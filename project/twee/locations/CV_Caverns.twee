@@ -1,0 +1,207 @@
+:: CV_Lv1_MAP [_back_]
+<hr><div id='canvas'></div></br>
+<script> window.gm.printMap2(window.story.state.DngSY.dngMap,window.gm.player.location.replace(window.story.state.DngSY.dng+'_',''),
+    window.story.state.DngCV.mapReveal,window.story.state.DngCV.visitedTiles);
+</script>
+
+
+:: CV_Entry
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%>
+TODO teleport tot Caverns 
+</br><p> [[Next|CV_Lv1_G4]] </br></p>
+</article><article id="LogPanel"></article></section>
+<script>
+function buildRooms() {
+    const _m=[
+        '    H2--I2    ',
+        '    |   |     ',
+        '    H3  I3    ',
+        '    |         ',
+        'G4--H4        '];
+    let grid =[
+    {room:'H2', dirs:['H3','I2']},
+    {room:'I2', dirs:['H2','I3']},
+    {room:'H3', dirs:['H2','H4']},
+    {room:'I3', dirs:['I2'],anno:['X']},
+    {room:'G4', dirs:['H4'],anno:['E']},
+    {room:'H4', dirs:['H3','G4']}];
+    let dng={grid:grid,width:14,height:8}
+    window.story.state.DngSY.dngMap=dng;
+    window.story.state.DngCV.visitedTiles=[],
+    window.story.state.DngCV.mapReveal=['I3'];
+}
+    var s = window.story.state;
+    s.vars.spawnAt="SY_Recover_Death";//might also set this in encounter
+    s.DngSY.dng='CV_Lv1';
+    s.DngCV.visitedTiles=[];
+    s.DngCV.tmp = {bathedInLake:0,
+    water:[]};
+    buildRooms();
+</script>
+
+:: CV_Lv1_Success
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%>
+You step through the portal and are facing Cyril again.
+<p class='tNPC2'>"There you are, I was already worrying what could delay that little task."</p>
+<p class='tNPC2'>"You have the glass with you?"</p>
+<%if(window.story.state.DngCV.tmp.bathedInLake>0){%>
+<p class='tNPC2'>"And why are your clothes all wet. You didn't fall in the lake, did you?"</p>
+You are kinda embarassed, like a child that did something stupid.
+<%}%>
+</br><a0 onclick='lvl2()'>Hand</a> him the glas.
+</article><article id="LogPanel"></article></section>
+<script>function lvl2() {
+    window.gm.player.Inv.removeItem("CrystalWater",1);
+    window.story.state.DngSY.dngLevel=2;
+    window.story.state.DngSY.remainingNights=2;
+    window.story.show("CV_Lv1_Success2");
+}
+</script>
+
+
+:: CV_Lv1_Success2
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%>
+<p class='tPC'>"Here, Sir."</p>
+Cyril takes the glass you present him.</br>
+<p class='tNPC2'>"Please follwo me to the lab. Someone is already waiting to analyse this."</p>
+<p class='tPC'>"There are others here around? I didn't notice anyone."</p>
+<p class='tNPC2'>"Kumala just returned this night, thats a good oppurtunity to meet her."</p>
+<p class='tPC'>"Is she also an acolyte?"</p>
+You hurry behind Cyril to keep up, following him back to the hall towards its long side where another door is now opened. 
+<p class='tNPC2'>"No she is a instructor and our alchemist. Oh and she also does the cooking."</p>
+</br><span class='tPC'>'I just hope she separates the cooking from the alchemy.'</span> you mumble to yourself.
+The door from the hall opens into another tunnel and you both walk to another entrance further down.
+<p class='tNPC2'>"Kumala? Kumala are you here?"</p>
+You look around. All the strange equipment here seems to fit into a laboratory. But it could also be a kitchen of haute cuisine, you arent sure.</br>
+There is some clanking going on in a backroom where someone seems busy.
+<p class='tNPC1'>"Just a moment.. Let me put the preserved on the shelf and I will be right with you."</p>
+A moment later a woman appears. She might be in her mid-thirtys and is wearing the same garment as Cyril. She just didnt put on the hood.
+<p class='tNPC1'>"Ah hello. You are the new apprentice right?"</p>
+You return the bow with which she greeted you..
+<p class='tPC'>"Yes my name is <%=window.gm.player.name%>..."</p>
+...
+Cyril does not seem to expect that Kumala is finished soon with whatever she is doing.
+<p class='tNPC2'>"Come, let's leave her alone. Better not divert her while she is doing the alchemistic stuff...it could get messy."</p>
+You follow him suit behind.
+<p class='tNPC2'>"Thats all for now. You should contemplate on what you have learned and prepare for your next task in 2 days."</p>
+<p class='tPC'>"Sure. What will be my next task?"</p>
+<p class='tNPC2'>"This I will tell you before you leave. Dont worry, its not to difficult."</p>
+<p class='tPC'>'Great. I should prepare for the job but they dont tell me what the job is. Well, lets contemplate what I've learned: Caves a dark and water is wet. Done.'</p>
+With a sigh you return to your [[room|SY_Your_Room]].</br>
+</article><article id="LogPanel"></article></section>
+
+:: CV_Lv1_FallToDeath
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%>
+<p class='tPC'>Its so damn dark, here.</p>
+Just as that thought crosses your mind, a gusty wind blows strong in your face.
+...
+You fall into the abyss never to return. </br>
+<a0 onclick='window.story.state.vars.spawnAt="SY_Recover_Death",window.gm.respawn()'>Next</a>
+</article><article id="LogPanel"></article></section>
+
+
+:: CV_Lv1_G4
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+There is a small clearing with a stone-plateu that has some kind of runes on it. 
+<%if(window.story.state.DngSY.dngLevel===1 && window.gm.player.Inv.countItem('GlasCrystalWater')>=1){%>
+    </br>The portal has opened, time for your return.
+    <p>[[Into the portal|CV_Lv1_Success]] </br></p>
+<%}else{%>
+    </br>Once you have fullfilled your task, the portal should reapear opening your way back to the sanctuary.
+    </br>Check your quest-log if you need a reminder on what to do.
+<%}%> 
+</br><p> [[Go East|CV_Lv1_H4]] </br></p>
+</article><article id="LogPanel"></article></section>
+
+:: CV_Lv1_H2
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+You can see the crystal lake from here. 
+</br><p> [[Go east|CV_Lv1_I2]][[Go south|CV_Lv1_H3]] </br></p>
+</article><article id="LogPanel"></article></section>
+
+
+:: CV_Lv1_I2
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+You can see the crystal lake from here. Its a little steep downwards. 
+</br><p> [[Go West|CV_Lv1_H4]][[Go South|CV_Lv1_I3]] </br></p>
+</article><article id="LogPanel"></article></section>
+
+
+:: CV_Lv1_H3
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+You can see the crystal lake from here.
+</br><p> [[Go north|CV_Lv1_H2]][[Go south|CV_Lv1_H4]] </br></p>
+</article><article id="LogPanel"></article></section>
+
+
+:: CV_Lv1_I3
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+<%if(!s.DngCV.tmp.water[window.gm.player.location]){%>
+<p class="tPC">"The water at the shore of the lake isnt as clean as it seemed from a distance. Its much cleaner a little further inside."</p>
+<p class="tPC">"I could just fill the glas here, but maybe they then dont believe me its from the lake if its spoiled with all that grime."</p>
+You look around and spot a larger one of those crystals growing from the wall toward the center of the lake, just above its surface.
+<p class="tPC">'Maybe if I climb on that one and slide on it a little further along away from the polluted shore...' </p>
+<div id='select1' >
+<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1a")'>Just fill the glas right here</a>
+<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1b")'>climb on the crystal</a>
+</div><div id='choice1a' hidden>
+    <p class="tPC">'Lets get it over with. It shouldnt matter if there is some dirt in it.'</p>
+    You fill the glas and try to keep most of the grime away. Still, you wouldnt say this is crystal clear.
+    Now its time to return to the entrance but for this you have to climb the steep <a0 onclick='window.gm.player.Inv.addItem(new window.gm.ItemsLib["CrystalWater"]()),window.story.state.DngCV.tmp.water[window.gm.player.location]=true,window.story.show("CV_Lv1_I3_SlopeUp")'>slope</a>.
+</div>
+<div id='choice1b' hidden>
+    You walk over to the crystal spike and hit it with your hand.
+    <p class="tPC">'Looks solid enough.'</p>
+    Carefully you pull yourself on the smooth crystal and, stradling it, slide forward to a point where you can plunge the glas into the water.
+    <p class="tPC">'Its to far, only some fingerwidth...'</p>
+    The round glas isnt helpful at all. 
+    <p class="tPC">'If I hold it just between 2 fingers at the edge, it should be possible to scoop up some water.'</p>
+    <div id='select2' >
+    <a0 onclick='window.gm.printTalkLink("div#select2","div#choice2a")'>Do it</a>
+    </div><div id='choice2a' hidden>
+        You are happy that your plan is working, until you notice that the water filled glas is now quite heavy.</br>
+        Feeling it slip from your fingers, you stretch a little bit further down and try to get a hold on it.</br>
+        Just a moment later you realize that this was a little bit to far and that your body weight is now drawing you down.
+        <div id='select3' >
+        <a0 onclick='window.gm.printTalkLink("div#select3","div#choice3a"),window.story.state.DngCV.tmp.bathedInLake=1;'>Next</a>
+        </div><div id='choice3a' hidden>
+        <span class="tPC">"AAhhh..."</span>, with a splash you fall into the lake.</br>
+        You trash around to stay above the surface of the cold water. Thankfully you quickly notice that it isnt that deep as it seemed from above and you can stand on the ground.</br>
+        The glas you somehow still have in your hand and you quickly make your way to escape the pond.
+        <p class="tPC">"Thats cold...brr"</p>
+        You teeth rattle as you step out of the water and the previous shock subsides. Why dont you even have a torch to warm you.
+        <p class="tPC">"Better get going before I catch a cold."</p>
+        Now its time to return to the entrance but for this you have to climb the steep <a0 onclick='window.gm.player.Inv.addItem(new window.gm.ItemsLib["CrystalWater"]()),window.story.state.DngCV.tmp.water[window.gm.player.location]=true,window.story.show("CV_Lv1_I3_SlopeUp")'>slope</a>.
+        </div>
+    </div>
+</div>
+<%}else{%>
+</br><p> [[Go north|CV_Lv1_I2]] </br></p>
+<%}%>
+</article><article id="LogPanel"></article></section>
+
+
+:: CV_Lv1_I3_SlopeUp
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%>
+The steep climb would not be a problem if you didn't have to carry the glas.
+...
+</br><p> [[Go north|CV_Lv1_I2]] </br></p>
+</article><article id="LogPanel"></article></section>
+
+
+:: CV_Lv1_H4
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+There are some candles on the floor. If you [[follow them north|CV_Lv1_H3]] , you should get to the crystal lake.</br>
+The portal should be in [[opposite direction|CV_Lv1_G4]]. There is also a pathway leading [[east|CV_Lv1_FallToDeath]], but it seems very dark there.</br>
+</article><article id="LogPanel"></article></section>

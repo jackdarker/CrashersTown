@@ -1,0 +1,359 @@
+
+body {
+  background-image:url('assets/bg_hex.jpg');
+  color:black;
+  padding:0;
+  margin:0;
+  font-size:1.25em;
+}
+hr {
+   box-sizing: content-box;
+   height: 0;
+   overflow:hidden;
+}
+section {
+  background: #ffffff;
+  display: grid;
+  grid-template-columns: 0.2fr 1fr 1fr 1fr;
+  grid-template-rows: 80% 20%;
+  height:100vh;
+  /*width:95vw;*/ /*scrollbars*/  }
+.section_swap {
+  grid-template-rows: 2% ;
+}
+
+section h2 {
+  grid-column: 1 / -1;
+}
+a {
+    /*line-height: 150%;*/
+    background-color: transparent;
+    margin-left:0.25em;
+    margin-right:0.25em;
+}
+a:hover {
+    color: #008929;
+    text-decoration-color: #008929;
+}
+#sidebar {
+  margin: 0.25em 0.25em;
+  padding: 0.25em;
+  min-width: 10em;
+  min-height: 30em;
+  text-align: center;
+  grid-row-start: 1;
+  grid-row-end: 3;
+  font-size: smaller;
+}
+
+#sidebar h3 {
+  font-size: 1em;
+  font-variant: small-caps;
+}
+
+#combatstats th { 
+  min-width:1em;/*minimum width empty col*/
+  padding-right: 1em;
+}
+/*#combatstats tbody td:nth-child(5n+1) { 
+  background-color: #e4ebf2; 
+}*/
+tw-story {
+  height:100vh; 
+  /*width:95vW;*/
+  max-width: 60em;
+  margin: 0 0/*auto*/; 
+  line-height: 100%;
+  display: block;
+}
+
+dialog {
+  display: none;
+  position: relative;
+  z-index:1002;
+}
+dialog[open="open"] {
+    display: block;
+}
+dialog::backdrop, #backdrop {      
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);    
+}
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  /*width: 160px;*/
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  bottom: 0%;
+  left: 0%;
+  /*margin-left: -80px;*/
+}
+/* Popup arrow 
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}*/
+
+/* Toggle this class - hide and show the popup */
+/*.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}*/
+
+/*.popuptext {
+  visibility: hidden;
+  width: 160px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  bottom: 0%;
+  left: 0%;
+  margin-left: -80px;
+}*/
+    
+.popup:hover .popuptext {
+  visibility: visible;
+}
+.popup2:active{
+  color:green;
+}
+.popup2:active .popuptext {
+  visibility: visible;
+}
+.toggle-label {
+  font-size: 16px;
+  background: #fff;
+  padding: 1em;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto 1em;
+  box-shadow: 0 1px 2px 0 rgba(153, 153, 153, 0.35);
+  border-radius: 4px;
+}
+
+.toggle-content {
+  color: #B0B3C2;
+  font-family: monospace;
+  font-size: 16px;
+  margin-bottom: 1.5em;
+  padding: 1em;
+}
+
+.toggle-input {
+  display: block;
+}
+.toggle-input:not(checked) {
+    background:red;
+}
+.toggle-input:checked {
+    background:blue;
+}
+.toggle-input:not(checked) .toggle-content {
+    display: none;
+background:blue;
+  }
+
+/*Display content when checkbox is "checked"*/
+.toggle-input:checked .toggle-content {
+    display: block;
+background:red;
+}
+
+input:not(checked) ~ span[role=tooltip] {
+  display:none;
+  visibility:hidden;
+}
+input:checked ~ span[role=tooltip] {
+	display: inline-block;
+	position: relative;
+	bottom: 1em;
+	left: 0em;
+	width: 15em;
+	padding: 0.5em;
+	z-index: 100;
+	color: #000;
+	background-color: #ffebe6;
+	border: solid 1px #c32e04;
+	border-radius: 0.2em;
+  visibility:visible;
+}
+[type=checkbox], [type=radio] {
+  width:1em;
+  height: 1em;
+  margin-right:1em;
+}
+button {
+  background-color: (rgb(239, 239, 239), rgb(59, 59, 59));
+  margin: 0.25em;
+}
+.speech {
+	border: 4px solid rgb(46,37,73);
+	border-radius: 15px;
+	padding: 8px 8px 8px 8px;
+	box-shadow: 5px 5px 3px Black;
+  	text-align: left;
+  	margin: 8px 8px 8px 8px;
+}
+.avatar {
+	display: block;
+	height: 100px;
+	width: 100px;
+	float: left;
+	margin: 0px 10px 0px 0px;
+	background-size: contain;
+}
+
+.tPC .avatar {
+	/*background-image: URL("../assets/icons/icon_question.svg");*/
+}
+.dev {
+  padding: 0.5em;
+}
+.dev::before {
+	display: block;
+	margin: -0.5em -0.5em 0.5em -0.5em;
+	padding: 0.5em;
+	text-decoration-line: underline;
+	content: 'Information from your Beta-Test-Support-Center:';
+}
+.author {
+	border: 1px solid red;
+	padding: 0.5em;
+}
+.author::before {
+	content: 'authors-note: ';
+	display: block;
+	background: red;
+	color: white;
+	font: bold /*16px sans-serif*/;
+	margin: -0.5em -0.5em 0.5em -0.5em;
+	padding: 0.5em;
+}
+.progressbar {
+  overflow: hidden;
+  background-color: lightgray;
+  /*height: 20px;*/
+  /*margin-bottom: 20px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);*/
+}
+.progressbar > div {
+  /*background-image: linear-gradient(45deg, rgba(255, 255, 255, 0.15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.15) 50%, rgba(255, 255, 255, 0.15) 75%, transparent 75%, transparent);
+  background-size: 40px 40px;*/
+  float: left;
+  width: 0%;
+  height: 100%;
+  /*font-size: 12px;
+  line-height: 20px;*/
+  color: black;
+  /*text-align: center;*/
+  -webkit-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  -webkit-transition: width 1s ease;
+  -moz-transition: width 1s ease;
+  -o-transition: width 1s ease;
+  transition: width 1s ease;
+  /*animation: progressbarstripes 1s linear infinite;*/
+  background-color: #de2828;
+}
+/*@keyframes progressbarstripes {
+
+  0% {
+    background-position: 40px 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
+}*/
+.progressbar p{
+  margin: 0;
+}
+
+@keyframes alarm {
+        0% {
+          background-color: initial;
+        }
+        50% {
+          background-color: coral;
+        }
+        100% {
+          background-color: initial;
+        }
+}
+.div_hidden { visibility: hidden; }
+.div { visibility: visible; }
+.div_alarm {animation: alarm 1s;}
+
+.red {
+  color: red;
+}
+.green {
+  color: green;
+}
+.soft_border {
+    border-radius: 1em;
+	  border-color: #df6c20;
+    border-width: 3px;
+    border-style: solid;
+}
+.selected {
+    border-style: double;
+    border-width: thick;
+    /* border-spacing: 20px; */
+    border-color: coral;
+} 
+div.scroll {
+  /*height: 100%; doesnt fit with buttons*/
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+@media (min-width: 30em) { 
+  article {
+    margin: 0.25em 0.25em;
+    padding: 1em;
+	  grid-column: 2;
+	  grid-column-end: -1;
+    /*line-height: 130%;*/
+    /*height: 100%;*/
+    overflow-x: hidden;
+    overflow-y: auto;  
+  }
+
+  #combatCanvas {
+    height:300px;
+  }
+}

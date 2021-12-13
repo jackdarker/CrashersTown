@@ -1,0 +1,333 @@
+:: AM_MAP_Level1 [_back_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+You have some kind of map from the mine:</br>
+<pre>
+[E]-[A2]-[A3]      [A5]
+      |             |
+    [B2]-[B3]-[B4]-[B5] 
+</pre>
+<div></br>[[Back|_back_]]</br></div>
+</article><article id="LogPanel"></article></section>
+
+:: AM_Entrance
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%>
+Eine dunkle Öffnung in der Felswand ist wohl der Eingang in die Mine.
+<div></br>[[PlainsFarmland]] [[Go In|AM_Lv1_A2]]</br>[[Map|AM_MAP_Level1]]</div>
+</article><article id="LogPanel"></article></section>
+
+
+:: AM_Lv1_A2
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%>
+Es wird schnell dunkler je tiefer du gehst.
+<div></br>[[West|AM_Entrance]] [[East|AM_Lv1_A3]] [[South|AM_Lv1_B3]]</br>[[Map|AM_MAP_Level1]]</div>
+</article><article id="LogPanel"></article></section>
+
+:: AM_Lv1_A3
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%>
+Hier ist die Decke zusammengebrochen und blockiert nun den Weg.
+<div></br>[[West|AM_Lv1_A2]]</br>[[Map|AM_MAP_Level1]]</div>
+</article><article id="LogPanel"></article></section>
+
+:: AM_Lv1_B2
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%>
+Ein Abzweig zum Hauptgang.
+<div></br>[[North|AM_Lv1_A2]] [[East|AM_Lv1_B3]]</br>[[Map|AM_MAP_Level1]]</div>
+</article><article id="LogPanel"></article></section>
+
+:: AM_Lv1_B3
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%>
+Kaum noch Licht vom Ausgang.
+<div></br>[[West|AM_Lv1_B2]] [[East|AM_Lv1_B4]]</br>[[Map|AM_MAP_Level1]]</div>
+</article><article id="LogPanel"></article></section>
+
+
+:: AM_Lv1_B4
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%>
+Die Stützbalken sind durch das eindringende Wasser vermodert.
+<div></br>[[West|AM_Lv1_B3]] [[East|AM_Lv1_B5]]</br>[[Map|AM_MAP_Level1]]</div>
+</article><article id="LogPanel"></article></section>
+
+
+:: AM_Lv1_B5
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%>
+Schwierig noch irgendwas zu sehen...ist da ein Loch im Boden?
+<div></br>[[West|AM_Lv1_B4]] [[North|AM_Lv1_A5]]</br>[[Map|AM_MAP_Level1]]</div>
+</article><article id="LogPanel"></article></section>
+
+
+:: AM_Lv1_A5
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%>
+Eine Sackgasse.
+<div></br>[[South|AM_Lv1_B5]]</br>[[Map|AM_MAP_Level1]]</div>
+</article><article id="LogPanel"></article></section>
+
+
+:: AM_MAP_Level2 [_back_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+You have some kind of map:</br>
+<div id='canvas'></div></br>
+Remember: If you have earned some money you should weight the option to retreat and invest that money in better gear.
+That might give you better chances to survive the tougher fights at the cost of fighting the previous foes again.</br>
+Grinding is fun. :)  </br>
+<div></br>[[Back|_back_]]</br></div>
+</article><article id="LogPanel"></article></section>
+<script> window.gm.printMap("testMap",window.gm.player.location,window.story.state.dng.arena.mapReveal);
+</script>
+
+:: AM_Lv2_Exit [_back_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<% if(window.story.state.dng.arena.enc===''){ %>
+You finished all fights. Congratulation. Now fetch your prize and go partying.
+<div></br><a0 onclick='leave()'>Collect prize</a></div>
+<% }else{ %>
+Are you really going to flee from battle?
+<div></br><a0 onclick='leave()'>Yes</a>[[Back|_back_]]</br></div>
+<% }%>
+<div id='output'></div>
+</article><article id="LogPanel"></article></section>
+<script>function leave() {
+  var tmp=window.story.state.dng.arena;
+  for(let el of tmp.loot) {
+    window.gm.player.changeInventory(window.gm.ItemsLib[el.id](),el.count);
+  }
+  window.story.show((tmp.enc==='')?'ForestBorder':'AM_Lv2_Start');
+}
+function showPrize() {
+  let msg='', tmp=window.story.state.dng.arena;
+  for(let el of tmp.loot) {
+    msg+=el.count+'x '+window.gm.ItemsLib[el.id]().name+'</br>';
+  }
+  return msg;
+}
+window.gm.printOutput(showPrize());
+</script>
+
+
+:: AM_Lv2_Shop [_back_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%> Would you like to buy something?</br>[[Back|_back_]]</br>
+<div id="choice"></div></br></br>   <!--display buy message-->
+<div id="panel"></div></br></br>    <!--display wares list-->
+</article><article id="LogPanel"></article></section>
+<script>
+window.gm.shop.findWaresToBuy("Arena:Shop");
+renderToSelector("#panel", "listbuy");
+</script>
+
+
+:: AM_Lv2_Start
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<% window.gm.moveHere();window.story.state.dng.arena= window.story.state.dng.arena||{
+  foundGate:0,mapReveal:0}; if((window.story.state.dng.arena.foundGate & 0x3)===1) {%>
+Deep in the dungeon you found a gate that you suspect to only open with a soulgem.
+Those are quite rare. Some magicans know how to grow them in a females uterus.
+Here is the plan:
+*  you need a lewd mark spell on you. Some lusty demons are granting them for free.
+*  But those demons only show up to those that show there debauchery. Go, grab some lewd gear from the shop.
+*  then, if you are female you just need to find someone to cuddle with to get the gem growing
+*  or you could court a lady and visit her often to have the gem well fed 
+<% } else if((window.story.state.dng.arena.foundGate & 0x2)>0){ %>
+The dungeons gate should be still open, except someone took the soulgem away.  
+<% } else { %>
+You are stuck in this dungeon and need to find your way out.
+You have to challenge several enemys one by one. After each fight you may decide to return here with the loot gathered so far.</br> 
+If you go on and get defeated, you will loose most items you carry with you.</br>
+You can store loot in this chest if you dont want to risk loosing it in battle. Dont forget to gear up in the shop close by.</br>
+<% } %>
+</br>Are you ready for your first fight?</br>
+<div></br>[[Magic Chest|GlobalChest]] [[Shop|AM_Lv2_Shop]] [[Map|AM_MAP_Level2]] 
+<a href="javascript:void(0)" onclick='($("tw-passage").fadeOut(1000, function() {window.gm.player.sleep(700);window.story.show("AM_Lv2_Start");}));'>Sleep Until Morning</a>
+</br><a0 onclick='window.gm.fightArena("wolf",null,[{id:"Money",count:30}],"AM_Lv2_E3")'>Into battle</a></div>
+</article><article id="LogPanel"></article></section>
+<script>
+window.story.state.dng.arena.loot=[]; //reset flags
+/*foundGate-bits:
+1 = foundgate
+2 = placed soulgem
+4 = succubusdeal
+8 = impregnated bitch
+16,32,64,128 = preg-counter
+*/
+</script>
+
+:: AM_SucDeal [_nosave_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<p class="tPC">Hey you, I would like to ask you something. Do you know where to get a soulgem?</p>
+<p class="tNPC1">Soulgems? Mages want them as do others that are related to arcana. But I dont have some...unfortunatly.</p>
+<p class="tPC">But where can I find one? Or can they be produced somehow?.</p>
+<p class="tNPC1">If you ask how you could produce one, there is in fact a way I could help you. Soulgems can be grown in a fertile woman. It requires some help of magic to do so.</p>
+<p class="tNPC1">Thats where I come into the game: I can grant you such power.</p>
+Of course there is some footangle with this. She is a demon after all and you should be careful what deal you make.</br>
+<p class="tPC">What prize would you have in mind for that power?</p>
+<p class="tNPC1">My life. You defeated me and could banish me from this plane of existence. But I would like to stay a little longer. So I would repay your kindness with this gift.</p>
+She smiles at you and is even able to not let it look to deviously. Should you take the deal?</br>
+[[Deal|AM_SucDeal2]] [[No Deal|AM_Lv2_Exit]]</br>
+</article><article id="LogPanel"></article></section>
+
+:: AM_SucDeal2 [_nosave_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<p class="tPC">What does this power exactly do and how do I use it?</p>
+<p class="tNPC1">Its a kind of arcane rune, some call it mark of the womb. If its placed on a woman and she is in an situation where she would receive a child, instead she would receive a soulgem.</p>
+<p class="tNPC1">...well a seed of a soulgem that would grow to a soulgem over time.</p>
+<p class="tPC">So this is only working for females?</p>
+<p class="tNPC1">Ahh, for males it would give them the opportunity to impregnate a woman with a soulgem, even if she doesnt bear the mark.</p>
+<p class="tPC">This sounds quite - improper ? I'm not even sure I would find someone to get started with. It's not like this is a big party where a lot of nice people hang around.</p>
+<p class="tNPC1">Oh, you neccesarily dont even need people.</p>
+<p class="tPC">Please?</p>
+She smiles at you and is even able to not let it look to deviously.</br>
+<p class="tNPC1">Well, it wouldn't ultimatly require another human to get this working. A healthy goblin would do the trick too, or anything alike... </p>
+<p class="tPC">I'm not really getting the picture here, and I even dont want too. </p>
+<p class="tNPC1">But you are interested in it. The spell I mean. It could still be helpful.</p>
+<a0 onclick='window.gm.player.Outfit.addItem(new window.gm.ItemsLib["LewdMark"]());window.story.state.dng.arena.foundGate|=0x4;window.story.show("AM_SucDeal3");'>Do it</a> [[I will find another way|AM_Lv2_Exit]]</br>
+</article><article id="LogPanel"></article></section>
+
+
+:: AM_SucDeal3 [_nosave_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<p class="tPC">Fine, do it !</p>
+She smirks again and strides forward to step in front of you. Then the palm of her hand touches your stomach just below the ribs. And slides a little bit lower.</br> 
+<p class="tPC">Hey what are you...</p> 
+Just as you start to protest she begins to speak some strange words and your lower belly grows warm. Its not an unpleasent feeling and after a moment its gone and she takes her hand away.  
+<p class="tNPC1">All done, now go and start making some gems. And if things aren't going like planned, just come by again. Sometimes those spells need some adjustment.</p>
+<p class="tPC">Thanks...I mean...I will see about that.</p>
+Just to make sure everthing is ok, you check your abdomen below your cloths.
+<p class="tPC">Hey, wait whats that !?.</p> you found your groin to be tattoed with some purple colored rune, shaped like some triangle in tribal style.
+<p class="tNPC1">Thats the mark of course. Isn't it cute? Dont worry, usually it will fade away after some time.</p>
+That might be true, the color seem to fade away while you stare at it.</br>
+[[Leave|AM_Lv2_Exit]]
+</article><article id="LogPanel"></article></section>
+
+
+:: AM_Lv2_E3
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();window.story.state.dng.arena.mapReveal|=10;%> Are you ready for your next fight?</br>
+<div></br>[[Retreat|AM_Lv2_Exit]] [[Map|AM_MAP_Level2]]</br>
+<a0 onclick='window.gm.fightArena("mole",{amount:2},[{id:"Money",count:30}],"AM_Lv2_F3")'>Continue to B3</a> 
+<a0 onclick='window.gm.fightArena("huntress",null,[{id:"Money",count:30}],"AM_Lv2_F4")'>Continue to C3</a></div>
+<a0 onclick='window.gm.fightArena("succubus",null,[{id:"Money",count:30}],"<%=((window.story.state.dng.arena.foundGate &0xF)===1)?"AM_SucDeal":"AM_Lv2_F5"%>")'>Continue to D3</a></div>
+</article><article id="LogPanel"></article></section>
+
+
+:: AM_Lv2_F3 [_nosave_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%> 
+</br>[[Retreat|AM_Lv2_Exit]] [[Map|AM_MAP_Level2]]</br> There is a loot chest !</br>
+<a0 onclick='window.story.show("AM_Lv2_G3")'>Ignore chest</a>
+<a0 onclick='window.gm.cursedChest("AM_Lv2_G3");window.story.show("AM_Lv2_LootChest")'>Open chest</a>
+</article><article id="LogPanel"></article></section>
+
+
+:: AM_Lv2_G3
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%> Are you ready for your next fight?</br>
+<div></br>[[Retreat|AM_Lv2_Exit]] [[Map|AM_MAP_Level2]]</br>
+<a0 onclick='window.gm.fightArena("mole",{amount:2},[{id:"Money",count:30}],"AM_Lv2_H3")'>Continue to B5</a></div>
+</article><article id="LogPanel"></article></section>
+
+
+:: AM_Lv2_H3
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%> Are you ready for your next fight?</br>
+<div></br>[[Retreat|AM_Lv2_Exit]] [[Map|AM_MAP_Level2]]</br>
+<a0 onclick='window.gm.fightArena("slug",null,[{id:"Money",count:30}],"AM_Lv2_I3")'>Continue to B6</a></div>
+</article><article id="LogPanel"></article></section>
+
+
+:: AM_Lv2_I3
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%> The path forward is blocked by a heavy gate that is somehow locked in place. There is a pedestal near it with an empty stand.</br>
+Maybe you have to place something there to make the gate open. A soulgem possibly. But where to get one?
+<div></br>[[Retreat|AM_Lv2_Exit]] [[Map|AM_MAP_Level2]]</br>
+<div id='output'></div>
+</article><article id="LogPanel"></article></section>
+<script>
+function placeSoulGem(evt) {
+  let msg='You dont have a soulgem.';
+  if((window.story.state.dng.arena.foundGate & 0x2)>0) {
+    msg=window.gm.printPassageLink("Pass the gate","AM_Lv2_J3");
+  } else if (evt===0) {
+    msg=window.gm.printLink("Use soulgem",'placeSoulGem(1)');
+  } else if(window.gm.player.Inv.countItem("TinySoulGem")>0) {
+    window.story.state.dng.arena.foundGate=window.story.state.dng.arena.foundGate | 0x2;
+    msg='As you place the soulgem into the stand, the gate opens.';
+    msg+=window.gm.printPassageLink("Pass the gate","AM_Lv2_J3");
+  }
+  window.gm.printOutput(msg)
+}
+window.story.state.dng.arena.foundGate=window.story.state.dng.arena.foundGate | 0x1;
+placeSoulGem(0);
+</script>
+
+
+:: AM_Lv2_J3
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%> And now?
+<div></br>[[Retreat|AM_Lv2_Exit]] [[Map|AM_MAP_Level2]]</br>
+<div id='output'></div>
+</article><article id="LogPanel"></article></section>
+
+
+:: AM_Lv2_LootChest [_nosave_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+You open the chest and find...<div id='output'></div></br>
+<a0 onclick='foo()'>Next</a>
+</article><article id="LogPanel"></article></section>
+<script>
+var foo,msg='',Items=[];
+var rnd=window.story.state.tmp.args[1],next=window.story.state.tmp.args[2];   
+function addLoot() {
+  for(let el of Items) { msg+=el.name+", ";};
+  foo=function(){ window.story.state.tmp.args=[];
+    for(let el of Items) {window.gm.player.changeInventory(el,1);}
+    window.story.show(next); //adding to inventory only if player is leaving the passage, otherwise he could glitch if switching to status-pane and back
+  }
+}
+if(rnd<10) {
+  Items.push(window.gm.ItemsLib.HorsePotion());
+  addLoot();
+} else if(rnd>40) {
+  Items.push(window.gm.ItemsLib.HealthPotionSmall());
+  if(rnd>60) {
+    Items.push(window.gm.ItemsLib.HorsePotion());
+  }
+  addLoot();
+} else {
+  msg+='trouble !';
+  foo=(function(){ window.story.state.tmp.args=[]; 
+    window.gm.fightArena("mole",{amount:2},[{id:"Money",count:30}],next);});
+}
+window.gm.printOutput(msg);
+</script>
+
+:: AM_Lv2_F5 [_nosave_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%> 
+</br>[[Retreat|AM_Lv2_Exit]] [[Map|AM_MAP_Level2]]</br> There is a loot chest !</br>
+<a0 onclick='window.story.show("AM_Lv2_F5")'>Ignore chest</a>
+<a0 onclick='window.gm.cursedChest("AM_Lv2_H5");window.story.show("AM_Lv2_LootChest")'>Open chest</a>
+</article><article id="LogPanel"></article></section>
+
+
+:: AM_Lv2_H5
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%> Are you ready for your next fight?</br>
+<div></br>[[Retreat|AM_Lv2_Exit]] [[Map|AM_MAP_Level2]]</br>
+<a0 onclick='window.gm.fightArena("slug",null,[{id:"Money",count:30}],"AM_Lv2_I3")'>Continue to B6</a></div>
+</article><article id="LogPanel"></article></section>
+
+
+:: AM_Lv2_XX
+The exit in this room seems to be unable to reach. Its on the opposite wall and some drawbridge is pulled up. But thats not the problem.
+The problem are the dense layer of long spikes sticking out of the floor several meters below you. Jumping down and walking over to the gate isnt an option.
+There seems to be a lever on a platform on your left side. You an only guess that it might lower the drawbridge. But you would have to jump 4m or more to reach it, which seems to be quite far for a human.
+How could anyone reach that lever without the ability to jump really far or to fly? The walls seems also to smooth unless you are a gecko.
+- would there be a way to learn flying, climbing or jumping?
+- could someone help me with the lever?   

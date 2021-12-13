@@ -1,0 +1,345 @@
+:: DF_Lv2_MAP [_back_]
+<hr><div id='canvas'></div></br>
+<script> window.gm.printMap2(window.story.state.DngSY.dngMap,window.gm.player.location.replace(window.story.state.DngSY.dng+'_',''),
+    window.story.state.DngDF.mapReveal,window.story.state.DngDF.visitedTiles);
+</script>
+
+
+:: DF_Entry
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%>
+The portal drops you within a clearing of a beautiful, thriving forest.
+<p class="tPC">"Wow, I expected some cave but not an open landscape. Let's look for a vantage point."</p>  
+</br><p> [[Next|DF_Lv2_F2]] </br></p>
+</article><article id="LogPanel"></article></section>
+<script>
+function buildRooms() {
+    const _m=[
+        'F2--G2--H2  I2--J2        ',
+        '    |   |       |         ',
+        'F3  G3  H3  I3  J3--K3    ',
+        '|   |   |                 ',
+        'F4--G4--H4  I4--J4--K4    ',
+        '|   |           |         ',
+        'F5  G5--H5  I5--J5--K5--L5',
+        '|   |                     ',
+        'F6--G6      I6--J6--K6--L6'];
+    let grid =[
+    {room:'F2', dirs:['G2']             ,anno:['E']},
+    {room:'G2', dirs:['F2','H2','G3']},
+    {room:'H2', dirs:['G2','H3']},
+    {room:'I2', dirs:['J2']},
+    {room:'J2', dirs:['I2','J3']},
+    {room:'F3', dirs:['F4']},
+    {room:'G3', dirs:['G2','G4']},
+    {room:'H3', dirs:['H2','H4'],           },
+    {room:'I3', dirs:['I4','J3'],           },
+    {room:'J3', dirs:['I3','K3','J2']},
+    {room:'K3', dirs:['J3']},
+    {room:'F4', dirs:['F3','G4','F5']},
+    {room:'G4', dirs:['G3','F4','H4','G5']},
+    {room:'H4', dirs:['H3','G4']},
+    {room:'I4', dirs:['H4','I3','J4']},
+    {room:'J4', dirs:['I4','J5','K4']},
+    {room:'K4', dirs:['J4'],                },
+    {room:'F5', dirs:['F4','F6']},
+    {room:'G5', dirs:['G4','H5','G6']},
+    {room:'H5', dirs:['G5']},
+    {room:'I5', dirs:['J5']},
+    {room:'J5', dirs:['I5','K5','J4']},
+    {room:'K5', dirs:['J5', 'K6','L5']},
+    {room:'L5', dirs:['K5'],                },
+    {room:'F6', dirs:['F5','G6'],                },
+    {room:'G6', dirs:['F6','G5'],                },
+    {room:'I6', dirs:['J6'],           },
+    {room:'J6', dirs:['I6','K6']},
+    {room:'K6', dirs:['K5','L6','J6']},
+    {room:'L6', dirs:['K6']}];
+    let dng={grid:grid,width:14,height:8}
+    window.story.state.DngSY.dngMap=dng;
+}
+    var s = window.story.state;
+    s.vars.spawnAt="SY_Recover_Death";//might also set this in encounter
+    s.DngSY.dng='DF_Lv2';
+    s.DngDF.plum={};
+    s.DngDF.tmp={stung:0};
+    buildRooms();
+</script>
+
+:: DF_Lv2_Success
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%>
+Balancing all those ripe plums, you step through the portal.
+<p class='tNPC2'>"Welcome back. I see you have quite some large plums."</p>
+<p class='tPC'>"Yeah, those a really a different size. What should I do with them now?"</p>
+<p class='tNPC2'>"Bring them to Kumala."</p>
+<p class='tPC'>"Is she going to make some jar from those?."</p>
+<p class='tNPC2'>"I dont think so. Well, I cant be sure..."</p>
+Carrying your truckload of fruits toward the laboratory, you right away run into <a0 onclick='lvl3()'>Kumala</a>.
+</article><article id="LogPanel"></article></section>
+<script>function lvl3() {
+    window.gm.player.Inv.removeItem("GiantPlum",5);
+    window.story.state.DngSY.dngLevel=3;
+    window.story.state.DngSY.remainingNights=2;
+    window.story.show("DF_Lv2_Success2");
+}
+</script>
+
+:: DF_Lv2_Success2
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%>
+<p class='tNPC1'>"Oh my, those should be more then enough for me."</p>
+<p class='tPC'>"What are you going to do with them? Boil down as jam or preserve?"</p>
+<p class='tNPC1'>"I will have to do some analyzes. But indeed, if there are remains I could still make something out of it."</p>
+<p class='tPC'>"Why are you analyze those things anyway?"</p>
+<p class='tNPC1'>"Did you run into those hornets? Didn't you think they are somewhat oversized."</p>
+<p class='tPC'>"Oh, yes. For sure people at home would panic if they are facing some buggers like that. You think the plums have something to do with it?"</p>
+<p class='tNPC1'>"Well, that we have to find out. I guess its not the fruit but something different that lets them grow."</p>
+<p class='tNPC1'>"Anyway, did you have any problems with the hornetts, they didn't sting you did they?"</p>
+<div id='select1' >
+<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1a")'><p class='tPC'>"Of course they stung me! What were you thinking."</p></a></br>
+</div><div id='choice1a' hidden>
+    <p class='tNPC1'>"Oh my. Are you feeling well? How many stings did you receive? I have some antitoxin to neutralize the poison. But it need to be properly dosed.</p>
+    <div id='select2' >
+    <a0 onclick='window.gm.printTalkLink("div#select2","div#choice2a")'><span class='tPC'>"It wasn't more then 3 times."</span></a></br>
+    <a0 onclick='window.gm.printTalkLink("div#select2","div#choice2a")'><span class='tPC'>"5 times or more, I guess."</span></a></br>
+    <a0 onclick='window.gm.printTalkLink("div#select2","div#choice2c")'><span class='tPC'>"I can't remember. I will just sit it out."</span></a></br>
+    </div><div id='choice2a' hidden>
+        <p class='tNPC1'>"Here trink that, it should neutralize the toxins.</p>
+        You down the concotion she hands you.
+        <p class='tPC'>"Blergh. That really has to be some good medicine if it tastes that bad."</p>
+        <p class='tNPC1'>"Please excuse me. I better get started with the tests."</p>
+        You are feeling somewhat nauseous now that she seemed to be worried about the wasps toxins. Maybe you should get to your [[room|SY_Your_Room]] and take a nap.</br>
+    </div>
+    <div id='choice2c' hidden>
+        <p class='tNPC1'>"Hmm, Please see me if it does cause problems."</p>
+        You are feeling somewhat nauseous now that she seemed to be worried about the wasps toxins. Maybe you should get to your [[room|SY_Your_Room]] and take a nap.</br>
+    </div>
+    Todo TF of...
+</div>
+</article><article id="LogPanel"></article></section>
+
+
+:: DF_Lv2_F2
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+There is a clearing with a stone-plateu that has some kind of runes on it. 
+<%if(window.story.state.DngSY.dngLevel===2 && window.gm.player.Inv.countItem('GiantPlum')>=3){%>
+    </br>The portal has opened, time for your return.</br>
+    <%if(window.story.state.DngDF.tmp.stung>0){%>
+    Those <%=window.story.state.DngDF.tmp.stung%> stings you received from those hornetts are itchy.
+    <%}else{%><%}%>
+    <p>[[Into the portal|DF_Lv2_Success]] </br></p>
+<%}else{%>
+    </br>Once you have at least 3 plums, the portal should reapear opening your way back to the sanctuary.
+    </br>Check your quest-log if you need a reminder on what to do.
+<%}%> 
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+
+:: DF_Lv2_G2
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+
+:: DF_Lv2_H2
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+
+:: DF_Lv2_F3
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+
+:: DF_Lv2_G3
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+<%if(!window.story.state.DngDF.plum[window.passage.name]){%>
+A large purple fruit hangs on one branch of a broad-leafed tree. Its so heavy that it has pulled down the branch to a height where you can reach it with your hand.</br>
+<div id='select1' >
+<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1a")'>harvest it</a>
+</div><div id='choice1a' hidden>
+As you plug the fruit from the twig, the branch snaps back to its origin.</br>
+That doesnt surprise you. What surprises you is the giant hornett that flys buzzing angrily out of the trees crown toward you.
+<a0 onclick='fightHornet();'>Defend yourself</a>
+</div>
+<%} else {%>
+No more plums are growing on the trees here.</br>
+<%}%>
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+<%=window.story.render("DF_Lv2_fightHornet")%>
+
+
+:: DF_Lv2_fightHornet
+<script> function fightHornet() {
+    window.gm.encounters.hornett({amount:(window.gm.player.Inv.countItem('GiantPlum')>=2)?2:1, noStart:true});
+    window.gm.Encounter.onVictory = (function(){
+        window.story.state.DngDF.plum[window.gm.player.location]=true;
+        window.gm.player.Inv.addItem(new window.gm.ItemsLib['GiantPlum']());
+        return('You defeated the angry hornet and earned that <b>juicy fruit</b>.</br> '+this.fetchLoot()+'</br>' + window.gm.printLink('Next','window.gm.postVictory()'));});
+    window.gm.Encounter.initCombat();
+}
+function fightLapine() {
+    window.gm.encounters.lapine({amount:1, noStart:true});
+    window.story.state.DngDF.lapine.met=true;
+    window.gm.Encounter.initCombat();
+}
+</script>
+
+
+:: DF_Lv2_H3
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+<%if(!window.story.state.DngDF.plum[window.passage.name]){%>
+    A large purple fruit hangs on one branch of a broad-leafed tree. Its so heavy that it has pulled down the branch to a height where you can reach it with your hand.</br>
+    <div id='select1' >
+    <a0 onclick='window.gm.printTalkLink("div#select1","div#choice1a")'>harvest it</a>
+    </div><div id='choice1a' hidden>
+    As you plug the fruit from the twig, the branch snaps back to its origin.</br>
+    That doesnt surprise you. What surprises you is the giant hornett that flys buzzing angrily out of the trees crown toward you.
+    <a0 onclick='fightHornet();'>Defend yourself</a>
+    </div>
+<%} else {%>
+No more plums are growing on the trees here.</br>
+<%}%>
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+<%=window.story.render("DF_Lv2_fightHornet")%>
+
+:: DF_Lv2_F4
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+<%if(!window.story.state.DngDF.plum[window.passage.name]){%>
+A large purple fruit hangs on one branch of a broad-leafed tree. Its so heavy that it has pulled down the branch to a height where you can reach it with your hand.</br>
+<div id='select1' >
+<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1a")'>harvest it</a>
+</div><div id='choice1a' hidden>
+As you plug the fruit from the twig, the branch snaps back to its origin.</br>
+That doesnt surprise you. What surprises you is the giant hornett that flys buzzing angrily out of the trees crown toward you.
+<a0 onclick='fightHornet();'>Defend yourself</a>
+</div>
+<%} else {%>
+No more plums are growing on the trees here.</br>
+<%}%>
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+
+:: DF_Lv2_G4
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+<%if(window.gm.player.Inv.countItem('GiantPlum')>=3 && !window.story.state.DngDF.lapine.met){%>
+As you make your way through the bushes, you here someone shout at you:
+<p class="tNPC3">"Hey you! Are you stealing all those plums?"</p>
+<div id='select1' >
+<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1a")'>Watch around</a></br>
+</div><div id='choice1a' hidden>
+    You quickly turn around toward the source of the shout and are surprised by what you see:</br>
+    Someone is walking toward you. At first you think its a human wearing a mask that looks like a rabbit. But as it gets closer it becomes clear that this is in fact the real face of this person.
+    Besides that you also notice the light grey fur visible on its body, at least those parts not covered by some tattered cloths.</br>   
+    <div id='select3' >
+    <a0 onclick='window.gm.printTalkLink("div#select3","div#choice3a")'>"I didn't know they are yours."</a></br>
+    <a0 onclick='window.gm.printTalkLink("div#select3","div#choice3b")'>"Get out of my way"</a>
+    </div><div id='choice3a' hidden>
+    <p class="tNPC3">"Technical they arent all mine. Its just not very friendly to plunder someones territory."</p>
+    <div id='select4' >
+    <a0 onclick='window.gm.printTalkLink("div#select4","div#choice4a")'>"I see. But I have to get 3 of those. If you want, you can get the others."</a></br>
+    <a0 onclick='window.gm.printTalkLink("div#select4","div#choice4b")'>"I already had to fight some nasty hornetts to get them. So I guess I earned them somehow."</a>
+    </div><div id='choice4a' hidden>
+    <p class="tNPC3">"Fine. This time I will let it pass. But better not get caught raiding again..."</p>
+    With that the creature walks away and for sure you arent going after it.
+    <%=window.gm.printNav()%>
+    </div>
+    <div id='choice4b' hidden>
+    <p class="tNPC3">"So if fighting is what you want"</p>
+    <a0 onclick='fightLapine();'>Defend yourself</a>
+    </div>
+    </div>
+    <div id='choice3b' hidden>
+    <p class="tNPC3">"Oh just wait - I will kick your ass."</p>
+    <a0 onclick='fightLapine();'>Defend yourself</a>
+    </div>
+</div>
+<%}else{%>
+High grass grows between sparse bushes.
+<%=window.gm.printNav()%>
+<%}%>
+</article><article id="LogPanel"></article></section>
+<%=window.story.render("DF_Lv2_fightHornet")%>
+
+:: DF_Lv2_H4
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+:: DF_Lv2_F5
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+<%if(!window.story.state.DngDF.plum[window.passage.name]){%>
+A large purple fruit hangs on one branch of a broad-leafed tree. Its so heavy that it has pulled down the branch to a height where you can reach it with your hand.</br>
+<div id='select1' >
+<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1a")'>harvest it</a>
+</div><div id='choice1a' hidden>
+As you plug the fruit from the twig, the branch snaps back to its origin.</br>
+That doesnt surprise you. What surprises you is the giant hornett that flys buzzing angrily out of the trees crown toward you.
+<a0 onclick='fightHornet();'>Defend yourself</a>
+</div>
+<%} else {%>
+No more plums are growing on the trees here.</br>
+<%}%>
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+<%=window.story.render("DF_Lv2_fightHornet")%>
+
+:: DF_Lv2_G5
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+<%if(!window.story.state.DngDF.plum[window.passage.name]){%>
+A large purple fruit hangs on one branch of a broad-leafed tree. Its so heavy that it has pulled down the branch to a height where you can reach it with your hand.</br>
+<div id='select1' >
+<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1a")'>harvest it</a>
+</div><div id='choice1a' hidden>
+As you plug the fruit from the twig, the branch snaps back to its origin.</br>
+That doesnt surprise you. What surprises you is the giant hornett that flys buzzing angrily out of the trees crown toward you.
+<a0 onclick='fightHornet();'>Defend yourself</a>
+</div>
+<%} else {%>
+No more plums are growing on the trees here.</br>
+<%}%>
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+<%=window.story.render("DF_Lv2_fightHornet")%>
+
+
+:: DF_Lv2_H5
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+High grass grows between sparse bushes.
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+
+:: DF_Lv2_F6
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+High grass grows between sparse bushes.
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+
+:: DF_Lv2_G6
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+High grass grows between sparse bushes.
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>

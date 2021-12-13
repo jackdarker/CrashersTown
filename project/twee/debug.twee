@@ -1,0 +1,160 @@
+
+:: debug_cheat [_back_]
+<section> 
+<aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+Some things for debugging:</br>
+</br>[[MemoryGame]] [[HangmanGame]] [[MinesweeperAscii]] [[Evade]] [[Pong]]</br> <!--todo-->
+</br>[[NewGamePlus]]</br> <!--todo-->
+[[Cheats|debug]]</br>
+[[Back|_back_]]</br>
+</article><article id="LogPanel"></article></section>
+
+
+:: debug [_back_]
+<section> <aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+[[Back|_back_]] [[DebugTransform]] [[Styletest]] [[Emergency-Wardrobe|Wardrobe]] [[DebugImages]] [[dont use!|debug_cheat]]</br>
+Cheat buttons: those are meant for debugging and might break your game</br>
+<a0  onclick='window.gm.player.Inv.addItem(new window.storage.constructors["Money"](),200);window.gm.refreshAllPanel();'>Get 200$</a></br>
+</br>
+<a0  onclick='unhideStats();window.gm.refreshAllPanel();'>unhide player stats</a></br>
+<%if(window.story.state._gm.dbgShowCombatRoll) {%>
+<a0  onclick='window.story.state._gm.dbgShowCombatRoll=false;window.gm.refreshAllPanel();'>disable combat debug</a>
+<%} else {%>
+<a0  onclick='window.story.state._gm.dbgShowCombatRoll=true;window.gm.refreshAllPanel();'>enable combat debug (log combat calculations)</a>
+<%}%>
+<%if(window.story.state._gm.dbgShowQuestInfo) {%>
+<a0  onclick='window.story.state._gm.dbgShowQuestInfo=false;window.gm.refreshAllPanel();'>disable extended questinfo</a>
+<%} else {%>
+<a0  onclick='window.story.state._gm.dbgShowQuestInfo=true;window.gm.refreshAllPanel();'>enable ext. questinfo</a>
+<%}%>
+<label for="addXP">addXP:<input type="text" id="addXP" name="addXP"></label><a0  onclick='window.gm.player.addXP(parseInt(document.getElementById("addXP").value));window.gm.refreshAllPanel();'>GO</a></br>
+<a0  onclick='window.gm.player.Stats.increment("health",25);window.gm.refreshAllPanel();'>Health +25</a></br>
+<a0  onclick='window.gm.player.Stats.increment("energy",25);window.gm.refreshAllPanel();'>Energy +25</a></br>
+<a0  onclick='window.gm.player.Stats.increment("corruption",25);window.gm.refreshAllPanel();'>corruption +25</a>
+<a0  onclick='window.gm.player.Stats.increment("corruption",-25);window.gm.refreshAllPanel();'>corruption -25</a></br>
+<a0  onclick='window.gm.player.Stats.increment("arousal",25);window.gm.refreshAllPanel();'>Arousal +25</a>
+<a0  onclick='window.gm.player.Stats.increment("arousal",-25);window.gm.refreshAllPanel();'>Arousal -25</a></br>
+Crash if you enter wrong things below !</br>
+<label for="passage">passage:<input type="text" id="passage" name="passage"></label><a0  onclick='window.story.show(document.getElementById("passage").value)'>Go</a></br>
+<label for="additem">add item:<input type="text" id="additem" name="additem"></label><a0  onclick='window.gm.player.Inv.addItem(window.gm.ItemsLib[document.getElementById("additem").value]())'>Go</a></br>
+(only non-wardrobe-items and weapons!)</br>
+<label for="addoutfit">add wardrobe:<input type="text" id="addoutfit" name="addoutfit"></label><a0  onclick='window.gm.player.Wardrobe.addItem(window.gm.ItemsLib[document.getElementById("addoutfit").value]())'>Go</a></br>
+(only wardrobe-items except weapons! You need to equip them in wardrobe.)</br>
+<label for="startfight">start fight:<input type="text" id="startfight" name="startfight"></label><label for="startfight2">params:<input type="text" id="startfight2" name="startfight2"></label>
+<a0  onclick='window.gm.encounters[document.getElementById("startfight").value](JSON.parse(document.getElementById("startfight2").value||"{}"))'>Go</a></br>
+(use Encounter-name, might sent you to certain events on defeat/victory. Might need extra params like {"amount":1} )</br>
+</article><article id="LogPanel"></article></section>
+<script> function unhideStats() {
+    var ids = window.gm.player.Stats.getAllIds();
+    for(var i=0; ids.length>i;i++) {
+        window.gm.player.Stats.modifyHidden(ids[i],0);
+    }
+}
+</script>
+
+
+:: DebugTransform  [_back_]
+<section> <aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+</br>[[Back|_back_]]</br>
+Test transformation events. Because they are deffered-events you need to return to story and move between rooms.</br>
+<a0 onclick='window.gm.MutationsLib.growBreast(window.gm.player)'>Breast grow</a></br>
+<a0 onclick='window.gm.MutationsLib.growVulva(window.gm.player)'>Vagina grow</a></br>
+<a0 onclick='window.gm.MutationsLib.swapGender(window.gm.player,window.storage.constructors["VulvaHuman"])'>to female</a></br>
+<a0 onclick='window.gm.MutationsLib.swapGender(window.gm.player,window.storage.constructors["PenisHuman"])'>to male</a></br>
+<hr>Anthros:</br>
+<a0 onclick='window.gm.MutationsLib.mutateCat(window.gm.player)'>Cat</a>
+<a0 onclick='window.gm.MutationsLib.mutateWolf(window.gm.player)'>Wolf</a></br>
+<a0 onclick='window.gm.MutationsLib.mutateHorse(window.gm.player)'>Horse</a></br>
+<hr>Ferals:</br>
+</article><article id="LogPanel"></article></section>
+
+
+:: DebugImages  [_back_]
+<section> <aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+</br>[[Back|_back_]]</br><div id='canvas'></div></br><div id='choice'></div></br>
+Test svg inlined in code.</br>
+</article><article id="LogPanel"></article></section>
+<script>window.gm.listImages();</script>
+
+:: Styletest [_back_]
+<section> <aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<div></br>[[Back|_back_]]
+Theme:
+<a href="javascript:window.styleSwitcher.setStyle('default');window.gm.refreshAllPanel();">default</a>
+<a href="javascript:window.styleSwitcher.setStyle('dark');window.gm.refreshAllPanel();">dark</a></br></div>
+</br><hr>
+<div class="speech tNPC2"><span class="avatar"></span>NPCx<hr><br>"There you are"</div>
+<p class='tPC'>PC-talk</p><p class='tNPC1'>NPC1-talk</p><p class='tNPC2'>NPC2-talk</p><p class='tNPC3'>NPC3-talk</p><p class='tNPC4'>NPC4-talk</p>
+<p class='dev'>notes from developer.</p>
+<p class='author'>notes from author.</p>
+<form><ul style="list-style-type: none; padding-inline-start: 0px;" ><legend>List</legend>
+<button type="button" id="button1">Button1</button>
+<div class="meter"><div class="bar" style="width:23%"></div><div style="position:absolute; top:0; left:0; width:100%">5/45</div></div>
+<li style="padding-bottom: 0.5em;"><input type="checkbox" name="y" value="x" readonly disabled><label>chekbox disabled</label></li>
+</ul></form></br>
+<statup>Statup</statup>  <statdown>Statdown</statdown> <span class='red'>RED</span><span class='green'>GREEN</span>
+<p class='div_alarm'>ALARM</p>
+<hr>
+<div id='bartest' class="progressbar"><div style="width: 100%;"><b><p>100%</p></b></div></div>
+<div><input id="progress-value" type="number" placeholder="Enter desired percentage" min="0" max="100" value="7" />
+	<input type="button" value="Change" onclick="change()"/></div>
+<hr>
+<label>[hint]<input type="checkbox"  style="display: none;" >
+  <span role='tooltip'>hkljj  fdggfdsf gf   dfsd afsdafgdae sgfegf</span>
+</label>       <label> <input type="checkbox" >
+  <span role='tooltip'>hkljj  fdggfdsf gf   dfsd afsdafgdae sgfegf</span>
+</label>
+<div class="popup">[hover here]
+  <span class="popuptext" id="myPopup2">A Simple window.gm.printPickupAndClear('Crowbar','A crowbar is lying other there.'</span>
+</div>
+<div class="popup">[hover here]
+  <span class="popuptext" id="myPopup2">A Simple window.gm.printPickupAndClear('Crowbar','A crowbar is lying other there.'</span>
+</div>
+<label> <input type="checkbox" >
+  <span role='tooltip'>hkljj  fdggfdsf gf   dfsd afsdafgdae sgfegf</span>
+</label>
+</article><article id="LogPanel"></article></section>
+<script>
+function change(){
+				var selectedValue = document.querySelector("#progress-value").value;
+				document.querySelector("#bartest > div").textContent = selectedValue + "%";
+				document.querySelector("#bartest > div").style.width = selectedValue + "%";
+			}
+</script>
+
+
+:: NOP [_back_]
+<section> <aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<p class='author'>Sorry, this location is curently not implemented.</p> <!--todo  implement passages pointing to this-->
+<div> </br>
+[[Back|_back_]]</br></div>
+</article><article id="LogPanel"></article></section>
+<script>
+window.gm.achievements.looseEnd='You found a dead end somewhere in '+window.gm.location;
+</script>
+
+
+:: Deffered1
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+Deffered1
+[[Home]]
+<a0 onclick= window.story.show("")>Next</a></br></br>
+</article></section>
+
+
+:: Deffered2
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+Deffered2
+[[Home]]
+<a0 onclick='window.gm.pushDeferredEvent("Deffered3",[13],true)'>Deffered3</a></br>
+<a0 onclick= window.story.show("")>go on</a></br></br>
+</article></section>
+
+
+:: Deffered3
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+Deffered3
+[[Home]]
+<a0 onclick='window.gm.pushDeferredEvent("Deffered3",[13])'>Deffered1</a></br>
+<a0 onclick= window.story.show("")>go on</a></br></br>
+</article></section>

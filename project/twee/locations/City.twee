@@ -1,0 +1,245 @@
+:: Evt_
+Your scouts found:
+- ruins with information
+- a tribe
+- a monster
+- some resources/food
+- a location where resources can be mined
+
+Buildings:
+- built
+- damaged by disaster
+- run out of resources
+- production completed
+
+People:
+- breeding done
+- people needs not fullfilled
+- training done
+- diseas spreading
+- people gone missing
+
+Intelligence:
+- diplomatic contact
+- declaration of war/ peace offer / trading offer / tribute payment
+
+Research:
+- new technology
+
+Others:
+- attack by monsters
+- attack by tribe
+- trading caravan
+- travelers with information or rare goods
+
+:: _Event [_nodeffered_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<div id='panel'></div><!--output rendered here-->
+</article><article id="LogPanel"></article></section>
+<script>
+var halt=window.gm.processEvents();
+if(!halt) window.story.show('Menu_Main')
+</script>
+
+:: Menu_Main
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<%window.gm.player.location=window.passage.name;%>
+From this menu you can access other menus and 
+- start the turn.
+[[Menu_Build]] [[Menu_Social]] [[Menu_Exploration]]
+
+<a0 onclick='window.gm.newTurn()'>-> START THE NEW WEEK <-</a>
+</article><article id="LogPanel"></article></section>
+
+
+:: Menu_Map
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<%window.gm.player.location=window.passage.name;%>
+This menu:
+- worldmap
+- exploration progress
+- influence
+- other tribes
+[[Menu_Main]]
+</article><article id="LogPanel"></article></section>
+
+
+:: Menu_Administration
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<%window.gm.player.location=window.passage.name;%>
+This menu:
+- define rules
+- check overall happiness of personal
+- list diplomatic relations
+- list resource storage, consumption and generation
+- list heros and assign office
+[[Menu_Main]]
+</article><article id="LogPanel"></article></section>
+
+:: Menu_Defense
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<%window.gm.player.location=window.passage.name;%>
+This menu:
+- lists facilities related to defense and combat
+- assign combatants
+[[Menu_Main]]
+</article><article id="LogPanel"></article></section>
+
+
+:: Menu_Intelligence
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<%window.gm.player.location=window.passage.name;%>
+This menu:
+- list spys in service and progress 
+- assign missions to spy
+- initiate propaganda
+- decide what to do with unruly citizen (sell, enslave, brainwash, arena)
+[[Menu_Main]]
+</article><article id="LogPanel"></article></section>
+
+
+:: Menu_Social
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<%window.gm.player.location=window.passage.name;%>
+<p>[[Menu_Main]]</p>
+This menu:
+- lists all people and their activity and State
+- overview on job distribution
+</br><div id='choice'></div>
+</br><div id='panel'></div></br><hr><div id='panel2'></div>
+</article><article id="LogPanel"></article></section>
+<script>
+window.gm.listPeople();
+</script>
+
+
+:: Menu_Person
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<p>[[Menu_Main]]</p>
+This menu:
+- detail information for a person
+- assign them new work or training
+</br><div id='choice'></div>
+</br><div id='panel'></div></br><hr><div id='panel2'></div>
+</article><article id="LogPanel"></article></section>
+<script>
+window.gm.listPerson(window.story.state.tmp.args[0]);
+</script>
+
+
+:: Menu_Breed
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<%window.gm.player.location=window.passage.name;%>
+This menu:
+- lists breeding and progress
+- select breeding-partners and initiate
+- conduct experiments
+[[Menu_Main]]
+</article><article id="LogPanel"></article></section>
+
+:: Menu_Market
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<%window.gm.player.location=window.passage.name;%>
+This menu:
+- list wares on the market place for selling and buying
+- buy & sell slaves and animals
+[[Menu_Main]]
+</article><article id="LogPanel"></article></section>
+
+
+:: Menu_Slave
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<%window.gm.player.location=window.passage.name;%>
+This menu:
+- lists slaves and their enslavement-progress
+- decide enslavement tactic
+- assign slaves to work or training
+- making slaves into citizen 
+[[Menu_Main]]
+</article><article id="LogPanel"></article></section>
+
+
+:: Menu_Exploration
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<%window.gm.player.location=window.passage.name;%>
+This menu:
+- lists scout-units and their progress and health
+- assign or abort exploration
+[[Menu_Main]]
+</article><article id="LogPanel"></article></section>
+
+
+:: Menu_Production
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<%window.gm.player.location=window.passage.name;%>
+This menu:
+- lists facilities and their production progress
+- list of workers
+- assign, pause or abort production
+[[Menu_Main]]
+</article><article id="LogPanel"></article></section>
+
+
+:: Menu_Research
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<%window.gm.player.location=window.passage.name;%>
+This menu:
+- lists research facilities and their research progress
+- list of scientists
+- assign, pause or abort research
+[[Menu_Main]]
+</article><article id="LogPanel"></article></section>
+
+
+:: Menu_Build
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<%window.gm.player.location=window.passage.name;%>
+This menu:
+- lists building, there production and resource consumption
+- check build progress of buildings
+- start or pause build 
+- upgrading/downgrading a building (make sure the building doesnt produce something) 
+- deconstruct buildings 
+</br><div id='choice'></div>
+</br><div id='panel'></div>
+</br><a0 id='Tent' onclick='buildTent(this)'>build tent</a>
+<p>[[Menu_Main]]</p>
+</article><article id="LogPanel"></article></section>
+<script>
+function buildTent(evt) {
+    window.story.state.Events.push(window.gm.EventsLib.BuildTent());
+    var entry = document.createElement('p');
+    entry.textContent = 'Construction assigned:'+evt.id;
+    $("div#choice")[0].replaceChild(entry);
+}
+function listBuildings(){
+    var _list={},_list2;
+    for(var i=window.story.state.City.Facilities.length-1;i>=0;i--) {
+        var _b=window.story.state.City.Facilities[i];
+        if(_list[_b.id]===undefined) _list[_b.id]=1;
+        else _list[_b.id]+=1;
+    }
+    _list2 = Object.keys(_list);
+    for(var i=_list2.length-1;i>=0;i--){
+        var link = document.createElement('a');
+        link.href='javascript:void(0)',link.addEventListener("click", function(){});
+        link.textContent=_list2[i]+':'+_list[_list2[i]];
+        $("div#panel")[0].appendChild(link);
+    }
+}
+listBuildings();
+</script>
+
+:: Menu_Train
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<%window.gm.player.location=window.passage.name;%>
+This menu:
+- lists people in training and their progress
+- list of trainers and facilities
+- assign or abort a training to someone
+[[Menu_Main]]
+</article><article id="LogPanel"></article></section>
+
+
+:: other
+visit bath/library/arena/stripclub for relaxation

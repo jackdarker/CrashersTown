@@ -1,0 +1,140 @@
+:: DogSit
+<script>
+//quest milestones
+var qDogSitLib = [ [0,'unknown'],
+    [0x100 , 'found dogsit annonce' ],
+    [0x200 , 'called phone, no answer'],
+    [0x300 , 'callback received, accepted offer'],
+    [0x310 , 'callback received, delayed decision'],
+    [0x400 , 'first visit at dogsit-center'],
+    [0x500 , 'interview run done'],
+    [0x550 , 'training run done'],
+    [0x600 , 'job offers lv1']
+];</script>
+
+:: qDogSit_Status
+<!--called  to print status--->
+
+:: Park_DogsitAd
+<section> 
+<aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<% window.gm.player.location=window.passage.name;
+if(s.vars.qDogSit<0x200) { s.vars.qDogSit=0x100; %>
+    A closer look on the paper reveals that it is an advertisment for an agency where you can rent people for dog-sitting.</br>
+    There is also a sidenote that new dog-sitters are hired and payed 20-100$ per hour.</br>
+    That sounds like easy money. Maybe you should call them and see if this is something for you.</br>
+    [[Call|Dogsit_FirstCall]]</br>
+<%} else {%>
+    You already got the advertisment of the dog-sitting-agency.</br>
+    [[Call Dogsit|Dogsit_NewCall]]</br>
+<% } %>
+[[Ignore the ad|Park]]</br>
+</article><article id="LogPanel"></article></section>
+
+
+:: Dogsit_FirstCall
+<section>
+<aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<% window.gm.player.location=window.passage.name;s.vars.qDogSit=0x200;%>
+Using the qr-scanner of your phone you scan the ad and start the call.</br>
+The ringing-sound is repeated several times but there is no one picking up the call.</br>
+After entering the number manually (just to make sure) you again got no connection.<br>
+Darn. Maybe they are all busy caring for dogs. </br>
+[[Ignore the ad|Park]]</br>
+</article><article id="LogPanel"></article> 
+</section>
+
+:: Dogsit_FirstCallBack
+<section> 
+<aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+"Yes hello here is Trisha from Dog-Sit-Agency." a female voice calls out.<br>
+"Im calling you back because your number was in our phones unanswered list." </br></br>
+<p class="tPC">"Hello, I saw your ad and would like to ask about the job as a dog-sitter."</p></br>
+Todo: explain job</br>
+"If you want to apply just come around at our shop at any time, ok?"  </br>
+<div id="choice">
+<a href="javascript:void(0)" id="yes" onclick='choice(this,"div#choice")'>Yes I will come by.</a></br>
+<a href="javascript:void(0)" id="no" onclick='choice(this,"div#choice")'>I not sure about this.</a></br>
+</div>
+[[Ignore the ad|<%=window.gm.player.location%>]]</br>
+</article><article id="LogPanel"></article></section>
+<script>
+function choice(elmt,replaceThis) {
+	var msg ='';
+	if(elmt.id==="yes") {
+	window.story.state.vars.qDogSit=0x300;
+	msg = "You aggreed to visit them.</br>";
+	} else {
+		window.story.state.vars.qDogSit=0x310;
+		msg = "You have to think about this. You can pay them a visit anyway.</br>";
+	}
+	$(replaceThis).replaceWith(msg+window.gm.printPassageLink("Next","Kitchen"));
+}
+</script>
+
+:: Dogsit_Center
+<section> 
+<aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<% window.gm.player.location=window.passage.name;
+if(s.vars.qDogSit<0x400) { s.vars.qDogSit=0x400; %>
+<!--intro-->
+Walking down the street you finally find the dogsit-center. Its located in the ground floor of an old appartment.
+A small name plate showing the outline of a dog and a human states that you have found the dogsit-center.
+"Hello how may I help you?" a friendly woman at the reception desk welcoms you as you push trough the entry door.
+<p class="tPC">"Hello, I'm <%=window.gm.player.name%>. I called before because I saw your ad. "</p>
+"Ah, yes. I remember your call. You said you dont have much experience about dogsitting. 
+Please go over there through this door. Micheal is there and he will take care."</br>
+[[Dogsit_Intro2]]</br>
+<%} else {%>
+<!--default-->
+<p class="tPC">"Hi, Thrisha. How are you."</p> 
+"Hi, <%=window.gm.player.name%>. Fine. Nice to meet you. Are you here for some job?"</br>
+[[walk a dog|Dogsit_NewJob]]</br>[[Dogsit_TalkTrisha]] [[Dogsit_TalkMichael]] </br>
+[[Home]]</br>
+<%}%>
+</article><article id="LogPanel"></article></section>
+
+
+:: Dogsit_TalkTrisha [_back_]
+<section> 
+<aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<!--<% window.gm.player.location=window.passage.name;%>-->
+todo
+[[Back|_back_]]</br>
+</article><article id="LogPanel"></article></section>
+
+
+:: Dogsit_TalkMichael [_back_]
+<section> 
+<aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<!--<% window.gm.player.location=window.passage.name;%>-->
+todo
+[[Back|_back_]]</br>
+</article><article id="LogPanel"></article></section>
+
+
+:: Dogsit_NewCall
+<section> 
+<aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<!--<% window.gm.player.location=window.passage.name;%>-->
+Ask for a new job.
+[[Ignore the ad|Park]]</br>
+</article><article id="LogPanel"></article></section>
+
+
+:: Dogsit_NewJob [_back_]
+<section> 
+<aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<!--<% window.gm.player.location=window.passage.name;%>-->
+"Let's see if there what requests we have..." Trisha starts working on the computer</br>
+"Seems there is actually no request. I will message you if we get a new."
+
+[[Lenny]] A playful and friendly corgi. 
+[[Ole]] Golden Retriever. As a family dog this one should not cause much trouble.
+[[Dotti]] Young Dalmatian female. Curious and lacks some obedience training.
+[[Snow]] Husky-female. This breed needs a lot of action so you better get your workout dress. 
+[[Klaus]] That doberman-stud isn't a easy one. He will question your role as a leader costantly.
+[[Victor]] As a Great Dane this matured male is quite a large breed. While usually not the troublemaker, it could be quite difficult to get him in line should he act unruly.
+
+[[None|_back_]]</br>
+</article><article id="LogPanel"></article></section>

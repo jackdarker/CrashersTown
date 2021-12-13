@@ -1,0 +1,65 @@
+body {
+  color:black;
+  background-color: rgb(37, 37, 28);
+}
+a {
+	color:royalblue;
+    text-decoration-color: initial;
+}
+a:hover {
+    color: #008929;
+    text-decoration-color: #008929;
+}
+button {
+  background-color: (rgb(239, 239, 239), rgb(59, 59, 59));
+}
+article {
+  background-color: #ffede0;
+}
+section {
+  background-color:#ffffff;
+}
+#LogPanel {
+  background: #e4e4e4;
+}
+#sidebar {
+  background-color: #ffede0;
+}
+#sidebar p {
+  color: black;
+}
+.author {
+  /*color: lightyellow;
+  background-color: darkred;*/
+}
+.dev {
+  color: #7bedf3;
+  background-color:#11114a;
+}
+statup {
+  color:green;
+}
+statdown {
+  color:red;
+}
+.tPC {	/*talk player*/
+  	color: #001eb1;
+	border-color:#001eb1;
+  /*slateblue,slategreen,royalblue*/
+}
+.tNPC1 {
+	color: Brown;
+    	border-color: Brown;
+}
+.tNPC2 {
+  	color: green;
+	border-color:green;
+}
+.tNPC3 {
+  	color: darkred;
+	border-color:darkred;
+}
+.tNPC4 {
+  	color: deepskyblue;
+	border-color:deepskyblue;
+}

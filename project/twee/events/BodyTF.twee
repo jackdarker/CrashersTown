@@ -1,0 +1,32 @@
+:: TFCanineCock
+getCockType & Rating
+if Type!=this decrease rating
+else increase rating
+if rating drops below 0 ??  "Something in your nethers is changing, you can feel it. Your once average sized human dong has changed its shape. At least that what you think."
+if rating increases just above 0 "You "
+
+:: GenericDeffered [_isdeffered_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<div id='output'><%=window.story.state.tmp.args[0]%></div></br>   <!--message is rendered here-->
+<a0 onclick= 'window.story.show("")'>Next</a></br>
+</article></section>
+
+
+:: CatHabit [_isdeffered_]
+<section> <aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+You feel the urge to sit down and give yourself a good licking...</br>
+<a0 onclick= window.story.show("")>Next</a></br>
+</article></section>
+
+
+:: MutateBreastEnd [_isdeffered_]
+<section> <aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+Somehow you know your breast stopped changing ...</br>
+<a0 onclick='window.story.state.msg="";window.story.show("")'>Next</a></br>
+</article></section>
+
+:: MutateVulvaEnd [_isdeffered_]
+<section> <aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+Your cunt didnt change since some time now. At least you cant see any... </br>
+<a0 onclick= window.story.show("")>Next</a></br>
+</article></section>

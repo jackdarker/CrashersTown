@@ -1,0 +1,94 @@
+:: ForestAlchemistTalk [_nosave_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<% if(!window.gm.quests.hasActiveQuest("qPurpleBerry") || window.gm.quests.getMilestoneState("qPurpleBerry").id<1) { 
+    window.story.render("AlchTalkStartPurpleBerry"); %>
+<% } else if(window.gm.quests.getMilestoneState("qPurpleBerry").id===1 && window.gm.player.Inv.countItem("PurpleBerry")>=5) { 
+    window.story.render("AlchTalkFinishPurpleBerry"); %>
+<% } else if(window.gm.quests.getMilestoneState("qBondageKink").id===300) {
+    window.story.render("AlchTalkFinishPurpleBerry"); %>
+<% } else if(window.gm.quests.getMilestoneState("qCarlia").id===700) {
+    window.story.render("AlchTalkShelterCarlia"); %>
+<%} else {%> He seems busy right now. [[Back|ForestAlchemistHut]] <%}%>
+</article><article id="LogPanel"></article></section>
+
+
+:: AlchTalkShelterCarlia
+todo  Convince Alchemist to take Carlia in.
+<p class="tPC">"I'm pretty sure she can help you around; fetching ingredients from the forest, keeping you company..."</p>
+"Well yes." the alchemist scratches his chin in thought "Sometimes it gets really lonely here and if someone others collects the ingredients, I can spent more time with potion-making.."</br>
+"Just bring her here and we will see if we can workout something."</br>
+<<p class="tPC">'That went smoother then I thought.'</p>>
+<a0 onclick='window.gm.quests.forceQuestMilestone("qCarlia",800,700);window.story.show("ForestAlchemistHut");'>Leave</a></br>
+
+
+:: AlchTalkBridgeThugs
+As you stumble into the hut, the alchemists greets you: "Ah, nice to see you again. You fine so far?"
+<p class="tPC">"Nope. There are some thugs at the bridge, they dont let me pass."</p>
+"Thugs? Did they rob you?"
+<p class="tPC">"I got away before they got that idea. Is there an alternative to get over the canyon."</p>
+He shakes his head "Not that I know. Cant you sneak around them or trick them somehow to let you pass?"
+<p class="tPC">"Well, thats what I wanted to ask you. You dont have an elixier or something that makes me hardier and stronger?"</p> 
+"Huff, no. I'm still out of stock. I can give you those berry-potions if you bring me enough berries. It wouldnt take much to improve it though..."
+"If you can get me 4 purple berries, 2 apoca flowers and 2 leeches I can mix up some potion to boost your strength."
+<p class="tPC">"Thats exactly what I need ! But where can I find them?"</p>
+"The flowers grow in the forest too. They have colorful blue and yellow blossoms. But those leeches...they lurk in dark,humid places, swamps and such."
+<p class="tPC">"I will see to get some."</p>
+<a0 onclick='window.gm.quests.forceQuestMilestone("qPurpleBerry",200,100);window.story.show("ForestBorder");'>Leave</a></br>
+
+
+:: AlchTalkFinishPurpleBerry
+<div id='select1' > You got enough purple berries to trade in for the alchemist. Will you do so?
+<a0 onclick='window.gm.player.Inv.removeItem("PurpleBerry",5);window.gm.player.Inv.addItem(new window.gm.ItemsLib["HealthPotionSmall"](),2);window.gm.quests.forceQuestMilestone("qPurpleBerry",100,1);window.gm.printTalkLink("div#select1","div#choice1a");'>Yes</a>
+<a0 onclick='window.story.show("ForestBorder");'>Leave</a>
+</div>
+<div id='choice1a' hidden>
+<p class='tPC'>"I've got those berries for you."</p> You place them on the desk and wait for the approval of the alchemist.</br>
+"Very good. Like I said I will give you 2 potions for those."
+<a0 onclick='window.gm.refreshAllPanel();'>Next</a>
+</div><div id='choice1b' hidden></div>
+<% } else if(window.gm.quests.getMilestoneState("qBondageKink").id===100) {%>
+<p class="tPC">"Hello. sorry to bother you again but can you take a look at this."</p>
+You tilt your head to a side and point at the choker.</br>
+"Fancy. You are in this sort of thing?"</br>
+<p class="tPC">"What? No! This somehow attached itself on me. I want to get it off!</p>
+"Let me see. Hm.. I'm not sure if this here is a locking mechanic.. I think I cant help you with that one. A locksmith might be the right person to ask."
+<p class="tPC">"And do you know where to find one?"</p>
+"There is a town east of here, called Elderant. You might be able to find someone that can unlock this thing there."
+<p class="tPC">"There is a town nearby?"</p>
+"Nearby is relative. Its about a 3 or 4 days walk I guess. As I think over it, maybe you shouldnt go. It can be dangerous traveling alone."
+<p class="tPC">"More dangerous than the forest? I died on the first visit of this damn forest ... by an stupid accident !"</p>
+"The forest isnt dangerous. I never had any issues. Maybe you just had a little bad luck."
+An idea forms in your mind: <span class="tPC">'when I die, I lose the equipment'</span></br>
+Of ourse dying would be bad if it causes a large loss. But right now you just have little to no gear and will be replenished with a new set.
+You smirk to yourself for your ingenuity.</br> 
+<p class="tPC">'So if I dont have any other option, I still just need to find a way to die to get rid of that thing.'</p>
+<a0 onclick='window.gm.quests.forceQuestMilestone("qBondageKink",200,100);window.story.show("ForestAlchemistHut");'>Death is a solution</a>
+<a0 onclick='window.gm.quests.forceQuestMilestone("qBondageKink",200,100);window.story.show("ForestAlchemistHut");'>Its not worth dieing to get rid of it</a>
+<a0 onclick='window.gm.quests.forceQuestMilestone("qBondageKink",200,100);window.story.show("ForestAlchemistHut");'>Strangely, it doesnt bother me that much anymore</a><!--todo increase submissive-->
+
+
+:: AlchTalkStartPurpleBerry
+<p class='tPC'>"Hello? Anyone there?"</p>
+A man appears from a door at the side of the room. Worn old clothing adorns his skinny frame. 
+<p class='tPC'>"I would like to ask if you have a quest for me."</p>
+"A quest? Thats an odd question. Do you mean a job?"
+<p class='tPC'>"Not a job. Something that is really important to you but you cant do it yourself."</p>
+Ah, you mean cake. I like cake but I cant bake a deent one myself.
+<p class='tPC'>"What?! No I mean something that is a matter of life."</p>
+"Cake is important for my life. Its a tasty treat that sweetens my existance."
+<p class='tPC'>"No listen. Do you need help with some task? I could help you and you give me something. Except for baking a cake."
+"I should give you something? What could I give you? A potion maybe. I dont have much else I could give away."
+<p class='tPC'>"What potions do you create."</p>
+"Oh hoho now we are talking my language. I could make a lot of useful potions. Unfortunatly my alembic is broken so I can only do the basic stuff.
+Now that I think about it, we could make a trade: you get me some purple berrys, and you get some berry juice I create from it."
+<p class='tPC'>"I could crush them myself and have all of the juice for myself!"</p>
+"Uhm.. but you cant do it like I do .. I have special equipment for that. It empowers the natural healing benefit."
+<p class='tPC'>"So that juice is some kind of health potion?"</p>
+"For sure it is. Therefore I say: bring me 5 handful of berries and you get to 2 bottles of potion."
+<p class='tPC'>"Sigh. Whatever. Seems to be the only possible quest I an get right now."</p>
+"Are they with caramel? I like caramel. And choclat."
+<p class='tPC'>"Please? What do you talk about?"</p>
+"About the cakes. What kind of cake are we speaking about."
+<p class='tPC'>"I will get you your berries now."</p>
+<a0 onclick='window.gm.quests.addQuest("qPurpleBerry",1);window.story.show("ForestBorder");'>Leave</a>
+

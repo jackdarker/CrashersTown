@@ -1,0 +1,64 @@
+:: Help_Index [_back_]
+<section> 
+<aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+[[Back|_back_]]</br>
+Here you can find some information about the gameplay.</br>
+[[Your goal|Help_background]]</br>
+[[Basics|Help_Basics]]</br>
+[[What should I do, where should I go|Help_Quest]]</br>
+[[Im stuck!|Help_Fixes]]</br>
+[[Credits]]</br>
+[[Back|_back_]]</br>
+</article><article id="LogPanel"></article></section>
+
+:: Help_background [_back_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+Of course you want to escape from this strange netherworld and get back to your old life.</br>
+The most prospective way to solve this is to satisfy the keepers requests.</br>
+Or maybe find some portal elsewhere...</br>
+</br>[[Back|_back_]]</br>
+</article><article id="LogPanel"></article></section>
+
+:: Help_Basics [_back_]
+<section> 
+<aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<hr></br>
+For many activities you have to spend energy and time. F.e. walking into the city takes some time and effort.</br>
+Energy can be recovered by sleeping. Also some activities, food or drugs can restore energy.</br>
+Use the sleep-option in your own bedroom to rest.</br>
+</br>Combat</br><hr></br>
+You defeat enemys by damaging their health. If you have the skill, you can tease them until they are to aroused to bother fighting.
+Postbattle scenes might differ if the victor is excited !
+For some actions you need energy, f.e. a heavy strike or blocking with shield. Energy is recovered slowly on each turn.
+Will can be used to cast magic.
+Be aware that running out of energy/will might get you in a weakened condition.</br>
+[[Back|_back_]]</br>
+</article><article id="LogPanel"></article></section>
+
+
+
+
+:: Help_Fixes [_back_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+If you are stuck on a page and you cannot escape. Press this [[Button|NOP]] to get back to your Home.</br></br>
+If you are even unable to get to this page because you see a weird plain textmessage in your browser:</br>
+Im sorry but no one can help you. I will try to add some debug-log that shows some more information that you can send me.</br>
+Then I might be abel to backtrack the error.</br>
+[[Back|_back_]]</br>
+</article><article id="LogPanel"></article></section>
+
+
+:: Credits [_back_]
+<section> <aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+Credits:</br>
+
+Icons & Images:</br>
+https://game-icons.net/
+https://www.svgrepo.com/ </br>
+https://www.hiclipart.com/</br>
+https://pixabay.com/de/</br>
+https://www.klipartz.com/</br>
+https://www.vecteezy.com/</br>
+
+[[Back|_back_]]</br>
+</article><article id="LogPanel"></article></section>

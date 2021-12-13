@@ -1,0 +1,47 @@
+:: PlainsWest
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;window.gm.moveHere();%>
+Some large grassland is laid out before you. There are some bushes here and there and even group of trees.</br>
+[[to Forest|ForestBridge]] [[West|PlainsCrossroad]]
+</article><article id="LogPanel"></article></section>
+<script></script>
+
+:: PlainsCrossroad
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;window.gm.moveHere();%>
+The dirtroad branches in different directions and there is also a wodden post with several withered signs on it, pointing in different directions:</br>
+[[West: to Forest|PlainsWest]] [[East: Village|PlainsEast]]  [[NorthWest: TrumpetHills|NOP]]  [[South: Wasteland|NOP]]
+</article><article id="LogPanel"></article></section>
+
+:: PlainsEast
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;window.gm.moveHere();%>
+Just more grassland. In the distance you can see herds of animals, probably deer or antelope.</br>
+A skilled hunter could certainly earn his living here with <a0 onclick='explore()'>hunting</a>.</br>
+[[West: to Crossroads|PlainsCrossroad]] [[East: to Farmland|PlainsFarmland]]
+</article><article id="LogPanel"></article></section>
+<script> function explore() {
+    let rnd = _.random(0,100);
+    window.gm.pushLog("rolled "+rnd);
+    window.story.state.tmp.args = [];
+    if(rnd > 70 ) {
+        window.gm.encounters.huntress();
+    }else if(rnd > 50) {
+        let find = ['PurpleBerry','ApocaFlower'];
+        let rnd2 = _.random(0,find.length-1);
+        window.story.state.tmp.args = [find[rnd2],1]
+        window.story.show('ForestSearchAround');
+    }
+    else {
+        window.story.show('ForestSearchAround'); //nothing
+    }
+}
+</script>
+
+
+:: PlainsFarmland
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;window.gm.moveHere();%>
+Fields with grain and also with vegetables stretch along the road. In between are farms, barns and windmills, most of them more or less run down.</br>
+[[West: Plains|PlainsEast]] [[East: Village|VillageEntranceIntro]] [[NorthWest: Large Rocks|AM_Entrance]]
+</article><article id="LogPanel"></article></section>

@@ -1,0 +1,147 @@
+:: VRSuiteUp
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<!--todo--> You are eager to try that virtual reallity game. </br>
+"Welcome to the test version of our new game. Lets just clarify some things about the beta-testing process. In most cases you just have to play the game as you like. We will track your actions and progress to adapt and improve the experience of the finished game.
+However, at times you might be requested to do certain things and do it in a certain way.  </br>
+Remember that this is not the final game. We continously modify aspects to get the best experience for the players."   </br>
+<div></br>
+[[Start the game|CharacterEditor]]</br></div>
+</article><article id="LogPanel"></article></section>
+
+:: CharacterEditor
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%>
+You say 'Create new avatar'. The screen switches to those kind of screens that are common to other RPGs.</br>
+You can select class, race, character-traits and some visual aspects.</br>
+<p class="tPC">'Lets see what classes we have...Staff Zealot..never heard of that one  '</p>
+As you try to flip through the classes you got a message "For testing purpose the following condition is applied: character-class and race restricted"</br>
+<p class="tPC">'Oh man, I'm stuck with that class? I would at least know what other classes are available.'</p> 
+You try to change race, but find that you are stuck to some kind of elf-boy. 
+You can toggle between male and female though the difference between the androgyne male and the female seem just to be some perky but small titts.</br>
+The description of the class is sparse. The picture you see indicates that this class uses a 2-handed staff and light armor. You expect also some magic abilities - its an elf, isn't it?.</br>
+<p class="tPC">'I will choose male. Brad would make fun of me all time if I would choose any other option. On the other hand, it is roleplay right?'</p></br>
+<div id='select1' >
+<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1a");window.gm.MutationsLib["swapGender"](window.gm.player,window.storage.constructors["PenisHuman"]);'>male</a>
+<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1b");window.gm.MutationsLib["swapGender"](window.gm.player,window.storage.constructors["VulvaHuman"]);window.gm.player.Outfit.addItem(new window.storage.constructors["BreastHuman"].factory("human"));'>female</a>
+</div><div id='choice1a' hidden> You selected male.
+</br>[[Ready|StartLocation]]</br>
+</div>
+<div id='choice1b' hidden> You selected female.
+</br>[[Ready|StartLocation]]</br>
+</div>
+</article><article id="LogPanel"></article></section>
+
+
+:: StartLocation
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;
+window.gm.enterVR();%>
+<%window.gm.quests.forceQuestMilestone("qDiedAgain",2,1);window.gm.quests.forceQuestMilestone("qDLCMain",700,600)%>
+<!--todo--> "You magically appear near the top of a hill. </br>
+You can see some hut from here. You just need to follow the trail down the hill."</br>
+<div></br>
+[[Settlement|ForestBorder]]</br></div>
+</article><article id="LogPanel"></article></section>
+
+
+:: Training1
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%>
+<!--todo--> The path snakes down the grassy flanks of the hill. As you make your way around a large boulder, something strange happens:</br>
+<devnote>"Welcome to our little world. Just in case you are not used to that kind of game we should get you some training."</devnote></br>
+<div></br>
+[[Continue|Training1Done]]</br></div>
+</article><article id="LogPanel"></article></section>
+
+
+:: Training1Done
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%>
+<!--todo--> </br>
+<devnote>"I wish you good luck in exploring this world. May the gods be with you."</devnote></br>
+<div></br>
+[[Continue|ForestBorder]]</br></div>
+</article><article id="LogPanel"></article></section>
+
+
+:: Dungeon
+<!--dont "show" this! setup the dungeon and call enterDungeon-->
+<!--if not explicitly allowed, save is disabled in dungeon-->
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%= window.gm.dng.name%>-<%= window.gm.dng.actualRoom.floor.name%>-<%= window.gm.dng.actualRoom.name%></br> 
+<%= window.gm.dng.actualRoom.descr()%><%= (window.gm.dng.actualRoom.allowSave?" <b>You can save here !</b>":"")%></br>
+<%= window.gm.dng.Mapper.printMap( window.gm.dng.actualRoom,true)%></br>
+</br> 
+<div id="panel"></div></br></br>    <!--display button list-->
+</article><article id="LogPanel"></article></section>
+<script>
+window.gm.dng.printButtons()
+</script>
+
+
+:: DungeonMap [_nosave_]
+<!--dont "show" this! setup the dungeon and call displayMap-->
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%= window.gm.dng.Mapper.printMap( window.gm.dng.actualRoom,false)%></br>
+</br> 
+[[Back|Dungeon]]
+</article><article id="LogPanel"></article></section>
+
+
+:: DungeonFoundNothing [_nosave_]
+<!--example-scene for onenter/onexit event-->
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%= window.gm.dng.actualRoom.descr()%></br>
+There are some buckets here, but there is nothing useful inside.</br>
+</br>
+<a0 onclick='window.gm.dng.resumeRoom();'>Go on</a></br>
+</article><article id="LogPanel"></article></section>
+
+:: DungeonGenericEvent [_nosave_]
+<!--example-scene for operation-->
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<div id='panel'></div><!--event is rendered here-->
+<%= window.gm.dng.renderEvent(window.gm.dng.evtData)%></br>
+</article><article id="LogPanel"></article></section>
+
+:: DungeonCrashedThroughFloor [_nosave_]
+<!--example-scene for onenter/onexit event-->
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%= window.gm.dng.actualRoom.descr()%></br>
+You crash down through the floor and find yourself back on the lowest level of the area.</br>
+</br>
+<a0 onclick='crashThrough();'>Go on</a></br>
+</article><article id="LogPanel"></article></section>
+<script>
+function crashThrough() {
+    var floor1 = window.gm.dng.allFloors()[0];
+    var Room = floor1.getRoom(window.gm.dng.actualRoom.name);  //room names are the same at same position of floor
+    window.gm.dng.teleport(Room);
+}
+</script>
+
+:: GlobalChest [_nosave_ _back_] 
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+Items you store in this magic chest dont get lost if you are knocked out.
+</br>[[Back|_back_]] [[Wardrobe...|GlobalChestWardrobe]]</br>
+<div id="choice"></div>
+</br>[[Back|_back_]]</br>
+</article><article id="LogPanel"></article></section>
+<script>window.gm.printItemTransfer(window.gm.player,window.story.state.GlobalChest,false);</script>
+
+
+:: GlobalChestWardrobe [_nosave_ _back_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+Items you store in this magic chest dont get lost if you are knocked out.</br>Only unequipped equipment can be transferred.
+</br>[[Items...|_back_]]</br>
+<div id="choice"></div>
+</br>[[Items...|_back_]]</br>
+</article><article id="LogPanel"></article></section>
+<script>window.gm.printItemTransfer(window.gm.player,window.story.state.GlobalChest,true);</script>
+
+
+:: NOP_VR [_nosave_ _back_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<p class='dev'> You cant go that way. Either because its WIP or you need to solve a quest first. </p>
+</br>[[Back|_back_]]</br>
+</article><article id="LogPanel"></article></section>

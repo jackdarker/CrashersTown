@@ -1,0 +1,64 @@
+body {
+  color: rgb(219, 205, 205);
+  background-color: rgb(37, 37, 28);
+}
+a {
+  color: #45bbb5;
+  text-decoration-color:  #45bbb5;
+}
+a:hover {
+  color: #0df3e7;
+  text-decoration-color: #0df3e7;
+}
+button {
+  background-color:  rgb(104 109 132)
+}
+article {
+  background-color:rgb(37, 37, 28);
+}
+section {
+  background-color:rgb(17, 17, 13);
+}
+#LogPanel {
+  background-color: rgb(37, 37, 28);
+}
+#sidebar {
+  background-color:rgb(37, 37, 28);
+}
+#sidebar p {
+  color: rgb(219, 205, 205);
+}
+.author {
+  color: lightyellow;
+}
+.dev {
+  color: #7bedf3;
+  background-color:#11114a;
+}
+statup {
+  color:rgb(14, 146, 10);
+}
+statdown {
+  color:red;
+}
+.tPC {
+  	color: floralwhite;
+	border-color:#001eb1;
+  /*slateblue,slategreen,royalblue*/
+}
+.tNPC1 {
+  color: #d07526;
+bordercolor:#d07526;
+}
+.tNPC2 {
+  color: green;
+border-color:green;
+}
+.tNPC3 {
+  	color: darkred;
+	border-color:darkred;
+}
+.tNPC4 {
+  	color: deepskyblue;
+	border-color:deepskyblue;
+}

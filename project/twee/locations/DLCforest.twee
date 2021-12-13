@@ -1,0 +1,494 @@
+:: ForestSpawn
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name; window.gm.enterVR();%>
+After the VR connects to the server, your avatar appears near the top of a hill in a magic puff. </br>
+<div></br>[[Spawn sanctum|ForestRespawnPodExit]][[Settlement|ForestBorder]]</br></div>
+</article><article id="LogPanel"></article></section>
+
+
+:: ForestRespawnPodExit
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%>
+You are in the sanctum of spawn. Its located on top of the hill above the settlement.</br> 
+</br>[[Magic Chest|GlobalChest]]</br>
+</br>Some leather bracers ly on the road.
+<a0 onclick='takeBracers();'>pickup fancy bracers</a></br><a0 onclick='takeBracers2();'>pickup even fancier bracers</a></br>
+<div></br>[[Settlement|ForestBorder]]</br></div>
+</article><article id="LogPanel"></article></section>
+<script>
+function takeBracers() {
+    let item = new window.storage.constructors['BracerLeather']();
+    item = window.gm.makeCursedItem(item,{lock:true,energydrain:2});
+    item = window.gm.makeBonusItem(item,{statBoost:'agility', statBonus:3});
+    window.gm.player.Wardrobe.addItem(item);
+    window.gm.player.Outfit.addItem(item);
+    this.disabled=true;
+}
+function takeBracers2() {
+    let item = new window.storage.constructors['BracerLeather']();
+    item = window.gm.makeCursedItem(item,{minItems:2,convert:'GlovesRubber'});
+    item = window.gm.makeBonusItem(item,{statBoost:'agility', statBonus:2});
+    window.gm.player.Wardrobe.addItem(item);
+    window.gm.player.Outfit.addItem(item);
+    this.disabled=true;
+}
+</script>
+
+:: ForestBorder
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%>
+<!--todo--> There is a dirt road here crossing the lush grassland that is bordered by the trees of an forest.</br> 
+One direction leads east, past a hut. The other direction follows the border of the forest but gets out of view quickly.</br> 
+<div><a0 onclick='window.gm.addTime(25);window.story.show(window.passage.name);'>Rest</a>
+[[Enter Hut|ForestAlchemistHut]] [[Into the forest|ForestEntrance]] [[follow Road|ForestBridge]] [[Up the hill|ForestRespawnPodExit]]</br>
+<a0 onclick='enterMinoLair(); '>Enter Mino's Lair</a>
+<a0 onclick='enterBeehive(); '>Enter Beehive</a> <a0 onclick='enterShatteredCity();'>Enter Shattered City</a><a0 onclick='enterArena();'>Enter Arena</a></div>
+</article><article id="LogPanel"></article></section>
+<script> function enterBeehive() {
+    window.gm.dng = window.gm.dngs.BeeHive();
+    window.gm.dng.enterDungeon();
+}
+function enterMinoLair() {
+    window.gm.dng = window.gm.dngs.MinoLair();
+    window.gm.dng.enterDungeon();
+}
+function enterShatteredCity() {
+    window.gm.dng = window.gm.dngs.ShatteredCity();
+    window.gm.dng.enterDungeon();
+}
+function enterArena() {
+    window.gm.dng = window.gm.dngs.ArenaTrialsNo1();
+    window.gm.dng.enterDungeon();
+}
+</script>
+
+
+:: ForestSearchAround [_back_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<% let args = window.story.state.tmp.args; if(args[0]==='PurpleBerry' && args[1]>0){ window.gm.player.Inv.addItem(window.gm.ItemsLib[args[0]](),args[1]); %>
+On a secluded spot you found a batch of berry bushes. Most of them dont have any more berrys but you are able to collect a handful.</br>
+<%} else if(args[0]==='PurpleBerry'){%>
+There arent any purple berrys left. You have to search on a different place.</br>
+<%} else if(args[0]==='ApocaFlower' && args[1]>0){ window.gm.player.Inv.addItem(window.gm.ItemsLib[args[0]](),args[1]);%>
+You found some pretty flowers with blue and yellow blossoms.</br>
+<%} else {%>
+Unfortunatly you didnt find anything useful.</br>
+<%}%>
+<div></br>[[Next|_back_]]</br></div>
+</article><article id="LogPanel"></article></section>
+
+
+:: ForestWolfEncounter [_back_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<% window.gm.quests.addQuest("qWolfMate",1); if(window.gm.quests.getMilestoneState("qWolfMate").id<=1) {%>
+Distracted by rummaging around in the bushes, you just caught by surprise as you turn around.</br>
+A dog is staring into your face. Its looks very close to a wolf you think. But wolfs would stay away from humans.
+'Oh wait, I'm in a game. In games wolves are nether to shy to attack.'
+The wolf doesnt do a thing, just stands there and looks at you.
+<div id='select1' >
+<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1a")'>First strike</a>
+<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1b")'>Dont move</a>
+</div>
+<div id='choice1a' hidden>
+I'm in this game right now for how long and havent killed anything? </br>
+Lets get started to earn some XP. </br>
+<a0 onclick='window.gm.encounters.wolf()'>Next</a>
+</div>
+<div id='choice1b' hidden>
+There is nearly no chance in real life to accidently run into a wolf. So lets saviour that thrilling feeling even if this is not reallity.</br>
+That wolf is around 1m large from tip to toe. It has a dark gray fur with some darker areas on its back and feet.</br>
+Dark yellow eyes stare into your own and you stare back.</br>
+...Which provokes the wolf to attack...  
+<a0 onclick='window.gm.encounters.wolf()'>Next</a>
+</div>
+<%} else {%>
+There is a wolf again. Or is it the same?</br>
+<a0 onclick='window.gm.encounters.wolf()'>Next</a>
+<%}%></br>
+<%=(window.story.state._gm.debug)?("[[Skip|_back_]]"):("")%></br>
+</article><article id="LogPanel"></article></section>
+
+
+:: ForestEntrance
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%>
+The forest makes a friendly impression.</br> The trees are still light and are not yet as expansive and large as that no more light can get through the canopy.</br> 
+Maybe you can <a0 onclick='explore(); '>explore</a> the surrounding woods and see if you can find anything useful.</br>
+<div></br>[[ForestBorder]] [[ForestCliff]] </br></div>
+</article><article id="LogPanel"></article></section>
+<script> function explore() {
+    let rnd = _.random(0,100);
+    window.gm.pushLog("rolled "+rnd);
+    window.story.state.tmp.args = [];
+    if(window.gm.quests.getMilestoneState("qDiedAgain").id<=2 && window.gm.player.Inv.countItem('PurpleBerry')>=2) {
+        window.story.state.tmp.args = ['PurpleBerry',0];window.story.show('ForestSearchAround'); //find nothing !
+    } else if(!window.gm.quests.hasActiveQuest("qCarlia") && window.gm.player.Inv.countItem('PurpleBerry')>=3) {
+        window.story.show('ForestMeetCarlia1');
+    } else if(window.gm.quests.getMilestoneState("qCarlia").id===100 && window.gm.player.Inv.countItem('PurpleBerry')>=4) {
+        window.story.show('ForestMeetCarlia2');
+    } else if(window.gm.quests.getMilestoneState("qCarlia").id===500 && window.gm.player.Inv.countItem('SquishedLeech')>=1) {
+        window.story.show('ForestMeetCarlia3');
+    } else if(rnd > 70 ) {
+         window.story.show('ForestWolfEncounter');
+    } else if(rnd > 65 ) {
+         window.story.show('ForestMudGlade');
+    }else if(rnd > 20) { //todo limit berys per day
+        let find = ['PurpleBerry','PurpleBerry','ApocaFlower'];
+        let rnd2 = _.random(0,find.length-1);
+        window.story.state.tmp.args = [find[rnd2],1]
+        window.story.show('ForestSearchAround');
+    }
+    else {
+        window.story.show('ForestSearchAround'); //nothing
+    }
+}
+</script>
+
+:: ForestMeetCarlia1 [_nosave_ _back_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+Standing around and thinking where to go next, you get the feeling of beeing watched.</br>
+You listen carefully but can't pickup any unusual noise or other sign that something is sneaking up on you.</br></br>
+Then you turn around.</br></br>
+Nothing.</br>
+You turn slowly and let your eyes wander. </br>
+That tree there, did you just see something vanishing behind it?</br></br>
+</br><div> <a0 onclick='window.gm.quests.addQuest("qCarlia",100);window.story.show("_back_");'>Next</a></br></div>
+</article><article id="LogPanel"></article></section>
+
+:: ForestMeetCarlia2 [_nosave_ _back_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+Again you have the feeling on beeing watched, maybe you also heard some rustling in one of those bushes behind you.</br>
+You decide to go onward. Some way ahead are several large trees and as you already know one of them has a large hollow.</br>
+As you make your way through the trees, as soon as you think you are out of line of sight, you hide into the musty opening and fall silent.</br>
+Holding your breath, you listen carefully.The birds are singing and the wind lets the leaves rustle but nothing else.</br>
+You wait a minute and just as you decide to get back on your way, you hear a dry twig breaking some meters back where you came from.</br>
+<div id='select1' >
+<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1a")'>Jump out of your cover</a>
+</div><div id='choice1a' hidden></br>
+Ejecting yourself out of your cover and facing the direction of the noise, you can discern a figure trying to hide in the shadow of a tree trunk.
+Your eyes need to adapt a moment and in that moment the figur starts running away.
+<p class="tPC">"Hey you wait !"</p>
+But however it was has vanished in the undergrow.
+You werent sure what you saw, but it seemed to be around your size and was moving upright. The murky cloak it was wearing preented to see more details.
+<p class="tPC">'So I were right, someone is hiding around. If I can follow their trail, I might find out who it is.'</p>
+The figure was running into the direction of the cliff. But that might also be a diversion.
+<div> <a0 onclick='window.gm.quests.forceQuestMilestone("qCarlia",200,100);window.story.show("_back_");'>Next</a></br></div>
+</div>
+</article><article id="LogPanel"></article></section>
+
+
+:: ForestMeetCarlia3 [_nosave_ _back_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+While scrutinizing a bush for further treasues, you hear something plop down on the grassy floor some distance behind you.</br>
+You swirl around to see whats going on and find yourself confronted with that hooded figure that you already tried to catch.</br>
+Now it is leering at you in a half crouching stand.</br>
+<p class="tPC">"Hey you, why are you pursuing me ! How are you?"</p>
+"Thief ! You are thief !" the figure shouts and adds a long growl. </br>
+<p class="tPC">'Did he just growl at me like a dog? What is this?'</p>
+"Give back what stolen !"</br>
+<p class="tPC">'I didnt steal anything !'</p>
+"Liar! You took necklace! Give back!"</br>
+<p class="tPC">"That damned collar? I didnt mean to take it! It just got alive and wrapped itself around my neck. What the heck is this?"</p>
+"Its present! Give back!"</br>
+<p class="tPC">"I would gladly do so if you an tell me how to get rid of it! Do you have a key?"</p>
+"No key. Just unlatch."</br>
+<p class="tPC">"I already tried but its not giving. The guy from the hut said it might be cursed!"</p>
+"Not unlatch? ...Maybe need magic perfom." you can here it muttering.</br>
+<p class="tPC">"Huh? Is it cursed? With what?"</p>
+"Depends"</br>
+<p class="tPC">"Depends? Depends on what? Do you know how to get it off or not?"</p>
+"Wear some time and you will see. Might unlatch if curse finished."</br>
+<p class="tPC">"Aahrg! Listen. You want it back and I want to get rid of it. So why dont we help each other? "</p>
+"No help no. You thief!"</br>
+With that, the figure jumps up and runs away diving through the undergrowth with a good amount of speed.
+You hurry after it but its of no use, at some point your target vanishs behind some close standing trees.</br> 
+<div> <a0 onclick='window.gm.quests.forceQuestMilestone("qCarlia",600,500);window.story.show("_back_");'>Next</a></div>
+</article><article id="LogPanel"></article></section>
+
+
+:: ForestMeetCarlia4 [_nosave_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+The cloaked pursuer drops from a thick branch just above your head as you pass by below it.</br>
+Pouncing on you, you get knocked over and the figure is stradling you on your back.
+You hear a 'rawr' and feel the choker been pulled thight. Either it want to choke you or to rip of the collar around your neck.
+Trashing around with your legs, you land a diverting hit and prepping yourself up from the ground with one hand, you can push the figure off from you.
+You get hold on the cloak while both of you struggle to get up to the feet before the other. 
+As you pull hard on the cloth to stop your assailant from getting up, you an feel something give away.
+"Thief stealing cloth  RAAWWR!"
+You are still on the ground and look up at her. Indeed, its not a he but a she.
+She is wearing some kind of bikini bottom made of coarse cloth and a small satchel on a long lether strap dangles at her hip.
+Otherwise she is nude, you get a good view of her small bossom from down here.
+Her round face has some distinct cat-like features like the snub nose and pointed ears that are now folded against her skull.
+She bares several small but sharph looking teeth.
+<p class="tPC">"What the hell are you?"</p>
+With that, the enraged cat-girl pounces at you with her outstretched hands, adorned with razor-sharph extended claws. 
+<div> <a0 onclick='window.story.show("_back_");'>Next</a></div>
+</article><article id="LogPanel"></article></section>
+
+
+:: CarliaMakeDeal [_nosave_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+You dive under Calias claw as she trys to land another hit.</br>
+At the same time - either because you have some hidden wrestler champion skill or by pure accident - you bring her down face first by tripping a feet.
+Now its your time to pounce on her back. Gripping her wrists with your hands and using your legs to keep hers in check, you can keep her face down on all fours.  
+<p class="tPC">'And now what?'</p>
+As soon as you let go she will either be up and away or give you some nasty scratching. She is struggling against you pinning her down.
+<div id='select1' >
+<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1a")'>She is quite in a vulnerable position...</a>
+<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1b")'>Lets try to talk some sense into her.</a>
+</div><div id='choice1a' hidden>
+</br>That bottom of hers rubbing against your groin is quite a diversion.
+<p class="tPC">'I wonder how far I could go in that game..'</p>
+Maybe she picked up your thoughts or she just run out of endurance. But she stopped struggling for the most and started to snuffle and sob.
+<p class="tPC">'Damn, those sobs a really getting onto me. Am I realy such a bad guy to force myself onto her?'</p>
+<div id='choice1a_'><a0 onclick='window.gm.printTalkLink("div#choice1a_","div#choice1b")'>Be kind</a></div>
+</div>
+<div id='choice1b' hidden>
+<p class="tPC">"Hey stop kicking and listen ! I dont want to hurt you."</p>
+After a minute or so, she indeed reduces her struggeling. 
+"You are meany. Let me go"
+<p class="tPC">"Hey..YOU attacked ME, remember? If I let go, do you promise to not attack me? You can also get your cloak back."</p>
+Snuffeling she seems to think about this.
+"Fine. I promise. But give cloak back yes?"
+<p class="tPC">'She might tell me anything to get out of the situation. But what other choice do I have.'</p>
+So you let her wrist go, push your self up and hurriedly back away some distance. She rises to her feetquickly but doesnt run away, maybe because you still haver her cloth.
+<p class="tPC">"Here, I will give you your cloth. But first you explain who you are and why you follow me around."</p>
+"Name is Carlia."
+....
+<p class="tPC">"Just as you want that choker back I want to get rid of it. Lets help each other. I will see to get you some home in favor for your trust."</p>
+<p class="tPC">'Maybe the alchemist could help again. Who else could I ask?'</p> 
+With that thought in mind you leave Carlia behind.</br> 
+<a0 onclick='window.gm.quests.forceQuestMilestone("qCarlia",700,600);window.story.show("ForestCliff");'>Next</a>
+</div>
+</article><article id="LogPanel"></article></section>
+
+
+:: ForestMudGlade
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%>
+This area of the forest seems to be more watery and sludgy. Your feet sink into the muddy soil.
+<a0 onclick='explore();'>Searching around</a> might only get you wet and dirty.</br>
+<div></br>[[ForestEntrance]] </br></div>
+</article><article id="LogPanel"></article></section>
+<script> function explore() {
+    let rnd = _.random(0,100);
+    window.gm.pushLog("rolled "+rnd);
+    window.story.state.tmp.args = [];
+    if(rnd > 0 ) {
+         window.story.show('ForestLeechEncounter');
+    } else {
+        window.story.show('ForestSearchAround'); //nothing
+    }
+}
+</script>
+
+:: ForestLeechEncounter [_back_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<% if(true) {%>
+Some sludgy leeches are crawling up your legs, each easily long as a hand !</br>
+<a0 onclick='window.gm.encounters.leech(window.gm.player.location,_.random(1,3))'>Next</a>
+<%}%></br>
+<%=(window.story.state._gm.debug)?("[[Skip|_back_]]"):("")%></br>
+</article><article id="LogPanel"></article></section>
+
+:: ForestDryadEncounter [_back_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<% if(true) {%>
+As you make your way through the trees, a strange woman-like figure steps out behind one of them !</br>
+<a0 onclick='window.gm.encounters.dryad(window.gm.player.location,_.random(1,3))'>Next</a>
+<%}%></br>
+<%=(window.story.state._gm.debug)?("[[Skip|_back_]]"):("")%></br>
+</article><article id="LogPanel"></article></section>
+
+
+:: ForestCliff
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%>
+<% if(window.gm.quests.getMilestoneState("qDiedAgain").id===2) { %>
+You fight your way through the dense undergrowth and realize just in time that you have reached the edge of a cliff.</br> 
+<div id='select1' >
+<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1a")'>Peak into the chasm</a>
+</div>
+<div id='choice1a' hidden>
+There is a slab of rock from which you should be able to look down quite well.</br>
+You look carefully over the edge. It's not a real abyss, but a pretty steep, rocky slope. </br>
+'I'm not climbing down there now.' you think when you want to go back to the forest. </br>
+<div id='select2' >
+<a0 onclick='window.gm.printTalkLink("div#select2","div#choice2a")'>Next</a>
+</div>
+<div id='choice2a' hidden>
+The rock slab is not so rock-solid and just as you turn around it begins to tip into the abyss. 
+Unfortunatly, your jump-ability isn't quite good enough. The slab drags you down with it.</br>
+At some point you see a massive rock coming onto you, reaching out with your hands to stop it squishing you.
+<div id='select3' >
+<a0 onclick='window.gm.printTalkLink("div#select3","div#choice3a")'>Next</a>
+</div>
+<div id='choice3a' hidden>
+But of course its futile trying to catch that crushing weight. </br>  
+You dont feel any pain, everything is just going <a0 onclick='window.gm.respawn();'>black</a> as if pulling the cord from a TV.</br>  
+</div></div></div>
+<% } else if(window.gm.quests.getMilestoneState("qCarlia").id===200) { %>
+Walking along the edge of the cliff, you check the ground. Maybe you can find some footprints or something that would help you track down the figure that stalked you.
+And really you can find one footprint in the muddy leftovers of a rain puddle. 
+<p class="tPC">'It looks like from a boot - is it my own? No, mine is not as broad but longer' </p>
+You go forward where you would guess someone would be walking, carefully watching not to miss another clue or falling down the cliff. 
+<a0 onclick='window.gm.quests.forceQuestMilestone("qCarlia",300,200);window.story.show("ForestCliff");'>Next</a></br>
+<% } else {%>
+<div>
+A path leads along the cliff until it vanishs into a [[cave entrance|ForestCliffCave]] .  
+Or you might just return to [[ForestEntrance]]. </br></div> 
+<%}%>
+</article><article id="LogPanel"></article></section>
+
+
+:: ForestCliffCave
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%>
+<% if(window.gm.quests.getMilestoneState("qBondageKink").id<=1 && window.gm.quests.getMilestoneState("qCarlia").id===300) { %>
+At some point the small path leads further downward the cliff, makes a curve and ends in front of a cave.</br>
+The cave entrance is possibly 5m in width and around 3m at its heighest point. It tapers while it goes inside the cliff but maybe it doesnt end soon, its just to dark to see if it goes on. 
+Someone made himself a home here. There is a small fireplace with burned up charcoal and a sleeping mat.</br>
+As you snoop around you find a worn bag or satchel made of leather and fur.</br>
+It could give you some information about its owner if you take a look at it.</br>
+<div id='select1' >
+<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1a")'>Peek inside</a>
+<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1b")'>or dont</a>
+</div><div id='choice1a' hidden>
+After undoing the clasp, you carefuly peek inside the bag.
+<p class="tPC">'I'm not going to stick my hand in it - better safe then sorry.'</p>
+Just as you think those smartass-words, something bursts out of the depths of the satchel into your face.</br>
+You stumble backwards in surprise, letting the bag fall to the ground and trying to grab whatever is now moving around on your front.</br>
+The uneven floor lets you loose your footing and you fall on your back beeing stunned just for an blink of an eye.</br>
+But in this moment, the snake - you guess - squirms up around your neck and ... enclose it ??</br>
+Using both hands to feel up around your neck, trying to get an idea what is now circling it. It doesnt move anymore and thats a good sign, right?</br>
+You feel a ring made from some rigid material, most likely leather. The surface is mostly smooth and flat. Its broad as a thumb but only half a cm thick.</br>
+'Its some kind of choker. How do I get it off ?!' </br> 
+You cant make out a latch or buckle.</br> Fitting 2 fingers between it and your throat is barely possible without choking yourself</br>
+Maybe you can ask someone for help.</br>
+<a0 onclick='window.gm.player.Outfit.addItem(new window.gm.ItemsLib["CollarQuest"]());window.gm.quests.forceQuestMilestone("qCarlia",500,300);window.gm.quests.forceQuestMilestone("qBondageKink",100,1);window.story.show("ForestCliff")'>Leave</a>
+</div>
+<div id='choice1b' hidden>
+Come on, what kind of adventurer are you? How will you ever get good loot if you dont open every chest and jar you find - or stinky old leatherbags.
+<a0 onclick='window.gm.printTalkLink("div#choice1b","div#choice1a")'>Peek inside</a>
+</div>
+<% } else {%>
+<div>
+The path leads up to [[ForestCliff]] or further down to a [[river|NOP]]. </br></div> 
+<%}%>
+</article><article id="LogPanel"></article></section>
+
+:: ForestOldForest
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%>
+<!--todo--> Very old oak-trees grow here with thick branches forking out of the large trunks several meters above the ground. Equally large roots dig into the humid soil. </br> 
+The leaf canopy is dense but in some places bundles of sun rays reach the forest floor.
+</br> <a0 onclick='explore();'>Explore</a></br>
+<div>[[ForestMudGlade]]</br></div> 
+</article><article id="LogPanel"></article></section>
+<script> function explore() {
+    let rnd = _.random(0,100);
+    window.gm.pushLog("rolled "+rnd);
+    window.story.state.tmp.args = [];
+    if(rnd > 0 ) {
+         window.story.show('ForestDryadEncounter');
+    } else {
+        window.story.show('ForestSearchAround'); //nothing
+    }
+}
+</script>
+
+
+
+:: ForestStoneCircle
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%>
+<!--todo--> Out of the dense undergrowth you step into a clearing. This would be an idyllic place if it weren't for this creepy stone circle.</br> 
+</br> 
+<% if(true) { %>
+<div id='select1' >
+<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1a")'>Inspect stone circle</a>
+</div>
+<div id='choice1a' hidden>
+Du gehst zu den übermannsgroßen Steinen. Es scheint hier etwas kühler zu sein und etwas Nebel liegt in der Luft.
+Ansonsten gibt es hier nichts.</br>
+[[Leave|NOP]]
+</div>
+<% } else {%>
+<div>[[ForestEntrance]]</br></div> 
+<%}%>
+</article><article id="LogPanel"></article></section>
+
+
+
+:: ForestAlchemistHut [name:shaby_hut]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%>
+<p class="tPC"></p>'Puh, what a stink. I shouldnt stay here for long for I might suffocate'</p>
+"About that cake we talked earlier - what kind of cake are we speaking about."
+<p class='tPC'>NOO CAKE !</p>
+<a0 onclick='window.gm.player.Inv.addItem(new window.gm.ItemsLib["KeyRestraintA"]());'>pickup small key</a>
+<% if(window.gm.quests.getMilestoneState("qPurpleBerry").id>=100) {%>
+<a0 onclick='window.gm.player.Inv.removeItem("PurpleBerry",5);window.gm.player.Inv.addItem(new window.gm.ItemsLib["HealthPotionSmall"](),1);window.gm.refreshAllPanel();' <%=(window.gm.player.Inv.countItem("PurpleBerry")>=5)?(""):("hidden")%>>Trade 5 purple berries for 1 health-potion</a></br>
+<a0 onclick='window.gm.player.Inv.removeItem("PurpleBerry",5);window.gm.player.Inv.addItem(new window.gm.ItemsLib["HorsePowerPotion"](),1);window.gm.refreshAllPanel();' <%=(true)?(""):("hidden")%>>Trade xxx for 1 HorsePower-Draft</a>
+<%}%>
+<div></br>[[Outside|ForestBorder]]  [[Alchemist|ForestAlchemistTalk]]</br></div>
+</article><article id="LogPanel"></article></section>
+
+
+:: ForestBridge
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%>
+<% if(window.gm.quests.getMilestoneState("qBondageKink").id<100) { %>
+Somehow you cant go into this direction. Maybe this route unlocks later.
+[[Leave|ForestBorder]]
+<% } else if(window.gm.quests.getMilestoneState("qBondageKink").id<=200) { %>
+<p class="tPC">'I guess this road leads to that town the alchemist mentioned.'</p>
+You follow the path until after a curve a wooden bridge comes into view.
+The bridge spans about the canyon,a deep chasm between the forest and the eastern area thereof.</br>
+You carefully set a foot on it, so far it looks stable enough to carry ones weight.
+<div id='select1' >
+<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1a")'>Go on</a>
+</div>
+<div id='choice1a' hidden>
+When you have half of the bridge behind you, a large figure steps into view.</br>
+"Stop. You have to pay a fee to pass the bridge." it shouts over to you.
+Squinching your eyes and slowing down your steps, you try to get a better view of that hindrance.</br> <!--todo-->
+<p class='tPC'>"A fee? I didnt see a sign. Who are you?" </p>
+<p class="tNPC1">"There is no sign yet beause...we where busy with...bridge repair. You give ...20coin and then you may pass."</p>
+<span class="tPC">'Looks more like highwayman then a craftsman'</span> you think to yourself. </br>
+<div id='select2' >
+<a0 onclick='window.gm.printTalkLink("div#select2","div#choice2a")'>Cant pay</a>
+</div>
+<div id='choice2a' hidden>
+<p class='tPC'>"I cant pay you, I have nothing of value."</p>
+<p class="tNPC1">"Then, just turn around and walk back before I force you to do so."</p>
+<p class="tPC">'I could tackle him. I bet he wouldnt take the risk of a fight if he is alone and cant expect some loot from me.'</p>
+<p class="tNPC1">"Nice collar. So you are a slave? Maybe you have fled from your master huh? I should just take you into custody for some reward - SLAVE."</p>
+<div id='select3' >
+<a0 onclick='window.gm.printTalkLink("div#select3","div#choice3a");'>"I'm not a slave!"</a>
+</div>
+<div id='choice3a' hidden>
+While you scream at your offender, he bolts forward trying to knock you over.</br>
+You are in a <a0 onclick='window.gm.quests.forceQuestMilestone("qBondageKink",300,200);window.gm.encounters.Trent(window.gm.player.location)'>fight!</a></br>
+</div></div></div></div>
+<% } else if(window.gm.quests.getMilestoneState("qBondageKink").id<=300) { %>
+Carefully approaching the bridge, you are scanning the surrounding.</br>
+Trent is over there, watching that no one passes the bridge without payment. </br>
+At least two other people are sitting around a firepit near the eastern end of the bridge.</br>
+Maybe you can [[speak up to him|TrentTalk]].</br>
+[[Leave|ForestBorder]] </br>
+<% } else {%>
+A large bridge made of wood crosses a deep canyon that separates the forest from the land east of it.</br>
+<div>[[to Forest|ForestBorder]] [[to Plains|PlainsWest]]. </br></div>
+<%}%>
+</article><article id="LogPanel"></article></section>
+
+:: TrentTalk
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%>
+Trent the horse-man is leaning at the handrail of the bridge and says with a smug grin: </br>
+<p class="tNPC1">"There you are again. Are you here for another lesson?"</p>
+<div> [[Leave|ForestBridge]] [[offer him something]] <a0 onclick='window.gm.encounters.Trent(window.gm.player.location);'>wrestle with him(again)</a></br></div>
+</article><article id="LogPanel"></article></section>
+
+

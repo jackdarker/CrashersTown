@@ -1,0 +1,723 @@
+:: Masturbate [_nosave_]
+<section> 
+<aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<div id='select1' >
+<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1a")'>Pinch your own nipples.</a></br>
+</div>
+<div id='choice1a' hidden></br>
+Tweasing your [small] nipples between thumb and index finger until it nearly gets painful.</br>
+<div id='select2' >
+<a0 id='tweazeNipple' onclick='window.gm.printTalkLink("div#select2","div#choice2a", fondlebreast)'>Just some more</a>
+<a0 onclick='window.gm.printTalkLink("div#select2","div#choice2b")'>Stop it</a>
+</div>
+<div id='choice2a' hidden></br>
+Now you increase the pressure until there is pain.
+'I think thats enough right now.' [[Next|<%=window.gm.player.location%>]]</br> 
+</div>
+<div id='choice2b' hidden></br>
+Releasing the pressure on your nubs, they just feel numb right now.
+'I think thats enough right now.' [[Next|<%=window.gm.player.location%>]]</br> 
+</div>
+</article><article id="LogPanel"></article></section>
+<script>
+function fondlebreast(elmnt) {
+    elmnt.replaceWith("You nipple stiffens under this attention.");
+    window.gm.player.addEffect(new window.storage.constructors['effGrowBreast'](),"effGrowBreast");
+    window.gm.quests.forceQuestMilestone("qMyPleasure",100,1);
+}
+</script>
+
+:: WolfSubmit
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+The wolf raises a hind leg and gives your prone form a good amount of watering.
+After a final sniff it runs of into the woods.
+<div></br><a0 onclick='window.gm.player.addEffect(new window.storage.constructors["effMutateWolf"](),"effMutateWolf");window.gm.postDefeat()');'>Black out</a></br></div>
+</article><article id="LogPanel"></article></section>
+
+
+:: WolfSubmitLewd
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+The wolf isn't aroused enough and leaves you alone.
+---
+The wolf is quite in the mood to fool around.
+---
+Stiffleged the wolf is strutting over to you. From your point of view you can easily see a red tip poking out of the sheath below his belly.
+You get on all 4 to crawl away, but he quickly jumps on your lower back, pushing you further down with his mass.
+---
+As soon as you can feel his tip hitting your backdoor you pass out.
+[[Pass out]]  
+---
+That bitch seems to be aggresive and submissive at the same time. Does she expect you to take care of her needs?
+[[Lick her]] [[Get behind her]]
+---
+Again she growls baring her teeth as you get behind her. But she also raises her tail giving you a good view of her sex. The black lips of her pussy already swelling in that canine like manner.
+[[Enter her]]
+--- 
+That hot pussy of her is squeezing down on you. 
+You cant hold any longer and shoot your jizzm inside her.
+---
+<div></br><a0 onclick='window.gm.respawn();'>Black out</a></br></div>
+</article><article id="LogPanel"></article></section>
+
+:: GenericPassage [_nosave_]
+<!--call this passage after setting tmp.args !-->
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<div id='panel'></div><!--description is rendered here-->
+<div id='choice'></div> <!--choice is rendered here-->
+</article><article id="LogPanel"></article></section>
+<script>window.story.state.tmp.args[0]();
+</script>
+
+:: WolfVictory  [_nosave_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<div id='panel'></div><!--description is rendered here-->
+<div id='choice'></div> <!--choice is rendered here-->
+</article><article id="LogPanel"></article></section>
+<script>window.gm.sex.wolfOnPlayer({state:0, battleResult:'victory'});
+</script>
+
+:: DryadVictory [_nosave_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<div id='panel'></div><!--description is rendered here-->
+<div id='choice'></div> <!--choice is rendered here-->
+</article><article id="LogPanel"></article></section>
+<script>window.gm.sex.dryadOnPlayer({state:0, battleResult:'victory'});
+</script>
+
+:: LapineVictory [_nosave_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<div id='panel'></div><div id='choice'></div>
+</article><article id="LogPanel"></article></section>
+<script>window.gm.sex.lapineOnPlayer({state:0, battleResult:'victory'});</script>
+
+:: LapineDefeat [_nosave_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<div id='panel'></div><div id='choice'></div>
+</article><article id="LogPanel"></article></section>
+<script>window.gm.sex.lapineOnPlayer({state:0, battleResult:'defeat'});</script>
+
+:: LizanVictory [_nosave_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<div id='panel'></div><!--description is rendered here-->
+<div id='choice'></div> <!--choice is rendered here-->
+</article><article id="LogPanel"></article></section>
+<script>window.gm.sex.lizanOnPlayer({state:0, battleResult:'victory'});
+</script>
+
+
+:: WolffightIntermezzo [_nosave_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+Wolf snarls at you.
+<div> [[Next|EncounterStartTurn]]</br></div> 
+</article><article id="LogPanel"></article></section>
+<div></br>
+[[Next|<%=window.gm.player.location%>]]</br></div>
+</article><article id="LogPanel"></article></section>
+
+
+:: Arousalchange
+<!--deffered event-->
+You are so horny ! If you ran into a virile stud right now, you wouldnt be able to resist his advances. 
+
+
+:: SoulCrystalGrowth
+<!--deffered event-->
+As you get comfortable to rest for a while, you get some warm, blissful feeling from your stomach.
+...
+Something is growing in you.
+...
+You guess a soul crystal absorbs fertile sperm slushing around in your uterus, converting it to arcane essence.
+...
+For sure that hungry soul crystal is busy absorbing seed and your own life preserving fluids to grow its power. Its essence concetration, you guess, is tiny/small/medium/large/massive/grand.
+...
+You gain the impression that the soul crystal has reached the maximum size that your body is able to sustain. Time to get it out form the oven.
+
+:: SoulcrystalKnowledge
+"Soul crystals are arcane essence contained in a crystalin sphere. They are commonly used as a source of power for crafts of the arcana."
+"Soul crystal, also called soul gems by some, can be sometimes found at locations with a strong etheral crossroads."
+"It was stated that soul gems can also form in-uteri of special aligned individuals. The process of forming the crystal seems to be bound to sexual interaction. Various studies have led to the view that the crystal feds on the live-force of the received sperm and also the hosts ovary.
+"A developing soul gem interferes and supresses normal pregnancys. There are different cases known where host used this effect as alternative to other birth control measures." 
+Several religious directions state that this is against natures law and has to be prohibited. However, the high demand for crystals encourages unofficial experimentation."
+
+
+
+:: Pong
+<div id="pong"></div>
+<a0 id='btStart'>Start</a><p id='result'></p>
+<script>window.gm.startPong();</script>
+
+:: ReactionTest
+<p>Click Start and then click somewhere on the bar to stop the green rectangle in the yellow hit-area.</p>
+<div id='canvas'></div>
+<div class="progressbar" id='clickHere' style='height:1em; width: 100%;'><div id='bar' style="position:relative; width:5%; height:100%; background-color:green;"></div></div>
+<a0 id='btStart'>Start</a><p id='result'></p>
+<script>
+function onStop(value) {
+document.getElementById('result').innerHTML='scored '+value;
+}
+var _game = window.gm.startReactTest('bar',2000,onStop,null,[{a:40,b:60,color:'orange'},{a:90,b:100,color:'yellow'}]);
+document.getElementById('btStart').addEventListener("click", _game.start);
+document.getElementById('clickHere').addEventListener("click", _game.click);
+</script>
+
+:: ReactionTest2
+<p>Click Start and then keypress A/D to fill meter.</p>
+<div class="progressbar" id='clickHere' style='height:1em; width: 100%;'><div id='bar' style="position:relative; width:5%; height:100%; background-color:green;"></div></div>
+<a0 id='btStart'>Start</a><p id='result'></p>
+<p><output id="losgelassen"><output></output></p>
+<script>
+function onStop(value) {
+  document.getElementById('result').innerHTML='scored '+value;
+}
+var _game = window.gm.startReactTest2('bar',100,onStop,null,[{a:40,b:60,color:'orange'},{a:90,b:100,color:'yellow'}]);
+document.getElementById('btStart').addEventListener("click", _game.start);
+document.querySelector('body').addEventListener("keyup", _game.click);
+</script>
+
+
+:: Reactiontest3
+<p>example on how to create reactive graphics from svg parts</p>
+* Define g-object with id in defs.
+* use-xlink to create instances of those objects
+* use var(--) to define variables that you can set in css 
+* 
+<svg class="pink-cube" viewBox="0 0 300 230" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<defs>
+  <g id="Leg" class="cube-unit">
+    <rect width="21" height="24" fill="var(--lightColor)" stroke="var(--strokeColor)"/>
+  </g>
+  </defs>
+  <use xlink:href="#Leg" x="121" y="112"/>
+</svg>
+<svg class="pink-cube" viewBox="0 0 300 230" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+  <g id="cube" class="cube-unit">
+    <rect width="21" height="24" fill="var(--lightColor)" stroke="var(--strokeColor)" transform="skewY(30)"/>
+    <rect width="21" height="24" fill="var(--darkColor)" stroke="var(--strokeColor)" transform="skewY(-30) translate(21 24.3)"/>
+    <rect width="21" height="21" fill="var(--mainColor)" stroke="var(--strokeColor)" transform="scale(1.41,.81) rotate(45) translate(0 -21)"/>
+  </g>
+  </defs>
+  <line opacity=".5" x1="80" x2="100" y1="150" y2="150" fill="none" stroke-width="1" stroke-linecap="round" stroke="var(--lightColor)" stroke-dasharray="2.5" />
+   <line opacity=".5" x1="186" x2="204" y1="90" y2="90" fill="none" stroke-width="1" stroke-linecap="round" stroke="var(--lightColor)" stroke-dasharray="2.5" />
+   <line opacity=".5" x1="115" x2="115" y1="75" y2="85" fill="none" stroke-width="1" stroke-linecap="round" stroke="var(--lightColor)" stroke-dasharray="2.5" />
+    <use xlink:href="#cube" x="121" y="112"/>
+    <use xlink:href="#cube" x="100" y="124"/>
+    <use xlink:href="#cube" x="142" y="124"/>
+    <use xlink:href="#cube" x="121" y="136"/>
+    <use class="m-left" xlink:href="#cube" x="79" y="136"/>
+    <use xlink:href="#cube" x="163" y="136"/>
+    <use xlink:href="#cube" x="142" y="148"/>
+    <use xlink:href="#cube" x="100" y="148"/>
+    <use xlink:href="#cube" x="121" y="160"/>
+    <use xlink:href="#cube" x="121" y="88"/>
+    <use xlink:href="#cube" x="100" y="100"/>
+    <use xlink:href="#cube" x="142" y="100"/>
+    <use xlink:href="#cube" x="121" y="112"/>
+    <use xlink:href="#cube" x="79" y="112"/>
+    <use xlink:href="#cube" x="163" y="112"/>
+    <line opacity=".5" x1="165" x2="185" y1="155" y2="155" fill="none" stroke-width="1" stroke-linecap="round" stroke="var(--lightColor)" stroke-dasharray="2.5" />
+    <use class="m-right" xlink:href="#cube" x="142" y="124"/>
+    <use xlink:href="#cube" x="100" y="124"/>
+    <use xlink:href="#cube" x="121" y="136"/>
+    <use xlink:href="#cube" x="121" y="64"/>
+    <use class="m-up" xlink:href="#cube" x="100" y="76"/>
+    <use xlink:href="#cube" x="142" y="76"/>
+    <use xlink:href="#cube" x="121" y="88"/>
+    <use xlink:href="#cube" x="79" y="88"/>
+    <use class="m-right" xlink:href="#cube" x="163" y="88"/>
+    <use xlink:href="#cube" x="142" y="100"/>
+    <use xlink:href="#cube" x="100" y="100"/>
+    <use xlink:href="#cube" x="121" y="112"/>
+  </svg>
+  <p>hover over me</p>
+
+:: Evade
+<!-- präsentiert von kostenlose-javascripts.de (c) Copyright By N00b1000-->
+<script type='text/javascript'>
+//<!--
+//alert("Versuche den herunterfallenden Objekten so lange wie möglich auszuweichen.nSteuere die Figur mit den Pfeiltasten.nDrücke 'N' für ein neues Spiel.")
+var bilderpfad = "http://www.eurehomepage.tld/bilder";
+var up=0;
+var down=0;
+var left=0;
+var right=0;
+var a=0;
+var b=0;
+var d=0;
+var z=0;
+var life=1;
+var c=Math.round(Math.random()*5);
+var starttime = new Date();
+document.write('<div id="feld" style="position:relative; left:0px; top:0px; background-color: black; width: 300px; height: 350px;"></div>');
+document.write('<div id="spieler" style="position:absolute; left:0px; top:0px">');
+document.write('	<img width="50" id="imgplayer" height="50" src="'+bilderpfad+'/spieler0.gif" alt="" />');
+document.write('</div>');
+document.write('<div id="auto" style="position:absolute; left:0px; top:0px">');
+document.write('	<img width="50" id="imgkristall" height="50" src="'+bilderpfad+'/kristall0.gif" alt="" />');
+document.write('</div>');
+function move() {
+	spieler0 = new Image();
+	spieler0.src = bilderpfad+"/spieler0.gif";
+	spieler1 = new Image();
+	spieler1.src = bilderpfad+"/spieler1.gif";
+
+	if (life==1) {
+	zaehler();
+	if (a>5) a=5;
+	document.getElementById('spieler').style.left = (a*50)+"px";
+	document.getElementById('spieler').style.top = "300px";
+	d++;
+	document.getElementById('auto').style.top = (d*z/200)+"px";
+	document.getElementById('auto').style.left = (c*50)+"px";
+	hit();
+
+	if (d*z/200>300) {d=0; c=Math.round(Math.random()*5);} }
+	window.setTimeout ('move()', 10);
+}
+
+function keyleft(y) {
+	if (y==37) { left++; a-- }
+}
+
+function keyright(y) {
+	if (y==39) { right++; a++ }
+}
+
+function hit() {
+	if (a==c && d*z/200>250 && life==1) {
+		wechsel('imgplayer',spieler1);
+		alert("Getroffen!!!nDu hast " + (new Date()-starttime)/1000 + " Sekunden überlebt.");
+		life=0;
+	}
+}
+
+function zaehler() {
+	z=z+1
+}
+
+function keycheck(e) {
+	y = (e) ? e.which : window.event.keyCode;
+	if ( y == 78 ) {
+		restart();
+	}
+
+	keyleft(y);
+	keyright(y);
+	if (a<0) a=0;
+	if (b<0) b=0;
+}
+
+function restart() {
+	a=0; b=0; c=Math.round(Math.random()*5);
+	d=0; z=0; life=1; starttime=new Date();
+	wechsel('imgplayer',spieler0);
+}
+
+function wechsel(Bildnr,Bildobjekt) {
+	document.getElementById(Bildnr).src = Bildobjekt.src;
+}
+document.onkeydown = keycheck;
+move();
+//-->
+</script>
+
+
+
+:: MinesweeperAscii
+<!-- präsentiert von kostenlose-javascripts.de -->
+<script type='text/javascript'>
+//<!--
+function neu(){
+minen=3;
+minen1=0;
+verloren=false;
+verdeckt=new Array();
+aufgedeckt=new Array();
+for (i=0;i<16;i++)
+{
+a = 1 + 6*(Math.random());
+a = Math.round(a);
+if(a==6 && minen!=0||a==2 && minen!=0){
+verdeckt[i]="mine";
+aufgedeckt[i]="mine";
+minen1+=1;
+}
+else{
+verdeckt[i]="leer";
+aufgedeckt[i]="leer";
+}
+aktuell="feld"+i;
+document.getElementById(aktuell).innerHTML = "( )";
+}
+document.getElementById('smiley').innerHTML='<font color="lime" onclick="neu();">:)</font>';
+}
+neu();
+function klick(feld){
+ausgabe="<b>( )</b>"
+if(verloren==false){
+
+checken="feld"+feld;
+if(verdeckt[feld]=="mine"){
+verloren=true;
+document.getElementById(checken).innerHTML="(<font color='red'>*</font>)";
+document.getElementById('smiley').innerHTML='<font color="red" onclick="neu();">:(</font>';
+}
+else{
+ausgabe=0;
+aufgedeckt[feld]="";
+if(verdeckt[feld+1]=="mine" && feld!=3 || verdeckt[feld-1]=="mine" && feld!=7 ||verdeckt[feld-1]=="mine" && feld!=11 ||verdeckt[feld-1]=="mine" && feld!=15){
+ausgabe+=1
+}
+if(verdeckt[feld-1]=="mine" && feld!=0 || verdeckt[feld-1]=="mine" && feld!=4 || verdeckt[feld-1]=="mine" && feld!=8 ||verdeckt[feld-1]=="mine" && feld!=12){
+ausgabe+=1
+}
+if(verdeckt[feld-4]=="mine"){
+ausgabe+=1
+}
+if(verdeckt[feld+4]=="mine"){
+ausgabe+=1
+}
+if(ausgabe==0){
+ausgabe="( )";
+}
+test=0;
+for (i=0;i<16;i++)
+{
+if(aufgedeckt[i]==""){
+test+=1;
+
+}
+if(test==16-minen1){
+alert("Sie haben gewonnen.");
+}
+
+}
+ausgaben="<font color='green'> "+ausgabe+"</font>";
+document.getElementById(checken).innerHTML=ausgaben;
+}}}
+neu();
+//-->
+</script>
+<div style="font-size: 30px;" align="center"><span id="smiley" style="background-color:yellow;"><font color="lime" onclick="neu();">:)</font></span><span style="background-color:yellow;"><font color="lime">
+</font></span></div>
+<p align="center"><span id="feld0" onclick="klick(0)">()</span> <span id="feld1"  onclick="klick(1)">()</span> <span id="feld2" onclick="klick(2)">()</span> <span id="feld3" onclick="klick(3)">()</span> </p>
+<p align="center"><span id="feld4" onclick="klick(4)">()</span> <span id="feld5" onclick="klick(5)">()</span> <span id="feld6" onclick="klick(6)">()</span> <span id="feld7" onclick="klick(7)">()</span> </p>
+
+<p align="center"><span id="feld8" onclick="klick(8)">()</span> <span id="feld9" onclick="klick(9)">()</span> <span id="feld10" onclick="klick(10)">()</span> <span id="feld11" onclick="klick(11)">()</span> </p>
+<p align="center"><span id="feld12" onclick="klick(12)">()</span> <span id="feld13" onclick="klick(13)">()</span> <span id="feld14" onclick="klick(14)">()</span> <span id="feld15"  onclick="klick(15)">()</span> </p>
+<br />
+
+
+:: HangmanGame
+<!--adapted from https://remybeumier.be/#creations-anchor-->
+<section> 
+<aside id="sidebar"></aside><article class="main"><%=window.story.render("CenterDialogs") %>
+<main><div class="alphabet" style="">
+    <span class="">a</span>
+    <span class="">b</span>
+    <span class="">c</span>
+    <span class="">d</span>
+    <span class="">e</span>
+    <span class="">f</span>
+    <span class="">g</span>
+    <span class="">h</span>
+    <span class="">i</span>
+    <span class="">j</span>
+    <span class="">k</span>
+    <span class="">l</span>
+    <span class="">m</span>
+    <span class="">n</span>
+    <span class="">o</span>
+    <span class="">p</span>
+    <span class="">q</span>
+    <span class="">r</span>
+    <span class="">s</span>
+    <span class="">t</span>
+    <span class="">u</span>
+    <span class="">v</span>
+    <span class="">w</span>
+    <span class="">x</span>
+    <span class="">y</span>
+    <span class="green">z</span>
+  </div>
+  <div class="word"><span class="z found">z</span><span class="o">o</span><span class="o">o</span><span class="m">m</span></div>
+  <button>Restart</button></main>
+</article><article id="LogPanel"></article></section>
+<script>
+var words = {
+  w3: ["car", "bus", "red", "fun", "arm", "leg", "hat", "dog", "cat", "pie", "egg", "cow", "pen", "key", "mug", "tea", "air", "ant", "ape", "ash", "add", "art", "awn", "bat", "bee", "bug", "bad", "bet", "box", "big", "bag", "bay", "bed", "beg", "bet", "bra", "bun", "cap", "car", "cut", "cup", "cry", "dot", "dye", "die", "dip", "ear", "ewe", "egg", "eel", "era", "fan", "fry", "fax", "for", "flu", "fur", "gel", "gym", "god", "ham", "hen", "hot", "hit", "ice", "ink", "inn", "jam", "jar", "joy", "lap", "law", "let", "mat", "man", "mix", "net", "nib", "now", "not", "oak", "odd", "oil", "ode", "pan", "pet", "rag", "red", "row", "set", "sun", "six", "tea", "toe", "tip", "urn", "van", "vet", "web", "wax", "why", "yam", "yak", "yet", "zip", "zoo"],
+  w4: ["boat", "ball", "blue", "rose", "hero", "city", "shoe", "hand", "sock", "head", "back", "foot", "bear", "beer", "duck", "lion", "wine", "milk", "meat", "rice", "kiwi", "peer", "salt", "fish", "rock", "bike", "book", "fire", "tree", "acid", "acne", "anti", "away", "beat", "beef", "blur", "bomb", "cage", "camp", "clue", "cube", "curl", "dark", "dead", "dial", "demo", "disk", "dorm", "dose", "dumb", "dump", "duty", "eyes", "exam", "evil", "epic", "fate", "fear", "film", "find", "flag", "flea", "fund", "gain", "game", "gift", "girl", "gold", "golf", "grow", "hail", "heal", "help", "hide", "hill", "hike", "high", "hunt", "join", "jute", "junk", "jump", "kick", "kite", "knit", "knob", "kiss", "lamp", "land", "loaf", "lump", "math", "mend", "mint", "mode", "mute", "myth", "nest", "next", "news", "noon", "nerd", "oats", "oven", "oval", "open", "pest", "pick", "pale", "palm", "plot", "plug", "rank", "read", "real", "rate", "rain", "risk", "rise", "seat", "salt", "ship", "side", "soil", "stem", "sure", "swap", "tree", "toad", "tape", "tone", "tyre", "urge", "vale", "vary", "vote", "wage", "warm", "wilt", "womb", "yawn", "yeti", "zero", "zoom", "zinc"],
+  w5: ["green", "black", "white", "house", "world", "space", "earth", "night", "shirt", "boxer", "scarf", "glove", "sheep", "snake", "horse", "water", "juice", "pasta", "apple", "mango", "melon", "salad", "candy", "bread", "ruler", "phone", "paper", "plane", "train", "mouse", "chair", "align", "actor", "agony", "clean", "cloak", "curve", "drain", "drape", "dwell", "eager", "erect", "erase", "faith", "fight", "flirt", "genie", "goose", "grant", "graph", "haiku", "heavy", "hello", "humid", "humor", "ideal", "index", "input", "judge", "joker", "jeans", "knife", "knock", "labor", "level", "latte", "leach", "lyric", "lodge", "major", "maths", "music", "myths", "night", "novel", "noble", "nudes", "often", "organ", "ozone", "panda", "paper", "peach", "phase", "plans", "power", "queen", "quick", "quill", "ramen", "rants", "react", "saint", "sauce", "skill", "spike", "small", "story", "swags", "tease", "towel", "tower", "truck", "twice", "veins", "vital", "verge", "watch", "water", "wheel", "widow", "xylem", "yatch", "yours", "zebra"],
+  w6: ["yellow", "pencil", "finger", "street", "jacket", "rabbit", "monkey", "cookie", "banana", "potato", "orange", "carrot", "tomato", "cheese", "pepper", "letter", "cisors", "wallet", "bottle", "coffee", "laptop", "screen", "garden", "toilet", "behalf", "behind", "belief", "belong", "berlin", "better", "beyond", "bishop", "border", "bottle", "bottom", "bought", "branch", "breath", "bridge", "bright", "broken", "budget", "burden", "bureau", "button", "camera", "cancer", "cannot", "carbon", "career", "castle", "casual", "caught", "center", "center", "chance", "change", "charge", "choice", "choose", "chosen", "church", "circle", "client", "closed", "closer", "coffee", "column", "combat", "coming", "common", "comply", "copper", "corner", "costly", "county", "couple", "course", "covers", "create", "credit", "crisis", "custom", "damage", "danger", "dealer", "debate", "decade", "decide", "defeat", "defend", "define", "degree", "demand", "depend", "deputy", "desert", "design", "desire", "detail", "detect", "device", "differ", "dinner", "direct", "doctor", "dollar", "domain", "double", "driven", "driver", "during", "easily", "eating", "editor", "effect", "effort", "eighth", "either", "eleven", "emerge", "empire", "employ", "enable", "ending", "energy", "engage", "engine", "enough", "ensure", "entire", "entity", "equity", "escape", "estate", "ethnic", "exceed", "except", "excess", "expand", "expect", "expert", "export", "extend", "extent", "fabric", "facing", "factor", "failed", "fairly", "fallen", "family", "famous", "father", "fellow", "female", "figure", "filing", "finger", "finish", "fiscal", "flight", "flying", "follow", "forced", "forest", "forget", "formal", "format", "former", "foster", "fought", "fourth", "French", "friend", "future", "garden", "gather", "gender", "german", "global", "golden", "ground", "growth", "guilty", "handed", "handle", "happen", "hardly", "headed", "health", "height", "hidden", "holder", "honest", "impact", "import", "income", "indeed", "injury", "inside", "intend", "intent", "invest", "island", "itself", "jersey", "joseph", "junior", "killed", "labour", "latest", "latter", "launch", "lawyer", "leader", "league", "leaves", "legacy", "length", "lesson", "letter", "lights", "likely", "linked", "liquid", "listen", "little", "living", "losing", "lucent", "luxury", "mainly", "making", "manage", "manner", "manual", "margin", "marine", "marked", "market", "martin", "master", "matter", "mature", "medium", "member", "memory", "mental", "merely", "merger", "method", "middle", "miller", "mining", "minute", "mirror", "mobile", "modern", "modest", "module", "moment", "morris", "mostly", "mother", "motion", "moving", "murder", "museum", "mutual", "myself", "narrow", "nation", "native", "nature", "nearby", "nearly", "nights", "nobody", "normal", "notice", "notion", "number", "object", "obtain", "office", "offset", "online", "option", "orange", "origin", "output", "oxford", "packed", "palace", "parent", "partly", "patent", "people", "period", "permit", "person", "phrase", "picked", "planet", "player", "please", "plenty", "pocket", "police", "policy", "prefer", "pretty", "prince", "prison", "profit", "proper", "proven", "public", "pursue", "raised", "random", "rarely", "rather", "rating", "reader", "really", "reason", "recall", "recent", "record", "reduce", "reform", "regard", "regime", "region", "relate", "relief", "remain", "remote", "remove", "repair", "repeat", "replay", "report", "rescue", "resort", "result", "retail", "retain", "return", "reveal", "review", "reward", "riding", "rising", "robust", "ruling", "safety", "salary", "sample", "saving", "saying", "scheme", "school", "screen", "search", "season", "second", "secret", "sector", "secure", "seeing", "select", "seller", "senior", "series", "server", "settle", "severe", "sexual", "should", "signal", "signed", "silent", "silver", "simple", "simply", "single", "sister", "slight", "smooth", "social", "solely", "sought", "source", "soviet", "speech", "spirit", "spoken", "spread", "spring", "square", "stable", "status", "steady", "stolen", "strain", "stream", "street", "stress", "strict", "strike", "string", "strong", "struck", "studio", "submit", "sudden", "suffer", "summer", "summit", "supply", "surely", "survey", "switch", "symbol", "system", "taking", "talent", "target", "taught", "tenant", "tender", "tennis", "thanks", "theory", "thirty", "though", "threat", "thrown", "ticket", "timely", "timing", "tissue", "toward", "travel", "treaty", "trying", "twelve", "twenty", "unable", "unique", "united", "unless", "unlike", "update", "useful", "valley", "varied", "vendor", "versus", "victim", "vision", "visual", "volume", "walker", "wealth", "weekly", "weight", "wholly", "window", "winner", "winter", "within", "wonder", "worker", "wright", "writer", "yellow"],
+  w7: ["morning", "sweater", "coconut", "ketchup", "mostard", "chicken", "country", "kitchen", "ability", "absence", "academy", "account", "accused", "achieve", "acquire", "address", "advance", "adverse", "advised", "adviser", "against", "airline", "airport", "alcohol", "alleged", "already", "analyst", "ancient", "another", "anxiety", "anxious", "anybody", "applied", "arrange", "arrival", "article", "assault", "assumed", "assured", "attempt", "attract", "auction", "average", "backing", "balance", "banking", "barrier", "battery", "bearing", "beating", "because", "bedroom", "believe", "beneath", "benefit", "besides", "between", "billion", "binding", "brother", "brought", "burning", "cabinet", "caliber", "calling", "capable", "capital", "captain", "caption", "capture", "careful", "carrier", "caution", "ceiling", "central", "centric", "century", "certain", "chamber", "channel", "chapter", "charity", "charlie", "charter", "checked", "chicken", "chronic", "circuit", "classes", "classic", "climate", "closing", "closure", "clothes", "collect", "college", "combine", "comfort", "command", "comment", "compact", "company", "compare", "compete", "complex", "concept", "concern", "concert", "conduct", "confirm", "connect", "consent", "consist", "contact", "contain", "content", "contest", "context", "control", "convert", "correct", "council", "counsel", "counter", "country", "crucial", "crystal", "culture", "current", "cutting", "dealing", "decided", "decline", "default", "defence", "deficit", "deliver", "density", "deposit", "desktop", "despite", "destroy", "develop", "devoted", "diamond", "digital", "discuss", "disease", "display", "dispute", "distant", "diverse", "divided", "drawing", "driving", "dynamic", "eastern", "economy", "edition", "elderly", "element", "engaged", "enhance", "essence", "evening", "evident", "exactly", "examine", "example", "excited", "exclude", "exhibit", "expense", "explain", "explore", "express", "extreme", "factory", "faculty", "failing", "failure", "fashion", "feature", "federal", "feeling", "fiction", "fifteen", "filling", "finance", "finding", "fishing", "fitness", "foreign", "forever", "formula", "fortune", "forward", "founder", "freedom", "further", "gallery", "gateway", "general", "genetic", "genuine", "gigabit", "greater", "hanging", "heading", "healthy", "hearing", "heavily", "helpful", "helping", "herself", "highway", "himself", "history", "holding", "holiday", "housing", "however", "hundred", "husband", "illegal", "illness", "imagine", "imaging", "improve", "include", "initial", "inquiry", "insight", "install", "instant", "instead", "intense", "interim", "involve", "jointly", "journal", "journey", "justice", "justify", "keeping", "killing", "kingdom", "kitchen", "knowing", "landing", "largely", "lasting", "leading", "learned", "leisure", "liberal", "liberty", "library", "license", "limited", "listing", "logical", "loyalty", "machine", "manager", "married", "massive", "maximum", "meaning", "measure", "medical", "meeting", "mention", "message", "million", "mineral", "minimal", "minimum", "missing", "mission", "mistake", "mixture", "monitor", "monthly", "morning", "musical", "mystery", "natural", "neither", "nervous", "network", "neutral", "notable", "nothing", "nowhere", "nuclear", "nursing", "obvious", "offense", "officer", "ongoing", "opening", "operate", "opinion", "optical", "organic", "outcome", "outdoor", "outlook", "outside", "overall", "pacific", "package", "painted", "parking", "partial", "partner", "passage", "passing", "passion", "passive", "patient", "pattern", "payable", "payment", "penalty", "pending", "pension", "percent", "perfect", "perform", "perhaps", "phoenix", "picking", "picture", "pioneer", "plastic", "pointed", "popular", "portion", "poverty", "precise", "predict", "premier", "premium", "prepare", "present", "prevent", "primary", "printer", "privacy", "private", "problem", "proceed", "process", "produce", "product", "profile", "program", "project", "promise", "promote", "protect", "protein", "protest", "provide", "publish", "purpose", "pushing", "qualify", "quality", "quarter", "radical", "railway", "readily", "Reading", "reality", "realize", "receipt", "receive", "recover", "reflect", "regular", "related", "release", "remains", "removal", "removed", "replace", "request", "require", "reserve", "resolve", "respect", "respond", "restore", "retired", "revenue", "reverse", "rollout", "routine", "running", "satisfy", "science", "section", "segment", "serious", "service", "serving", "session", "setting", "seventh", "several", "shortly", "showing", "silence", "silicon", "similar", "sitting", "sixteen", "skilled", "smoking", "society", "somehow", "someone", "speaker", "special", "species", "sponsor", "station", "storage", "strange", "stretch", "student", "studied", "subject", "succeed", "success", "suggest", "summary", "support", "suppose", "supreme", "surface", "surgery", "surplus", "survive", "suspect", "sustain", "teacher", "telecom", "telling", "tension", "theatre", "therapy", "thereby", "thought", "through", "tonight", "totally", "touched", "towards", "traffic", "trouble", "turning", "typical", "uniform", "unknown", "unusual", "upgrade", "upscale", "utility", "variety", "various", "vehicle", "venture", "version", "veteran", "victory", "viewing", "village", "violent", "virtual", "visible", "waiting", "walking", "wanting", "warning", "warrant", "wearing", "weather", "webcast", "website", "wedding", "weekend", "welcome", "welfare", "western", "whereas", "whereby", "whether", "willing", "winning", "without", "witness", "working", "writing", "written"],
+  w8: ["elephant", "zucchini", "eggplant", "computer", "keyboard", "bathroom", "basement", "breaking", "breeding", "building", "bulletin", "business", "calendar", "campaign", "capacity", "casualty", "catching", "category", "Catholic", "cautious", "cellular", "ceremony", "chairman", "champion", "chemical", "children", "circular", "civilian", "clearing", "clinical", "clothing", "collapse", "colonial", "colorful", "commence", "commerce", "complain", "complete", "composed", "compound", "comprise", "computer", "conclude", "concrete", "conflict", "confused", "congress", "consider", "constant", "consumer", "continue", "contract", "contrary", "contrast", "convince", "corridor", "coverage", "covering", "creation", "creative", "criminal", "critical", "crossing", "cultural", "currency", "customer", "database", "daughter", "daylight", "deadline", "deciding", "decision", "decrease", "deferred", "definite", "delicate", "delivery", "describe", "designer", "detailed", "diabetes", "dialogue", "diameter", "directly", "director", "disabled", "disaster", "disclose", "discount", "discover", "disorder", "disposal", "distance", "distinct", "district", "dividend", "division", "doctrine", "document", "domestic", "dominant", "dominate", "doubtful", "dramatic", "dressing", "dropping", "duration", "dynamics", "earnings", "economic", "educated", "efficacy", "eighteen", "election", "electric", "eligible", "emerging", "emphasis", "employee", "endeavor", "engaging", "engineer", "enormous", "entirely", "entrance", "envelope", "equality", "equation", "estimate", "evaluate", "eventual", "everyday", "everyone", "evidence", "exchange", "exciting", "exercise", "explicit", "exposure", "extended", "external", "facility", "familiar", "featured", "feedback", "festival", "finished", "firewall", "flagship", "flexible", "floating", "football", "foothill", "forecast", "foremost", "formerly", "fourteen", "fraction", "franklin", "frequent", "friendly", "frontier", "function", "generate", "generous", "genomics", "goodwill", "governor", "graduate", "graphics", "grateful", "guardian", "guidance", "handling", "hardware", "heritage", "highland", "historic", "homeless", "homepage", "hospital", "humanity", "identify", "identity", "ideology", "imperial", "incident", "included", "increase", "indicate", "indirect", "industry", "informal", "informed", "inherent", "initiate", "innocent", "inspired", "instance", "integral", "intended", "interact", "interest", "interior", "internal", "interval", "intimate", "intranet", "invasion", "involved", "isolated", "judgment", "judicial", "junction", "keyboard", "landlord", "language", "laughter", "learning", "leverage", "lifetime", "lighting", "likewise", "limiting", "literary", "location", "magazine", "magnetic", "maintain", "majority", "marginal", "marriage", "material", "maturity", "maximize", "meantime", "measured", "medicine", "medieval", "memorial", "merchant", "midnight", "military", "minimize", "minister", "ministry", "minority", "mobility", "modeling", "moderate", "momentum", "monetary", "moreover", "mortgage", "mountain", "mounting", "movement", "multiple", "national", "negative", "nineteen", "northern", "notebook", "numerous", "observer", "occasion", "offering", "official", "offshore", "operator", "opponent", "opposite", "optimism", "optional", "ordinary", "organize", "original", "overcome", "overhead", "overseas", "overview", "painting", "parallel", "parental", "patented", "patience", "peaceful", "periodic", "personal", "persuade", "petition", "physical", "pipeline", "platform", "pleasant", "pleasure", "politics", "portable", "portrait", "position", "positive", "possible", "powerful", "practice", "precious", "pregnant", "presence", "preserve", "pressing", "pressure", "previous", "princess", "printing", "priority", "probable", "probably", "producer", "profound", "progress", "property", "proposal", "prospect", "protocol", "provided", "provider", "province", "publicly", "purchase", "pursuant", "quantity", "question", "rational", "reaction", "received", "receiver", "recovery", "regional", "register", "relation", "relative", "relevant", "reliable", "reliance", "religion", "remember", "renowned", "repeated", "reporter", "republic", "required", "research", "reserved", "resident", "resigned", "resource", "response", "restrict", "revision", "rigorous", "romantic", "sampling", "scenario", "schedule", "scrutiny", "seasonal", "secondly", "security", "sensible", "sentence", "separate", "sequence", "sergeant", "shipping", "shortage", "shoulder", "simplify", "situated", "slightly", "software", "solution", "somebody", "somewhat", "southern", "speaking", "specific", "spectrum", "sporting", "standard", "standing", "standout", "sterling", "straight", "strategy", "strength", "striking", "struggle", "stunning", "suburban", "suitable", "superior", "supposed", "surgical", "surprise", "survival", "sweeping", "swimming", "symbolic", "sympathy", "syndrome", "tactical", "tailored", "takeover", "tangible", "taxation", "taxpayer", "teaching", "tendency", "terminal", "terrible", "thinking", "thirteen", "thorough", "thousand", "together", "tomorrow", "touching", "tracking", "training", "transfer", "traveled", "treasury", "triangle", "tropical", "turnover", "ultimate", "umbrella", "universe", "unlawful", "unlikely", "valuable", "variable", "vertical", "victoria", "violence", "volatile", "warranty", "weakness", "weighted", "whatever", "whenever", "wherever", "wildlife", "wireless", "withdraw", "woodland", "workshop", "yourself"],
+  w9: ["aardvarks", "alligator", "boulevard", "hamburger", "turquoise", "telephone", "furniture", "checklist", "container", "professor", "frequency", "spaceship", "scarecrow", "deodorant", "cranberry"],
+  w10: ["department", "watermelon", "strawberry", "skateboard", "rainforest", "helicopter", "percentage", "restaurant", "microscope", "vegetables", "university", "volleyball", "toothbrush", "laboratory", "calculator", "wheelchair", "chandelier", "blackberry", "binoculars"],
+  all: []
+};
+words.all = words.w3.concat(words.w4, words.w5, words.w6, words.w7, words.w8, words.w9, words.w10);
+getRandomWord();
+function getRandomWord() {
+  var randomWord = words.all[Math.floor(Math.random() * words.all.length)];
+  $(".word").html("");
+  console.log(randomWord);
+  var randomWordSplitted = randomWord.split("");
+  randomWordSplitted.forEach(function (x) {
+    $(".word").append("<span class='" + x + "'>" + x + "</span>");
+  });
+  $(".alphabet span").on("click", function () {
+    var letter = $(this).text();
+    if (checkLetter(letter, randomWordSplitted)) {
+      $(this).addClass("green");
+      $("." + letter).addClass("found");
+      if (checkWin(randomWordSplitted.length)) {
+        $(".alphabet").fadeOut();
+        // setTimeout(function(){
+        //   $(".word").hide(400);
+        //   gameReset();
+        // }, 800); 
+      }
+    }
+    else {
+      $(this).addClass("red2");
+    }
+  });
+}
+$("button").on("click", function () {
+  gameReset();
+});
+function checkWin(length) {
+  if ($(".found").length === length) {
+    return true;
+  }
+}
+function checkLetter(letter, arr) {
+  if (arr.indexOf(letter) !== -1) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+function gameReset() {
+  $(".alphabet span").off().removeClass();
+  $(".word span").removeClass("found");
+  $(".alphabet, .word").fadeIn();
+  getRandomWord();
+}
+</script>
+
+:: MemoryGame
+<!--adapted from https://remybeumier.be/#creations-anchor-->
+<section> 
+<aside id="sidebar"></aside><article class="main"><%=window.story.render("CenterDialogs") %>
+  <div class="box play"></div>
+  <div class="box play"></div>
+  <div class="box play"></div>
+  <div class="box play"></div>
+  <div class="box play"></div>
+  <div class="box play"></div>
+  <div class="box play"></div>
+  <div class="box play"></div>
+  <div class="box play"></div>
+  <div class="box play"></div>
+  <div class="box play"></div>
+  <div class="box play"></div>
+  <div class="box play"></div>
+  <div class="box play"></div>
+  <div class="box play"></div>
+  <div class="box play"></div>
+  <div class="box play"></div>
+  <div class="box play"></div>
+  <div class="box play"></div>
+  <div class="box play"></div>  
+  <div id="state">
+    <span id="time">0</span>
+    <span id="score">0</span>
+  </div>
+</article>
+
+<article id="pre" class="">
+  <div id="themes">
+    Chose your theme !
+    <p id="pokemon" class="themes" title="Pokemon">Pokemon</p>
+    <p id="starwars" class="themes" title="Star Wars">Star Wars</p>
+    <p id="lotr" class="themes" title="Lord of the Ring">Lord of the Ring</p>
+    <p id="disney" class="themes" title="Disney">Disney</p>
+    <p id="pixar" class="themes" title="Pixar">Pixar</p>
+    <p id="harrypotter" class="themes" title="Harry Potter">Harry Potter</p>
+  </div>
+</article>
+<article id="post" class="hidden">
+  <div>
+    <p>BRAVO !</p>
+    <p id="final"></p>
+    <br>
+    <p>
+      <a id="again">Play Again !</a>
+    </p>
+  </div>
+</article>
+<article id="LogPanel"></article></section>
+<script>
+var library = {
+harrypotter: [
+    'https://res.cloudinary.com/beumsk/image/upload/v1547998926/memory/harrypotter/harry.jpg',
+    'https://res.cloudinary.com/beumsk/image/upload/v1547998958/memory/harrypotter/ron.jpg',
+    'https://res.cloudinary.com/beumsk/image/upload/v1547998992/memory/harrypotter/hermione.jpg',
+    'https://res.cloudinary.com/beumsk/image/upload/v1547999106/memory/harrypotter/dumbledore.jpg',
+    'https://res.cloudinary.com/beumsk/image/upload/v1547999032/memory/harrypotter/malfoy.jpg',
+    'https://res.cloudinary.com/beumsk/image/upload/v1547999143/memory/harrypotter/voldemort.jpg',
+    'https://res.cloudinary.com/beumsk/image/upload/v1547999401/memory/harrypotter/rogue.jpg',
+    'https://res.cloudinary.com/beumsk/image/upload/v1547999196/memory/harrypotter/hagrid.jpg',
+    'https://res.cloudinary.com/beumsk/image/upload/v1547999271/memory/harrypotter/sirius.jpg',
+    'https://res.cloudinary.com/beumsk/image/upload/v1547999577/memory/harrypotter/neville.jpg',
+    'https://res.cloudinary.com/beumsk/image/upload/v1547998926/memory/harrypotter/harry.jpg',
+    'https://res.cloudinary.com/beumsk/image/upload/v1547998958/memory/harrypotter/ron.jpg',
+    'https://res.cloudinary.com/beumsk/image/upload/v1547998992/memory/harrypotter/hermione.jpg',
+    'https://res.cloudinary.com/beumsk/image/upload/v1547999106/memory/harrypotter/dumbledore.jpg',
+    'https://res.cloudinary.com/beumsk/image/upload/v1547999032/memory/harrypotter/malfoy.jpg',
+    'https://res.cloudinary.com/beumsk/image/upload/v1547999143/memory/harrypotter/voldemort.jpg',
+    'https://res.cloudinary.com/beumsk/image/upload/v1547999401/memory/harrypotter/rogue.jpg',
+    'https://res.cloudinary.com/beumsk/image/upload/v1547999196/memory/harrypotter/hagrid.jpg',
+    'https://res.cloudinary.com/beumsk/image/upload/v1547999271/memory/harrypotter/sirius.jpg',
+    'https://res.cloudinary.com/beumsk/image/upload/v1547999577/memory/harrypotter/neville.jpg'
+  ]
+}
+var images = [],
+    tempElt1 = "",
+    tempElt2 = "",
+    click = -1,
+    win = 0,
+    score = 0,
+    time = 0;
+var preElt = document.querySelector("#pre"),
+    themesElt = document.querySelector("#themes"),
+    boxElts = document.getElementsByClassName("box"),
+    mainElt = document.querySelector(".main"),
+    timeElt = document.querySelector("#time"),
+    scoreElt = document.querySelector("#score"),
+    postElt = document.querySelector("#post"),
+    finalElt = document.querySelector("#final"),
+    againElt = document.querySelector("#again");
+// initiate the game with chosen theme
+themesElt.addEventListener("click", function(e) {
+  if (e.target.classList.contains("themes")) {
+    activateTheme(e.target.id);
+    preElt.classList.add("hidden");
+  }
+});
+function activateTheme(theme) {
+  // insert theme in images array
+  switch (theme) {
+    case "pokemon":
+      for (let i=0; i<20; i++) {images.push(library.pokemon[i]);}
+      break;
+    case "starwars":
+      for (let i=0; i<20; i++) {images.push(library.starwars[i]);}
+      break;
+    case "lotr":
+      for (let i=0; i<20; i++) {images.push(library.lotr[i]);}
+      break;
+    case "disney":
+      for (let i=0; i<20; i++) {images.push(library.disney[i]);}
+      break;
+    case "pixar":
+      for (let i=0; i<20; i++) {images.push(library.pixar[i]);}
+      break;
+    case "harrypotter":
+      for (let i=0; i<20; i++) {images.push(library.harrypotter[i]);}
+      break;
+  }
+  preElt.classList.add("hidden");
+  // insert images in memory game
+  for (let i=0; i<20; i++) {
+    var rand = Math.floor(Math.random() * (images.length-1));
+    boxElts[i].innerHTML = "<img src='" + images[rand] + "' alt='image' class='hidden'>";
+    images.splice(rand, 1);
+  }
+}
+// Handle the play
+mainElt.addEventListener("click", gameLogic);
+function gameLogic(e) {
+  // make sure the box is playable
+  if (e.target.classList.contains("play")) {
+    e.target.firstChild.classList.remove("hidden");
+    // first of two click
+    if (click < 1) {
+      tempElt1 = e.target;
+      // timer
+      if (click === -1) {
+        timer = setInterval(function() {
+          time++;
+          timeElt.innerHTML = time;
+        }, 1000);
+      }
+      click = 1;
+    }
+    // second click
+    else if (e.target !== tempElt1) {
+      tempElt2 = e.target;
+      // different images
+      if (tempElt1.firstChild.src !== tempElt2.firstChild.src) {
+        mainElt.removeEventListener("click", gameLogic);
+        setTimeout( function() {
+          tempElt1.firstChild.classList.add("hidden");
+          tempElt2.firstChild.classList.add("hidden");
+          mainElt.addEventListener("click", gameLogic);
+        }, 400);
+        if (score > 0){
+          score -= 2;
+        }
+        scoreElt.innerHTML = score;
+      }
+      // same images
+      else {
+        score += 10;
+        win += 2;
+        tempElt1.firstChild.classList.add("outlined");
+        tempElt2.firstChild.classList.add("outlined");
+        tempElt1.classList.remove("play");
+        tempElt2.classList.remove("play");
+        scoreElt.innerHTML = score;
+        // game won
+        if (win === 20) {
+          clearTimeout(timer);
+          finalElt.innerHTML = "You won " + score + " points <br> in " + time + " seconds";
+          postElt.classList.remove("hidden");
+        }
+      }
+      click = 0;
+    }
+  }
+}
+againElt.addEventListener("click", resetGame);
+function resetGame() {
+  // reset game
+  tempElt1 = "";
+  tempElt2 = "";
+  click = -1;
+  win = 0;
+  score = 0;
+  time = 0;
+  postElt.classList.add("hidden");
+  preElt.classList.remove("hidden");
+  for (let i=0; i<20; i++) {
+    boxElts[i].classList.add("play");
+    boxElts[i].firstChild.classList.add("hidden");
+  }
+  timeElt.textContent = time;
+  scoreElt.textContent = score;
+}
+activateTheme("harrypotter");
+// handle focus of the page
+// function checkPageFocus() {
+//   if (document.hasFocus()) {
+//     preElt.classList.remove("hidden");
+//   }
+//   else {
+//     preElt.classList.add("hidden");
+//   }
+// }
+// var checkPageInterval = setInterval(checkPageFocus, 300);
+</script>

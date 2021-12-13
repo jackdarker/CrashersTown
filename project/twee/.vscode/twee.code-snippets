@@ -1,0 +1,57 @@
+{
+	// Place your twee workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
+	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
+	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
+	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
+	// Placeholders with the same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"scope": "javascript,typescript",
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+		"Insert <div": {
+			"prefix": "<d",
+			"body": ["<div>","$1","</div>", "$0"]
+		},
+		"Insert <p-talk": {
+			"prefix": "pp",
+			"body": ["<${1|p,span|} class=\"${2|dev,author,tPC,tNPC1,tNPC2|}\">${3:${TM_SELECTED_TEXT}}</$1>$0"]
+		},
+		"Insert talk": {
+			"prefix": "tk",
+			"body": ["<div class=\"speech ${1|dev,author,tPC,tNPC1,tNPC2|}\"><span class=\"avatar\"></span>$1<hr><br>${2:${TM_SELECTED_TEXT}}</div>"]
+
+		},
+		"Insert </br>": {
+			"prefix": "bb",
+			"body": ["</br>$0"]
+		},
+
+		"Insert <select": {
+			"prefix": "sel",
+			"body": ["<div id='select${1:idx}' >",
+			"<a0 onclick='window.gm.printTalkLink(\"div#select${1:idx}\",\"div#choice${1:idx}a\")'>click a</a></br>",
+			"<a0 onclick='window.gm.printTalkLink(\"div#select${1:idx}\",\"div#choice${1:idx}b\")'>click b</a></br>",
+			"</div><div id='choice${1:idx}a' hidden></br>","$0</div>","<div id='choice${1:idx}b' hidden></br>","</div>"]
+		},
+		"Insert <% if": {
+			"prefix": "if",
+			"body": ["<% if($0){%>","","<%}else{%>", "","<%}%>"]
+		},
+		"Insert passage": {
+			"prefix": "passage",
+			"body": [":: $0","<section><aside id=\"sidebar\"></aside><article><%=window.story.render(\"CenterDialogs\")%>",
+			"<%window.gm.player.location=window.passage.name;%>",
+			"</br><p>[[Back|_back_]] <a0 onclick='window.story.show(xxx);'>Start</a></p>",
+			"</article><article id=\"LogPanel\"></article></section>",
+			"<script></script>"]
+		}
+
+
+}

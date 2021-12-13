@@ -1,0 +1,62 @@
+:: Marga_Info
+Margarethe bezeichnet sch selber als Enchanter-Scholar.
+Sie verschlingt Bücher und untersucht magische Artefakte um herauszufinden wie man Verzauberungen selber herstellt.
+Wie weit fortgeschritten sie ist, ist aber schwer einzuschätzen.
+
+
+:: MargaCursedItemsTalk [_nosave_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<% if(!window.gm.quests.hasActiveQuest("???") || window.gm.quests.getMilestoneState("???").id<1) { 
+    window.story.render("AlchTalkStartPurpleBerry"); %>
+<% } else if(window.gm.quests.getMilestoneState("???").id===1 && window.gm.player.Inv.countItem("???")>=5) { 
+    window.story.render("AlchTalkFinishPurpleBerry"); %>
+<% }  else {%> Margarethe seems busy right now. [[Back|SC_Library]] <%}%>>
+</article><article id="LogPanel"></article></section>
+
+
+:: Marga_Librarian
+"Oh, I know this and that about arcane arts. If you have some equipment that you are not sure what kind of magic trick it might hide, I can try to rveal it.
+I might even be able to enhance its power - for a price and a risk."
+"What risk?"
+"If I put a good amount of effort and resources in it, I might be able to improve a certain aspect. But this is quite a lengthy and expensive procedure."
+"With less sophisticated techniques you could get the same or even better results. But its also quite possible to accidently amplify an adverse effect."
+"So, more expenses means less risk for failure."
+"So lets say I have those boots here with some speed-bonus. Could you improve the bonus even further? And what would it cost me?"
+"Depends on the level of enchantment the item already has. Lets say it has a Level 3 bonus. To enhance it to Lv4 in a failure-proof way, I would need a medium soulcrystal, 2 sulfur and 500gd."
+"If its already at Lv5, I would need a greater SoulCrystal, 3 sulfur, a blue pearl and 1000gd to make sure its enchanted to Lv6."
+"But if you give me free hand, I would gladly offer an option that also has the possibility to get a stronger enchantment with the smaller cost."
+"Its a win-win, well mostly. I have the possibility to improve my techniques and you might get a even better equipment."
+...
+"Oh my, not again. I was pretty sure that this wouldnt occur again."
+"Happen again? Why didnt you warn me about this! I cant remove it."
+"I'm sorry. There has to be a flaw in the item or the soulcrystal wasn't good enough.That created some resonance that after some time collapses and transmogrifys the item."
+"Or you have no idea what you are doing and have done a sloppy job! How do I get rid of this?"
+"Whoa whoa.. keep calm. No reason to get enraged. "
+"Now that I think about it. Items that change themself...in benefical ways...or not so benefical...that could be interesting."
+
+
+:: MargaQuest
+"Please bring me some item with a arcane trait. Something like a bracer that is magical reenforced."
+"What would I get for this?"
+"My gratitude, really. I cant pay you right now in terms of money or arcana. But when I get some more knowledge about those enchants, I could create some of them myself and that would open up a lot possibilities to help you and me."
+"So I do the dirty work but might not get anything out of it?"
+"I would owe you a favour. That could be much more valuable than some plain money, dont you think." she smiles at you.
+"How do I notice if an item has magic on it? Is it glowing blue or something like that."
+"Thats a good question. In fact I once had a dagger that glowed blue when a ham-sandwich was close to it. But often there are no so clear indicators for magical traits. I can feel if something is enchanted and you might be able to develop that sense too. In general the stronger the enchantment is that easier it is to recognize that there is something. Except if someone took some additional precautions to hide it."
+---
+"So I found this. I'm not sure but I think it has some magic on it."
+"I see.. yes there is something on it. Did you try to use it?"
+"Actually not because I didn't like to take the risk to fetch another curse." you nestle at the collar around your neck.
+"Hmh, I will first have to determine what kind of magic trait is hidden there..please come back later, that will take some time." already deep in thought she walks away with the item
+"...and keep an eye out there for some more items like this."
+---
+"That item you brought me has some magic on it that improves the perception of the wearer"
+"Perception? You mean you can see like an eagle or hear like a cat?"
+"Well, not as good as that, I assume. Someone would just be more attentive."
+"Thats interesting. Since you are done with your research can you give it back to me? It would be of good use for me."
+"Not yet. Determining the enchantment was only the first step. Now I want to try to improve it. That might indeed amplify the magnitude of the spell."
+"Fine. And then I can use it?"
+"Oh yes. But I need some ingredients and tools for that and I would like to ask..."
+"... if I can help you another time. Sigh. What do you need?"
+"That5s so nice of you to offer your help. I would need some apoca-bloom and a soul-gem, the bigger the better. It should be at least of medium size."
+"I think I know where to find those flowers. But that other thing, I dont have a clue." 

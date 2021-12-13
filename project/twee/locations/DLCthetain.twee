@@ -1,0 +1,92 @@
+:: VillageEntranceIntro
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<!--todo--> A neat little village comes into view as you make your way along the dirtroad.</br>
+Someone has painted 'Thetain' on the planks above the wooden gate. Most likely thats the name of this commune.</br>
+'I wonder if I can really visit those houses or if they are just scenery of the game.'
+<div></br>
+[[Continue|VillageMarketPlace]]</br></div>
+</article><article id="LogPanel"></article></section>
+
+
+:: VillageEntrance
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%>
+<!--todo--> You are at the entrance to the town Thetain.
+</br></br>
+<div></br>
+[[Enter village|VillageMarketPlace]]  [[leave village|PlainsFarmland]] [[Spawn sanctum|VillageRespawnPodExit]]</br></div>
+</article><article id="LogPanel"></article></section>
+
+
+:: VillageMarketPlace
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%>
+<!--todo--> No people can be seen around the place right now.</br> There seems to be a smithy, a Inn and another shop where you cant say what kind of wares - if any - they are trading.</br>
+</br> Near the entrance of the Inn is also a [[bulletin-board|VillageBlackboard]]. 
+<div></br>
+[[Gate|VillageEntrance]] [[Inn|VillageInn]] [[Smithy|VillageSmithy]] [[Shop|VillagePawnshop]]</br></div>
+</article><article id="LogPanel"></article></section>
+
+:: VillageBlackboard [_back_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+Some tattered notes are pinned to the board: </br>
+<hr> Farmhand needed </br> Someone is searching for help with their farm work.</br> "I'm here for adventure,not boring work !"</br>
+<div></br>
+[[Leave|_back_]]</br></div>
+</article><article id="LogPanel"></article></section>
+
+
+:: VillageInn
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%>
+<!--todo--> 'This really looks like they scavenged that place from a typical fantasy story book.'</br> 
+<p class="tPC">"Hello, uhm... lady. I would like to ask if you know someone who could have some knowledge about magic."</p>
+<p class="tNPC1">"Actually, there was some kind of scholar that we had hosted here. I'm a little bit worried because she didnt show up again since nearly 2 days."</p>
+<p class="tNPC1">Could you try to find her? She was asking everyone out about the ruins north of the town. I guess she went there.</p>
+<p class="tPC">"Ruins, eh? Sounds like another quest to me."</p>
+<<p class="tNPC1">"Please ?!"</p>>
+<div></br>[[Square|VillageMarketPlace]] [[Innkeeper|NOP]] </br></div>
+</article><article id="LogPanel"></article></section>
+<script> </script>
+
+
+:: VillagePawnshop
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%>
+<!--todo--> If this is a shop, then they sell everything: Shoes, cooking pans, assault ballista and chicken.</br> 
+<!--todo-->On the other side of the room is a large [[Wardrobe]] with a [[Mirror]] where you can take a look at yourself.</br>
+<div id="choice"></div></br>  <!--display buy message-->
+<div id="panel"></div></br>    <!--display wares list-->
+<div></br> [[Buy]] or [[Sell]] something.</br>
+[[Square|VillageMarketPlace]]  [[Shopkeeper|NOP]]</br></div>
+</article><article id="LogPanel"></article></section>
+<script></script>
+
+
+:: VillageSmithy
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%>
+This smithy is especially - especially dirty, noisy and smelly.
+<p class="tPC">Excuse me, could you help me a second</p> you shout at the figure working the metal on the forge.
+That figure - you think its a human but you wont place a bet on that- gives you an annoyed look and carefully places the dim glowing bar into the forge fire before walking over to you.
+<span class="tNPC2">"What is it?"</span> the gruff man asked.
+<p class="tPC">"I'm sorry to disturb you while you are working, but I would like to ask if you can help me with that."<p> you point at the collar around your neck.
+The man just gives a short glance at it before crossing his arms again before his chest.
+<p class="tNPC2">"Help with what? A tag, a chain?"</p>
+<p class="tPC">"No no, I want to remove it but I dont have a key. I dont even know if there is a key, it somehow wrapped itself around my neck..."</p>
+<p class="tNPC2">"Its kind of magical?"</p>
+<p class="tPC">"Maybe, thats the..."</p>   
+<span class="tNPC2">"I dont touch that kind of stuff !"</span> he is already walking back to the forge, very obviously not interested to make your problem into one of his own.
+<p class="tPC">"But who could help me?"</p>
+<p class="tNPC2">"I dunno" he shrugs his shoulders "a magican maybe."</p>
+</br>[[Square|VillageMarketPlace]]  [[Shopkeeper|NOP]]</br></div>
+</article><article id="LogPanel"></article></section>
+
+
+:: VillageRespawnPodExit
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%>
+You are in the sanctum of spawn located in Thetain.</br> 
+</br>[[Magic Chest|GlobalChest]]</br>
+<div></br>[[Leave|VillageEntrance]]</br></div>
+</article><article id="LogPanel"></article></section>

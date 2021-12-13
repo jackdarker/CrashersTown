@@ -1,0 +1,1 @@
+jsdoc src/scripts -r -c jsdoc_conf.json -d docs/jsdoc

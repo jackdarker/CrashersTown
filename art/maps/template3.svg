@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="384"
+   height="192"
+   viewBox="0 0 384 192"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1 (c68e22c387, 2021-05-23)"
+   sodipodi:docname="template3.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="false"
+     inkscape:document-units="px"
+     showgrid="true"
+     showguides="false"
+     inkscape:snap-global="true"
+     inkscape:snap-nodes="true"
+     inkscape:snap-to-guides="false"
+     inkscape:snap-bbox="false"
+     inkscape:snap-bbox-midpoints="true"
+     inkscape:zoom="2"
+     inkscape:cx="216.75"
+     inkscape:cy="53.25"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer2"
+     units="px"
+     width="600px"
+     scale-x="0.4"
+     inkscape:snap-others="true"
+     inkscape:snap-object-midpoints="true"
+     inkscape:object-nodes="true"
+     height="240px"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:snap-center="false"
+     inkscape:snap-text-baseline="true"
+     inkscape:snap-page="true"
+     inkscape:snap-midpoints="true"
+     inkscape:snap-smooth-nodes="true"
+     inkscape:snap-intersection-paths="true"
+     inkscape:object-paths="true"
+     inkscape:bbox-paths="true"
+     inkscape:bbox-nodes="true"
+     inkscape:snap-bbox-edge-midpoints="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3052"
+       originx="0"
+       originy="0"
+       dotted="false"
+       spacingx="16"
+       spacingy="16"
+       units="px"
+       empcolor="#050094"
+       empopacity="0.25098039"
+       color="#4545ff"
+       opacity="0.1254902"
+       empspacing="2"
+       enabled="true" />
+    <inkscape:grid
+       type="xygrid"
+       id="grid1831"
+       spacingx="25.6"
+       spacingy="25.6"
+       enabled="false"
+       originx="64.2"
+       originy="67.597538" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2">
+    <linearGradient
+       id="linearGradient6530"
+       inkscape:swatch="solid">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop6528" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient1963">
+      <stop
+         style="stop-color:#000000;stop-opacity:1;"
+         offset="0"
+         id="stop1959" />
+      <stop
+         style="stop-color:#000000;stop-opacity:1"
+         offset="1"
+         id="stop1961" />
+    </linearGradient>
+    <style
+       id="style1109"><![CDATA[
+.roomVisited {
+  fill:#afa200;
+  fill-opacity:1;
+}
+.roomFound {
+  fill:#464100;
+  fill-opacity:1;
+}
+.roomNotFound {
+  display:none;
+}
+.pathFound {
+  fill:#000000;
+  fill-opacity:1;
+  fill-rule:evenodd;
+  paint-order:fill markers stroke;
+  stop-color:#000000;
+  stroke:#736b00;
+  stroke-dasharray:none;
+  stroke-linecap:round;
+  stroke-linejoin:bevel;
+  stroke-miterlimit:4;
+  stroke-opacity:1;
+  stroke-width:16;
+}
+.playerPosition {
+  fill:#00c175;
+  fill-opacity:1;
+}
+.textLabel {
+  font-size:12px;
+  stroke-width:0.4;
+}
+.textLabel {
+  -inkscape-font-specification:'Arial, Normal';
+  font-family:Arial;
+  font-size:12px;
+  line-height:1.2;
+  stroke-width:0.5;
+text-anchor:middle;
+text-align:center;
+}
+]]></style>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1963"
+       id="linearGradient1965"
+       x1="111.56082"
+       y1="270.17377"
+       x2="199.42569"
+       y2="270.17377"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(-265.49326,-230.17377)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient1963"
+       id="linearGradient2101"
+       x1="2.5798092"
+       y1="10"
+       x2="17.420191"
+       y2="10"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(4.0000028,4.0000002)" />
+  </defs>
+  <g
+     inkscape:groupmode="layer"
+     id="layerTmpl"
+     inkscape:label="template"
+     style="display:none">
+    <rect
+       style="display:inline;fill-opacity:1;fill-rule:evenodd;stroke:url(#linearGradient2101);stroke-opacity:1;paint-order:fill markers stroke;stop-color:#000000"
+       id="tmplRoom"
+       width="24"
+       height="24"
+       x="4"
+       y="4"
+       onmouseover="style.opacity = 0.5;"
+       onmouseout="style.opacity = 1;"
+       inkscape:label="tmplRoom" />
+    <path
+       sodipodi:type="star"
+       style="display:inline;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:13.5;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers;stop-color:#000000"
+       inkscape:flatsided="true"
+       sodipodi:sides="8"
+       sodipodi:r1="5.5040836"
+       sodipodi:r2="17.250219"
+       sodipodi:arg1="0.37988997"
+       sodipodi:arg2="0.77258905"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="m 21.111672,18.041015 -2.940389,3.016699 -4.212298,0.05396 -3.016699,-2.940389 -0.05396,-4.212298 2.940389,-3.016699 4.212298,-0.05396 3.016699,2.940389 z"
+       id="tmplRoom1"
+       inkscape:label="tmplRoom1"
+       sodipodi:cx="16"
+       sodipodi:cy="16" />
+    <rect
+       id="tmplCorner"
+       width="0.72664201"
+       height="0.72664201"
+       x="51.273357"
+       y="-44.000004"
+       inkscape:label="tmplCorner"
+       class="pathFound" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#tmplRoom"
+       id="use1023"
+       width="100%"
+       height="100%"
+       transform="translate(132,-44)"
+       class="playerPosition" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#tmplRoom"
+       id="use1708"
+       width="100%"
+       height="100%"
+       transform="translate(164,-44)"
+       class="roomFound" />
+    <text
+       xml:space="preserve"
+       x="15.518555"
+       y="212.29492"
+       id="text2366"
+       class="textLabel"><tspan
+         sodipodi:role="line"
+         id="tspan2364"
+         x="15.518555"
+         y="212.29492"
+         class="textLabel">A       B       C      D       E       F        G      H         I        J       K       L</tspan></text>
+    <text
+       xml:space="preserve"
+       x="-16"
+       y="16"
+       id="text8305"
+       class="textLabel"><tspan
+         sodipodi:role="line"
+         id="tspan8303"
+         style="font-size:13.3333px;stroke-width:0.4"
+         x="-16"
+         y="16">1</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:13.3333px;stroke-width:0.4"
+         x="-16"
+         y="31.99996"
+         id="tspan8719" /><tspan
+         sodipodi:role="line"
+         style="font-size:13.3333px;stroke-width:0.4"
+         x="-16"
+         y="47.99992"
+         id="tspan8721">2</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:13.3333px;stroke-width:0.4"
+         x="-16"
+         y="63.999882"
+         id="tspan29330" /><tspan
+         sodipodi:role="line"
+         style="font-size:13.3333px;stroke-width:0.4"
+         x="-16"
+         y="79.99984"
+         id="tspan8727">3</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:13.3333px;stroke-width:0.4"
+         x="-16"
+         y="95.999802"
+         id="tspan8733" /><tspan
+         sodipodi:role="line"
+         style="font-size:13.3333px;stroke-width:0.4"
+         x="-16"
+         y="111.99976"
+         id="tspan8735">4</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:13.3333px;stroke-width:0.4"
+         x="-16"
+         y="127.99972"
+         id="tspan8737" /><tspan
+         sodipodi:role="line"
+         style="font-size:13.3333px;stroke-width:0.4"
+         x="-16"
+         y="143.99968"
+         id="tspan8739">5</tspan><tspan
+         sodipodi:role="line"
+         style="font-size:13.3333px;stroke-width:0.4"
+         x="-16"
+         y="159.99965"
+         id="tspan8741" /><tspan
+         sodipodi:role="line"
+         style="font-size:13.3333px;stroke-width:0.4"
+         x="-16"
+         y="175.9996"
+         id="tspan8743">6</tspan></text>
+    <use
+       x="0"
+       y="0"
+       xlink:href="#tmplRoom"
+       id="myRoom"
+       width="100%"
+       height="100%"
+       transform="translate(132,-76)"
+       class="playerPosition" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#tmplRoom"
+       id="aRoom"
+       width="100%"
+       height="100%"
+       transform="translate(164,-76)"
+       class="roomFound" />
+    <g
+       id="g14719"
+       transform="translate(87.000001,-164.99999)">
+      <use
+         x="0"
+         y="0"
+         xlink:href="#tmplRoom"
+         id="Tile_Entry"
+         width="100%"
+         height="100%"
+         transform="translate(109,88.999986)"
+         class="roomFound"
+         style="fill:url(#linearGradient2189)" />
+    </g>
+    <path
+       d="M 0,-32 H 32"
+       id="path4639-2-8-2"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0"
+       class="pathFound"
+       sodipodi:nodetypes="cc" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#tmplRoom2"
+       id="use1775"
+       width="100%"
+       height="100%"
+       transform="translate(97,-53)"
+       class="roomVisited" />
+    <use
+       x="0"
+       y="0"
+       xlink:href="#tmplRoom2"
+       id="use2317"
+       width="100%"
+       height="100%"
+       transform="translate(97,-33.000001)"
+       class="roomVisited" />
+    <rect
+       style="font-variation-settings:normal;display:inline;vector-effect:none;fill:#ff006f;fill-opacity:1;fill-rule:evenodd;stroke:#5ea230;stroke-width:0.4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.766129;-inkscape-stroke:none;stop-color:#000000"
+       id="use1617"
+       width="12"
+       height="12"
+       x="10"
+       y="10" />
+    <text
+       xml:space="preserve"
+       style="font-variation-settings:normal;opacity:1;vector-effect:none;fill:#0000ff;fill-opacity:1;stroke:#5ea230;stroke-width:0.999999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.766129;-inkscape-stroke:none;stop-color:#000000;stop-opacity:1"
+       x="-16"
+       y="96"
+       id="text26512"><tspan
+         sodipodi:role="line"
+         id="tspan26510"
+         x="-16"
+         y="96"> </tspan></text>
+    <text
+       xml:space="preserve"
+       id="text3594"
+       class="textLabel"
+       x="80"
+       y="-48"
+       style="text-align:center;text-anchor:middle"><tspan
+         sodipodi:role="line"
+         id="tspan3592"
+         x="80"
+         y="-48">E</tspan></text>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Layer 2">
+    <use
+       x="0"
+       y="0"
+       xlink:href="#tmplRoom"
+       id="Tile_L6-6"
+       width="100%"
+       height="100%"
+       transform="translate(352)"
+       class="roomFound"
+       style="display:none" />
+  </g>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     style="display:inline">
+    <use
+       x="0"
+       y="0"
+       xlink:href="#tmplRoom"
+       id="Tile_L6"
+       width="100%"
+       height="100%"
+       transform="translate(352,160)"
+       class="roomFound"
+       style="display:none" />
+  </g>
+</svg>

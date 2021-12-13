@@ -1,0 +1,34 @@
+:: EncounterStartTurn [_nosave_] {"position":"650,25"}
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<div id='canvas'></div></br>
+<div id="panel"></div></br> <!--filled by statspanel-->
+<div id='output'></div></br>    <!--message is rendered here-->
+<div id="choice"></div></br> <!--filled by combat-statemachine-->
+<div id="choice2"></div></br>  <!--filled by combat-statemachine-->
+</article><article id="LogPanel"></article>
+</section>
+<script>
+window.gm.Encounter.battle();
+</script>
+
+
+:: statspanel
+<!--subpanel-->
+<%=window.gm.Encounter.printStats()%>
+
+
+:: GameOver {"position":"200,275"}
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+Game Over. Better luck next time.</br>
+</br>[[New Game|Start]]
+</article><article id="LogPanel"></article></section>
+
+
+:: Mole Submit {"position":"500,175"}
+<section> 
+<aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+The mole took you down into his cave. </br>
+Which was very difficult since you are far to large - you know?</br>
+<a0 onclick='window.gm.postDefeat();'>Black out</a>
+</article><article id="LogPanel"></article>
+</section>

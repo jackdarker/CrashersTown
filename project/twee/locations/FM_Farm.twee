@@ -1,0 +1,249 @@
+:: FM_Lvx_MAP [_back_]
+<hr><div id='canvas'></div></br>
+<script> window.gm.printMap2(window.story.state.DngSY.dngMap,window.gm.player.location.replace(window.story.state.DngSY.dng+'_',''),
+    window.story.state.DngFM.mapReveal,window.story.state.DngFM.visitedTiles);
+</script>
+
+
+:: FM_Entry
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%>
+TODO Appear at farm.
+</br><p> [[Next|FM_Lvx_F6]] </br></p>
+</article><article id="LogPanel"></article></section>
+<script>
+function buildRooms() {
+    const _m=[
+        '        H2  I2--J2        ',//todo write parser for this
+        '        |       |         ',
+        '        H3  I3--J3--K3    ',
+        '        |   |             ',
+        'F4--G4--H4--I4--J4--K4    ',
+        '|   |           |         ',
+        'F5  G5--H5--I5--J5--K5--L5',
+        '|       |           |     ',
+        'F6      H6--I6--J6--K6--L6'];
+    let grid =[
+    {room:'H2', dirs:['H3']},
+    {room:'I2', dirs:['J2']},
+    {room:'J2', dirs:['I2','J3']},
+    {room:'H3', dirs:['H2','H4'],           anno:['B']},
+    {room:'I3', dirs:['I4','J3'],           anno:['Q']},
+    {room:'J3', dirs:['I3','K3','J2']},
+    {room:'K3', dirs:['J3']},
+    {room:'F4', dirs:['G4','F5']},
+    {room:'G4', dirs:['F4','H4','G5']},
+    {room:'H4', dirs:['H3','G4','I4']},
+    {room:'I4', dirs:['H4','I3','J4']},
+    {room:'J4', dirs:['I4','J5','K4']},
+    {room:'K4', dirs:['J4'],                anno:['L']},
+    {room:'F5', dirs:['F4','F6']},
+    {room:'G5', dirs:['G4','H5']},
+    {room:'H5', dirs:['G5','I5','H6']},
+    {room:'I5', dirs:['H5','J5']},
+    {room:'J5', dirs:['I5','K5','J4']},
+    {room:'K5', dirs:['J5', 'K6','L5']},
+    {room:'L5', dirs:['K5'],                anno:['A']},
+    {room:'F6', dirs:['F5'],                anno:['E']},
+    {room:'H6', dirs:['H5','I6']},
+    {room:'I6', dirs:['H6','J6'],           anno:['S']},
+    {room:'J6', dirs:['I6','K6']},
+    {room:'K6', dirs:['K5','L6','J6']},
+    {room:'L6', dirs:['K6']}];
+    let dng={grid:grid,width:14,height:8,legend:'E=Portal B=Beehives S=Stables L=Lake A=Plantation Q=Quarters '}
+    window.story.state.DngSY.dngMap=dng;
+    //window.story.state.DngFM.visitedTiles=[];
+}
+    var s = window.story.state;
+    s.DngSY.dng='FM_Lvx';
+    s.vars.spawnAt="SY_Recover_Death";
+    buildRooms();
+</script>
+
+:: FM_Lvx_H2
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+Several beehives are placed on wooden tables. They are rather big, but for sure you arent an expert in that matter. 
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+:: FM_Lvx_I2
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+A back room of the quarters.
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+:: FM_Lvx_J2
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+A back room of the quarters.
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+
+:: FM_Lvx_H3
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+Several beehives are placed on wooden tables. They are rather big, but for sure you arent an expert in that matter. 
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+:: FM_Lvx_I3
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+You are now inside the abode of the workser of the farm. 
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+:: FM_Lvx_J3
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+You are now inside the abode of the workser of the farm. 
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+:: FM_Lvx_K3
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+You are now inside the abode of the workser of the farm. 
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+:: FM_Lvx_F4
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+The dirtroad to the farm.
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+:: FM_Lvx_G4
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+The dirtplace before the buildings of the farm.
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+:: FM_Lvx_H4
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+TODO The dirtroad to the farm.
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+:: FM_Lvx_I4
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+The dirtplace before the buildings of the farm.
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+:: FM_Lvx_J4
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+The dirtplace before the buildings of the farm.
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+:: FM_Lvx_K4
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+The dirtplace before the buildings of the farm.
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+:: FM_Lvx_F5
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+The dirtroad to the farm.
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+:: FM_Lvx_G5
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+TODO The dirtroad to the farm.
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+
+:: FM_Lvx_H5
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+TODO The dirtroad to the farm.
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+
+:: FM_Lvx_I5
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+TODO The dirtroad to the farm.
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+
+:: FM_Lvx_J5
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+TODO The dirtroad to the farm.
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+
+:: FM_Lvx_K5
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+TODO The dirtroad to the farm.
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+
+:: FM_Lvx_L5
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+TODO The dirtroad to the farm.
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+:: FM_Lvx_F6
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+The portalstone to the farm.
+<%=window.gm.printNav()%><p>[[Into the portal|SY_Portal]] </br></p>
+</article><article id="LogPanel"></article></section>
+
+:: FM_Lvx_H6
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+The large wooden buildings have to be the stables. 
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+:: FM_Lvx_I6
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+The large wooden buildings have to be the stables. 
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+:: FM_Lvx_J6
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+The large wooden buildings have to be the stables. 
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+:: FM_Lvx_K6
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+The large wooden buildings have to be the stables. 
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
+
+:: FM_Lvx_L6
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%><%=window.story.render(window.story.state.DngSY.dng+"_MAP")%>
+The large wooden buildings have to be the stables. 
+<%=window.gm.printNav()%>
+</article><article id="LogPanel"></article></section>
