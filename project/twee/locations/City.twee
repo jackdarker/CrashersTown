@@ -41,14 +41,16 @@ var halt=window.gm.processEvents();
 if(!halt) window.story.show('Menu_Main')
 </script>
 
+
 :: Menu_Main
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
 <%window.gm.player.location=window.passage.name;%>
-From this menu you can access other menus and 
-- start the turn.
-[[Menu_Build]] [[Menu_Social]] [[Menu_Exploration]]
-
-<a0 onclick='window.gm.newTurn()'>-> START THE NEW WEEK <-</a>
+From this menu you can access other menus.</br>
+<p>[[Menu_Social]] [[Menu_Exploration]]</p>
+<p>[[Menu_Market]] [[Menu_Slave]] [[Menu_Breed]]</p>
+<p>[[Menu_Build]] [[Menu_Production]] [[Menu_Resources]] </p>
+<p> Press the button below to progress time.</p>
+<a0 onclick='window.gm.newTurn()'>-> END THIS DAY <-</a>
 </article><article id="LogPanel"></article></section>
 
 
@@ -75,6 +77,19 @@ This menu:
 - list heros and assign office
 [[Menu_Main]]
 </article><article id="LogPanel"></article></section>
+
+:: Menu_Resources
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<%window.gm.player.location=window.passage.name;%>
+<p>[[Menu_Main]]</p>
+This menu:
+- list resource storage, consumption and generation
+</br><div id='choice'></div>
+</br><div id='panel'></div></br>
+</article><article id="LogPanel"></article></section>
+<script>
+window.gm.listResources();
+</script>
 
 :: Menu_Defense
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
@@ -162,12 +177,18 @@ This menu:
 :: Menu_Exploration
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
 <%window.gm.player.location=window.passage.name;%>
+<p>[[Menu_Main]]</p>
 This menu:
-- lists scout-units and their progress and health
-- assign or abort exploration
-[[Menu_Main]]
+<li>lists scout-units and their progress and health</li>
+<li>assign or abort exploration</li>
+</br>Units designated as scout are listed here. Click on a idle one to select a new scouting target.
+</br>You can only start one scout-operation per area.
+</br><div id='choice'></div>
+</br><div id='panel'></div></br><hr><div id='panel2'></div>
 </article><article id="LogPanel"></article></section>
-
+<script>
+window.gm.listScouts();
+</script>
 
 :: Menu_Production
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
@@ -200,34 +221,14 @@ This menu:
 - start or pause build 
 - upgrading/downgrading a building (make sure the building doesnt produce something) 
 - deconstruct buildings 
-</br><div id='choice'></div>
+</br><div id='choice'></div><hr>
 </br><div id='panel'></div>
-</br><a0 id='Tent' onclick='buildTent(this)'>build tent</a>
+</br><a0 id='Tent' onclick='window.gm.buildFacilityQry(this)'>build tent</a>
 <p>[[Menu_Main]]</p>
 </article><article id="LogPanel"></article></section>
 <script>
-function buildTent(evt) {
-    window.story.state.Events.push(window.gm.EventsLib.BuildTent());
-    var entry = document.createElement('p');
-    entry.textContent = 'Construction assigned:'+evt.id;
-    $("div#choice")[0].replaceChild(entry);
-}
-function listBuildings(){
-    var _list={},_list2;
-    for(var i=window.story.state.City.Facilities.length-1;i>=0;i--) {
-        var _b=window.story.state.City.Facilities[i];
-        if(_list[_b.id]===undefined) _list[_b.id]=1;
-        else _list[_b.id]+=1;
-    }
-    _list2 = Object.keys(_list);
-    for(var i=_list2.length-1;i>=0;i--){
-        var link = document.createElement('a');
-        link.href='javascript:void(0)',link.addEventListener("click", function(){});
-        link.textContent=_list2[i]+':'+_list[_list2[i]];
-        $("div#panel")[0].appendChild(link);
-    }
-}
-listBuildings();
+window.gm.listBuildOption();
+window.gm.listBuildings();
 </script>
 
 :: Menu_Train
@@ -243,3 +244,62 @@ This menu:
 
 :: other
 visit bath/library/arena/stripclub for relaxation
+
+
+:: CS_Forest_Explore
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%>
+<% if(window.story.state.Map.Crashsite.timesExplored<=1){ %>
+First time forest 
+<%}%>
+A dense forest is close to the crash site. That should make a good source for harvesting wood for construction and making fire. 
+<p>[[Menu_Main]] </p>
+</article><article id="LogPanel"></article></section>
+
+
+:: CS_Forest_Hunt
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%>
+Your hunter found some trail with paw prints. Should a snare trap be placed here? [[Yes]][[No]]
+<div id='select1' >
+<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1a")'>Yes</a></br>
+<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1b")'>No</a></br>
+</div><div id='choice1a' hidden></br>
+    A lapine is struggling in a trap.
+    <p class="tNPC1">"Please free me. My people will be grateful if you help me."</p> 
+    <div id='select2' >
+    <a0 onclick='if(window.story.state.Map.LapineVillage===undefined){window.story.state.Map.CrashsiteRuins=window.gm.ExploreLib["AreaLapineVillage"]();};window.gm.printTalkLink("div#select2","div#choice2a")'>"Sure. I'm going to release you."</a></br>
+    <a0 onclick='window.story.state.City.Slaves.push(new Operator());window.gm.printTalkLink("div#select2","div#choice2b")'>Lets take the creature back to your camp.</a></br>
+    </div><div id='choice2a' hidden></br>
+    </div>
+    <div id='choice2b'>
+    </div>
+</div>
+<div id='choice1b' hidden></br> 
+</div>
+<p>[[Menu_Main]] </p>
+</article><article id="LogPanel"></article></section>
+
+
+:: CS_Ruins_Explore
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%>
+<% if(window.story.state.Map.CrashsiteRuins===undefined){window.story.state.Map.CrashsiteRuins=window.gm.ExploreLib["AreaCrashsiteRuins"](); %>
+First time ruins
+<%}%>
+Deeper in the forest your scout spots some overgrown piles of stone.
+<p>[[Menu_Main]] </p>
+</article><article id="LogPanel"></article></section>
+<script></script>
+
+
+
+:: CS_Ruins_Scavenge
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%>
+Some iron was found in the ruins.
+<p>[[Menu_Main]] </p>
+</article><article id="LogPanel"></article></section>
+<script>
+ResourceChange.add(window.story.state.City.Resources,"Iron",2);
+</script>

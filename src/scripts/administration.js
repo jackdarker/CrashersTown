@@ -1,4 +1,4 @@
-"use strict;"
+"use strict";
 
 /**
  *a baseclass containing common functions
@@ -13,6 +13,26 @@ export class Entity {
     }
     get parent() {return this._parent?this._parent():null;}
     _relinkItems(parent){this._parent=window.gm.util.refToParent(parent);}
+    //tag or [tag]
+    hasTag(tags) {
+        if(tags instanceof Array) {
+            for(var i=0;i<tags.length;i++) {
+                if(this.hasTag(tags[i])) return(true);
+            }
+            return(false);
+        }
+        return(this.tags.includes(tags));
+    }
+    removeTags(tags){
+        for(var i= this.tags.length-1;i>=0;i--){
+            if(tags.includes(this.tags[i])) this.tags.splice(i,1);
+        }
+    }
+    addTags(tags){
+        for(var i= tags.length-1;i>=0;i--){
+            if(!this.tags.includes(tags[i])) this.tags.push(tags[i]);
+        }
+    }
     tick(){ return(false);}
     renderTick(){ return(false);}
 }
@@ -22,6 +42,7 @@ class ResourceBase extends Entity {
         super();
         this._amount=0;
     }
+    set amount(amount) {this._amount=amount;}
     get amount() { return this._amount;}
     consume(count){
         this._amount = Math.max(0,this._amount-count);
@@ -55,6 +76,7 @@ class Generator extends Entity {
 class Facility extends Entity{
     constructor() {
         super();
+        this.cost = {Resources:[],time:0}; //how much for building it
     }
 }
 /**
@@ -64,6 +86,8 @@ class Homestead extends Facility {
     constructor() {
         super();
     }
+    // how many people/animals can life here
+    getCapacity(typ) {retur(0); }
 }
 
 /**
@@ -72,28 +96,26 @@ class Homestead extends Facility {
  * @class Operator
  */
 class Operator extends Entity { 
-    constructor(){ super(),this.name='Operator'+this.id;this.style=Operator.Job.Nothing;}
-    set style(style) {
-        this._style = style; 
-        switch(style) {
-        case Operator.Job.Nothing: 
-        case Operator.Job.Scavenger:
-        case Operator.Job.Hunter:
-        case Operator.Job.WoodChopper:
-        case Operator.Job.Farmer:
-            break;
-        default: throw new Error(this.id +' doesnt know '+style);
-        }
+    constructor(){ super(),
+        this.name='Operator'+this.id;
+        this.job=Operator.Job.Nothing;
+        this.jobActive=false;
     }
-    get style() {return this._style;}
+    set job(job) {
+        this._job = job; 
+    }
+    get job() {return this._job;}
     get desc() { 
         let msg ='Operator#'+this.id;
-        switch(this._style) {
+        switch(this._job) {
             case Operator.Job.Nothing:
                 msg ='Has no job assigned.';
                 break;
+            case Operator.Job.Scavenger:
+                msg ='Searchs an area for some useful resources.';
+                break;
             case Operator.Job.WoodChopper:
-                msg ='chop wood.';
+                msg ='Chops wood.';
                 break;
             default: throw new Error(this.id +' doesnt know '+style);
         }
@@ -105,17 +127,27 @@ class Operator extends Entity {
         let delta = window.gm.getDeltaTime(time,this.lastTick);
         if(delta>(24*60-1)) {
             this.lastTick=time;
-            if(this.style===Operator.Job.Hunter) {
-                let _R = new ResourceChange();_R.Resource='Food';
+            let _R;
+            if(this._job===Operator.Job.Hunter) {
+                _R = new ResourceChange();_R.Resource='Food';
+                window.story.state.Events.push(_R);
+            } else if(this._job===Operator.Job.WoodChopper) {
+                _R = new ResourceChange();_R.Resource='Wood';
                 window.story.state.Events.push(_R);
             }
+            this.needsSatisfied=false; //todo people dont work if hungry
         }
         return(false);
     }
     getDamage(){}
     fixDamage(){}
-    getNeeds(){}
-    satisfyNeed() {}
+    // returns list of resources to feed
+    getBasicNeeds(){
+        return([{ResId:'Food',amount:3}]);
+    }
+    satisfyNeeds() {
+        this.needsSatisfied=true;
+    }
     getTraits(){}
     getHome(){}
     setHome(){}
@@ -125,6 +157,10 @@ Operator.Job = {
     Scavenger : 'Scavenger',
     WoodChopper : 'WoodChopper',
     Hunter : 'Hunter',
+    Scout : 'Scout',
+    Smith : 'Smith',
+    Slaver: 'Slaver',
+    BeastTamer: 'BeastTamer',
     Farmer : 'Farmer'
 }
 /**
@@ -138,7 +174,7 @@ class Trait extends Entity {
     }
 } 
 /**
- * 
+ * base class for the events
  */
 class GMEvent extends Entity {
     static createButton(label,foo) {
@@ -156,5 +192,27 @@ class GMEvent extends Entity {
     constructor() {
         super();
         this.done=false;
+    }
+}
+/**
+ * represents an area you can explore or do some resource gathering
+ */
+class MapArea extends Entity {
+    constructor() {
+        super();
+        this.timesExplored=0;
+        this.nextScene='';
+    }
+    explore(PerId) {
+        this.nextScene='';  
+        return(false);
+    }
+    hunt(PerId) {
+        this.nextScene='';  //todo if we hunt&explore at same time we would need separate scene
+        return(false);
+    }
+    scavenge(PerId) {
+        this.nextScene='';  
+        return(false);
     }
 }

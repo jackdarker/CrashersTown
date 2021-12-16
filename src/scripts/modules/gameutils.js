@@ -49,9 +49,11 @@ window.gm.initGame= function(forceReset,NGP=null) {
       s.City = {
         Facilities: [window.gm.BuildingsLib.Shipwreck()],
         People: [new Operator(),new Operator(),new Operator()],
+        Slaves:[],
         Resources:{},
         Known:[]  //list what you have explored and other events you have unlocked
       };
+      s.Map={},s.Map.Crashsite=window.gm.ExploreLib["AreaCrashsite"](); 
       s.Events=[];
     }
     if (!s.Cyril||forceReset) {  //
@@ -176,95 +178,7 @@ window.gm.getScenePic = function(id){
   if(id.slice(0,7)==='AM_Lv2_') return('assets/bg/bg_dungeon_2.png');
   return('assets/bg_park.png')//return('assets/bg/bg_VR_1.png');//todo placehodler
 }
-//////////////////////////////////////////
-window.gm.newTurn=function() {
-//daycount++
-window.gm.addTime(24*60);
-window.story.state.PrcEvent=null;
-window.story.state.Summary=[new ResourceChangeSummary()];
-window.story.show("_Event");
-};
-window.gm.processEvents=function() {
-  // the groups are evaluated left to right !
-  window.story.state.PrcEvent = window.story.state.PrcEvent || {i:-1, list:'', group:['Facilities','People','Events','Summary']};
-  let _list2,_E,now = window.gm.getTime(), PrcEvent=window.story.state.PrcEvent;
-  while(true){
-    if(PrcEvent.list==='') {
-      if(PrcEvent.group.length>0) {
-        PrcEvent.list=PrcEvent.group.shift(),PrcEvent.i=-1;
-      } else {
-        return(false); //all list done
-      }
-    }
-    if(PrcEvent.list==='Facilities') _list2= window.story.state.City.Facilities;
-    if(PrcEvent.list==='People') _list2= window.story.state.City.People;
-    else if(PrcEvent.list==='Events') _list2= window.story.state.Events;
-    else if(PrcEvent.list==='Summary') _list2= window.story.state.Summary;
-    while(PrcEvent.i+1<_list2.length) {
-      PrcEvent.i=1+PrcEvent.i;
-      _E =_list2[PrcEvent.i];
-      if(_E.tick(now) && _E.renderTick()) { //if there is a event triggered and output requires interaction, halt the processing
-        return(true);
-      }
-    }
-    //remove all done events
-    PrcEvent.i = _list2.length-1;
-    while(PrcEvent.i>=0) {
-      _E =_list2[PrcEvent.i];
-      if(_E.done ) { _list2.splice(PrcEvent.i,1);  }
-      PrcEvent.i -=1;
-    }
-    PrcEvent.list='';
-  }
-};
-//
-window.gm.listPeople=function() {
-  var _list={},_list2;
-  _list2 = window.story.state.City.People;
-  for(var i=_list2.length-1;i>=0;i--){
-      var _p = _list2[i];
-      if(_list[_p.style]===undefined) _list[_p.style]=1;
-      else _list[_p.style]+=1;
-      var link = document.createElement('a');
-      link.id=_p.id,link.href='javascript:void(0)',
-      link.addEventListener("click", function(me){window.story.state.tmp.args=[me.currentTarget.id];window.story.show('Menu_Person');});
-      link.textContent=_p.name+':'+_p.style;
-      $("div#panel2")[0].appendChild(link);
-  }
-  _list2 = Object.keys(_list);
-  for(var i=_list2.length-1;i>=0;i--) { //list job-overview
-      var link = document.createElement('a');
-      link.href='javascript:void(0)',link.addEventListener("click", function(){});
-      link.textContent=_list2[i]+':'+_list[_list2[i]];
-      $("div#panel")[0].appendChild(link);
-  }
-};
-window.gm.listPerson=function(id){
-  var _p,_list;
-  id=Number(id);
-  _list = window.story.state.City.People;
-  for(el of _list){
-      _p=el;
-      if(_p.id===id) break;
-      _p=null;
-  }
-  if(!_p) return;
-  var link = document.createElement('p');
-  link.textContent=_p.name+' is currently working as '+_p.style;
-  $("div#panel")[0].appendChild(link);
-  
-  //list possible jobs depending on training and open position
-  _list = Object.keys(Operator.Job);
-  for(el of _list){
-    link = document.createElement('a');
-    link.href='javascript:void(0)';
-    const job=el;
-    link.addEventListener("click", function(me){_p.style=job;window.story.show('Menu_Person');});  //todo confirmation popup
-    link.id=el,link.textContent='change to '+el;
-    $("div#panel")[0].appendChild(link);
-  }
-  
-};
+
 /////////////////////////////////////////////
 window.gm.enterVR=function() {
   let s= window.story.state;
