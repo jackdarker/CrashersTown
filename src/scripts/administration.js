@@ -98,8 +98,14 @@ class Homestead extends Facility {
 class Operator extends Entity { 
     constructor(){ super(),
         this.name='Operator'+this.id;
-        this.job=Operator.Job.Nothing;
-        this.jobActive=false;
+        this.job=Operator.Job.Nothing;this.jobActive=false;
+        this.traits ={};
+        /*temper    -100=rebellious 100=kind
+        obedience   -100=never obeys 0= 100= always obeys
+        trust/fear  -100=fearsome 100=trustful
+        mood        -100 very sad 100=always happy
+        lust        -100=gets frigid fast 0=no change over time 100=gets eager fast
+        */    
     }
     set job(job) {
         this._job = job; 
@@ -154,14 +160,26 @@ class Operator extends Entity {
 }
 Operator.Job = {
     Nothing : 'Nothing',
+    Brewer: 'Brewer',
+    Chemist : 'Chemist',
+    Worker: 'Worker',
+    Builder : 'Builder',
     Scavenger : 'Scavenger',
     WoodChopper : 'WoodChopper',
     Hunter : 'Hunter',
     Scout : 'Scout',
     Smith : 'Smith',
+    Technican: 'Technican',
     Slaver: 'Slaver',
+    Torturer: 'Torturer',
     BeastTamer: 'BeastTamer',
-    Farmer : 'Farmer'
+    Farmhand: 'Farmhand',
+    Farmer : 'Farmer',
+    Stablehand : 'Stablehand', 
+    Stablemaster: 'Stablemaster',
+    Guard: 'Guard',
+    Soldier: 'Soldier'
+
 }
 /**
  * a Skill, Mallus or Bonus
@@ -172,6 +190,7 @@ class Trait extends Entity {
     constructor() {
         super();
     }
+    /* */
 } 
 /**
  * base class for the events

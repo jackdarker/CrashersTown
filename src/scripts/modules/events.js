@@ -36,7 +36,7 @@ class ResourceChange extends GMEvent {
         return(true);
     }
 }
-//removes resources consumed by people
+//removes resources consumed by people; checks Housing
 class FoodDrain extends GMEvent {
     constructor() {
         super();
@@ -257,7 +257,7 @@ class ScavengeProgress extends GMEvent {
         return(true);
     }
 }
-/*class SlaveCaptured extends GMEvent {
+class SlaveCaptured extends GMEvent {
     constructor() {
         super();
         this.SlaveId =0;
@@ -268,24 +268,21 @@ class ScavengeProgress extends GMEvent {
     static fromJSON(value) {let x=window.storage.Generic_fromJSON(SlaveCaptured, value.data);return(x);}
     tick(time) {
         let delta = window.gm.getDeltaTime(time,this.lastTick);
-        if(delta>(24*60-1)) {
-            this.daysLeft-=1,this.lastTick=time;
-            if(this.daysLeft<=0) {
-                window.story.state.City.Facilities.push(window.gm.BuildingsLib[this.Facility]());
-                this.done=true;
-            }
-            return(true);
-        }
-        return(false);
+        let _P = window.gm.randomizePerson({slave:true});
+        this.SlaveId = _P.id;
+        window.story.state.City.Slaves.push(_P);
+        this.done=true;
+        return(true);
+
     }
     renderTick() {
         var entry = document.createElement('p');
-        entry.textContent = this.done?'A '+this.Facility+' was constructed.':this.daysLeft+' more days until the building is done.';
+        entry.textContent = 'A slave was captured.';
         $("div#panel")[0].appendChild(entry);
         GMEvent.createNextBt('Next');
         return(true);
     }
-}*/
+}
 window.gm.EventsLib = (function (Lib) {
     window.storage.registerConstructor(FoodDrain);
     window.storage.registerConstructor(ResourceChange);
@@ -293,6 +290,7 @@ window.gm.EventsLib = (function (Lib) {
     window.storage.registerConstructor(ScoutProgress);
     window.storage.registerConstructor(HuntProgress);
     window.storage.registerConstructor(ScavengeProgress);
-    //Lib['BuildTent'] = function () { let x= new BuildProgress();return(x);};
+    window.storage.registerConstructor(SlaveCaptured);
+    Lib['SlaveCaptured'] = function () { let x= new SlaveCaptured();return(x);};
     return Lib; 
 }(window.gm.EventsLib || {}));

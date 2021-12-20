@@ -1,5 +1,7 @@
 "use strict";
 //////////////////////////////////////////
+// this will loop over all events and break if something needs to display
+// display is done in _event-Passage
 window.gm.newTurn=function() {
     //daycount++
     window.gm.addTime(24*60);
@@ -93,8 +95,8 @@ window.gm.exploreQry=function(_P){
     link.href='javascript:void(0)',
     link.addEventListener("click", function(me){_P2.jobActive=true;
         var _S;
-        if(_P2.job===Operator.Job.Hunter) _S = new HunterProgress();
-        else if(_P2.job===Operator.Job.Scavenger) _S = new ScavengerProgress();
+        if(_P2.job===Operator.Job.Hunter) _S = new HuntProgress();
+        else if(_P2.job===Operator.Job.Scavenger) _S = new ScavengeProgress();
         else _S = new ScoutProgress();
         _S.Person=_P2.id,_S.Area=_Area;
         window.story.state.Events.push(_S);
@@ -115,23 +117,24 @@ window.gm.exploreAbort=function(_P,_J){
 }
 //
 window.gm.buildFacilityQry=function(evt) {
-    var _R,_B = window.gm.BuildingsLib[evt.id]();
+    const _id=evt.currentTarget.id;
+    var _R,_B = window.gm.BuildingsLib[_id]();
     var link = document.createElement('p');
-    link.textContent="Build a "+evt.id+" within "+_B.cost.time+" days using ";
+    link.textContent="Build a "+_id+" within "+_B.cost.time+" days using ";
     var canBuild=true;
     for(el of _B.cost.Resources) {
     _R = window.story.state.City.Resources[el.ResId];
     if(!_R || _R.amount<el.amount) {
         canBuild=false;
     }
-    link.textContent+=(el.ResId+':'+el.amount+' of '+((_R===undefined)?"0":_R.amount));
+    link.textContent+=(el.ResId+':'+el.amount+' of '+((_R===undefined)?"0":_R.amount+" "));
     }
     let choice=$("div#choice")[0];  
     while(choice.firstChild) choice.removeChild(choice.firstChild);
     choice.appendChild(link);
     if(canBuild) {
     link = document.createElement('a');
-    link.href='javascript:void(0)',link.addEventListener("click", function(){window.gm.buildFacilityStart(evt);});
+    link.href='javascript:void(0)',link.addEventListener("click", function(){window.gm.buildFacilityStart(_id);});
     link.textContent = 'Do it !';
     } else {
     link = document.createElement('p');
@@ -139,10 +142,10 @@ window.gm.buildFacilityQry=function(evt) {
     }
     choice.appendChild(link);
 };
-window.gm.buildFacilityStart=function(evt) {
-    var _R,_B = window.gm.BuildingsLib[evt.id](),_R;
+window.gm.buildFacilityStart=function(what) {
+    var _R,_B = window.gm.BuildingsLib[what](),_R;
     var link = document.createElement('p');
-    link.textContent="They are now building a "+evt.id+" with ";
+    link.textContent="They are now building a "+what+" with ";
     for(el of _B.cost.Resources) {
     _R = window.story.state.City.Resources[el.ResId];
     _R.consume(el.amount);
@@ -151,23 +154,48 @@ window.gm.buildFacilityStart=function(evt) {
     let choice=$("div#choice")[0];  
     while(choice.firstChild) choice.removeChild(choice.firstChild);
     choice.appendChild(link); 
-    var _E = new BuildProgress();_E.Facility=evt.id,_E.daysLeft=_B.cost.time;
+    var _E = new BuildProgress();_E.Facility=what,_E.daysLeft=_B.cost.time;
     window.story.state.Events.push(_E); 
 };
 //
 window.gm.listBuildings =function(){
-    var _list={},_list2;
+    var link,_list={},_list2,_list3, panel=$("div#panel")[0],panel2=$("div#panel2")[0];
+    //sum up buildings
     for(var i=window.story.state.City.Facilities.length-1;i>=0;i--) {
         var _b=window.story.state.City.Facilities[i];
         if(_list[_b.id]===undefined) _list[_b.id]=1;
         else _list[_b.id]+=1;
     }
     _list2 = Object.keys(_list);
-    for(var i=_list2.length-1;i>=0;i--){
-        var link = document.createElement('a');
-        link.href='javascript:void(0)',link.addEventListener("click", function(){});
+    for(var i=_list2.length-1;i>=0;i--){ //building interaction
+        link = document.createElement('a');
+        link.href='javascript:void(0)',link.addEventListener("click", function(){}); //todo
         link.textContent=_list2[i]+':'+_list[_list2[i]];
-        $("div#panel")[0].appendChild(link);
+        panel.appendChild(link);
+    }
+    _list3 =window.story.state.Known;
+    _list2 = Object.keys(_list3); //what buildings you know
+    var _item='';
+    for(el of _list2) {
+        switch(el) {
+            case 'Farm':
+                _item='Farm';
+                break;
+            case 'Barracks':
+                _item='Tent';
+                break;
+            case 'Slavery':
+                _item='SlavePen';
+                break;
+            default:
+                _item='';
+        }
+        if(_item!=='') {
+            link = document.createElement('a');
+            link.id=_item,link.href='javascript:void(0)',link.addEventListener("click", window.gm.buildFacilityQry);
+            link.textContent=link.id;
+            panel2.appendChild(link);
+        }
     }
 };
 //
@@ -185,29 +213,54 @@ window.gm.listResources=function() {
     }
 };
 //
-window.gm.listPeople=function() {
-    var _list={},_list2;
-    _list2 = window.story.state.City.People;
+window.gm.listSlave=function(id){
+    var _p,_list,id=Number(id),panel=$("div#panel")[0];
+    _list = window.story.state.City.Slaves;
+    for(el of _list){
+        _p=el;
+        if(_p.id===id) break;
+        _p=null;
+    }
+    if(!_p) return;
+    //manuel training
+    //or assign trainer
+    var link = document.createElement('p');
+    link.textContent=_p.name;
+    panel.appendChild(link);
+    if(_p.jobActive) {
+        link.textContent+=' You cant change the job right now !';
+    } else { //todo
+    }
+};
+window.gm.listSlaves=function() {
+    var _list={},_list2,panel2=$("div#panel2")[0],panel=$("div#panel")[0];;
+    _list2 = window.story.state.City.Slaves;
     for(var i=_list2.length-1;i>=0;i--){
         var _p = _list2[i];
         if(_list[_p.job]===undefined) _list[_p.job]=1;
         else _list[_p.job]+=1;
         var link = document.createElement('a');
         link.id=_p.id,link.href='javascript:void(0)',
-        link.addEventListener("click", function(me){window.story.state.tmp.args=[me.currentTarget.id];window.story.show('Menu_Person');});
+        link.addEventListener("click", function(me){window.story.state.tmp.args=[me.currentTarget.id,"Slave"];window.story.show('Menu_Person');});
         link.textContent=_p.name+':'+_p.job;
-        $("div#panel2")[0].appendChild(link);
+        panel2.appendChild(link);panel2.appendChild(document.createElement("br"));
     }
     _list2 = Object.keys(_list);
     for(var i=_list2.length-1;i>=0;i--) { //list job-overview
         var link = document.createElement('a');
         link.href='javascript:void(0)',link.addEventListener("click", function(){});
         link.textContent=_list2[i]+':'+_list[_list2[i]];
-        $("div#panel")[0].appendChild(link);
+        panel.appendChild(link);
     }
 };
+window.gm.randomizePerson=function(params) {
+        let slave=(params&&params.slave)?params.slave:false;
+        let _P= new Operator();
+        _P.slave=slave;
+        return _P;
+    };
 window.gm.listPerson=function(id){
-    var _p,_list;
+    var _p,_list,_AreaJobs=["Hunter","Scout","Scavenger"];
     id=Number(id);
     _list = window.story.state.City.People;
     for(el of _list){
@@ -220,17 +273,39 @@ window.gm.listPerson=function(id){
     link.textContent=_p.name+' is currently working as '+_p.job;
     $("div#panel")[0].appendChild(link);
     if(_p.jobActive) {
-    link.textContent+=' You cant change the job right now !';
+        link.textContent+=' You cant change the job right now !';
     } else {
     //todo list possible jobs depending on training and open position
-    _list = Object.keys(Operator.Job);
-    for(el of _list){
-        link = document.createElement('a');
-        link.href='javascript:void(0)';
-        const job=el;
-        link.addEventListener("click", function(me){_p.job=job;window.story.show('Menu_Person');});  //todo confirmation popup
-        link.id=el,link.textContent='change to '+el;
-        $("div#panel")[0].appendChild(link);
+        _list = Object.keys(Operator.Job);
+        for(el of _list){
+            link = document.createElement('a');
+            link.href='javascript:void(0)';
+            const job=el;
+            link.addEventListener("click", function(me){_p.job=job;window.story.show('Menu_Person');});  //todo confirmation popup
+            link.id=el,link.textContent='change to '+el;
+            if(_AreaJobs.includes(el)) link.textContent+="(requires assigned Area in Exploration-Menu)"
+            $("div#panel")[0].appendChild(link);$("div#panel")[0].appendChild(document.createElement("br"));
+        }
     }
+};
+window.gm.listPeople=function() {
+    var _list={},_list2,panel2=$("div#panel2")[0],panel=$("div#panel")[0];
+    _list2 = window.story.state.City.People;
+    for(var i=_list2.length-1;i>=0;i--){
+        var _p = _list2[i];
+        if(_list[_p.job]===undefined) _list[_p.job]=1;
+        else _list[_p.job]+=1;
+        var link = document.createElement('a');
+        link.id=_p.id,link.href='javascript:void(0)',
+        link.addEventListener("click", function(me){window.story.state.tmp.args=[me.currentTarget.id,"People"];window.story.show('Menu_Person');});
+        link.textContent=_p.name+':'+_p.job;
+        panel2.appendChild(link);panel2.appendChild(document.createElement("br"));
+    }
+    _list2 = Object.keys(_list);
+    for(var i=_list2.length-1;i>=0;i--) { //list job-overview
+        var link = document.createElement('a');
+        link.href='javascript:void(0)',link.addEventListener("click", function(){});
+        link.textContent=_list2[i]+':'+_list[_list2[i]];
+        panel.appendChild(link);
     }
 };

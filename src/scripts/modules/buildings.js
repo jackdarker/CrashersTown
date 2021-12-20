@@ -134,6 +134,9 @@ class Smithy extends Facility {
 class Farm extends Facility {}
 class Windmill extends Facility {}
 class Wall extends Facility {}
+//repressor-field
+//
+
 
 window.gm.BuildingsLib = (function (Lib) {
     window.storage.registerConstructor(Operator); //todo operator-Lib?

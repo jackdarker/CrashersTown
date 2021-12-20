@@ -82,8 +82,8 @@ This menu:
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
 <%window.gm.player.location=window.passage.name;%>
 <p>[[Menu_Main]]</p>
-This menu:
-- list resource storage, consumption and generation
+This menu:</br>
+- list resource storage, consumption and generation</br>
 </br><div id='choice'></div>
 </br><div id='panel'></div></br>
 </article><article id="LogPanel"></article></section>
@@ -130,15 +130,16 @@ window.gm.listPeople();
 
 :: Menu_Person
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
-<p>[[Menu_Main]]</p>
-This menu:
-- detail information for a person
-- assign them new work or training
+<%=(window.story.state.tmp.args[1]==="Slave")?"Menu_Slave":"Menu_Social"%>
+This menu:</br>
+- detail information for a person</br>
+- assign them new work or training</br>
 </br><div id='choice'></div>
 </br><div id='panel'></div></br><hr><div id='panel2'></div>
 </article><article id="LogPanel"></article></section>
 <script>
-window.gm.listPerson(window.story.state.tmp.args[0]);
+if(window.story.state.tmp.args[1]==="Slave") window.gm.listSlave(window.story.state.tmp.args[0]);
+else window.gm.listPerson(window.story.state.tmp.args[0]);
 </script>
 
 
@@ -164,20 +165,22 @@ This menu:
 
 :: Menu_Slave
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
-<%window.gm.player.location=window.passage.name;%>
-This menu:
-- lists slaves and their enslavement-progress
-- decide enslavement tactic
-- assign slaves to work or training
-- making slaves into citizen 
-[[Menu_Main]]
+<%window.gm.player.location=window.passage.name;%><p>[[Menu_Main]]</p>
+This menu:</br>
+- lists slaves and their enslavement-progress</br>
+- decide enslavement tactic</br>
+- assign slaves to work or training</br>
+- making slaves into citizen </br>
+</br><div id='choice'></div>
+</br><div id='panel'></div></br><hr><div id='panel2'></div>
 </article><article id="LogPanel"></article></section>
-
+<script>
+window.gm.listSlaves();
+</script>
 
 :: Menu_Exploration
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
-<%window.gm.player.location=window.passage.name;%>
-<p>[[Menu_Main]]</p>
+<%window.gm.player.location=window.passage.name;%><p>[[Menu_Main]]</p>
 This menu:
 <li>lists scout-units and their progress and health</li>
 <li>assign or abort exploration</li>
@@ -214,20 +217,16 @@ This menu:
 
 :: Menu_Build
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
-<%window.gm.player.location=window.passage.name;%>
+<%window.gm.player.location=window.passage.name;%><p>[[Menu_Main]]</p>
 This menu:
 - lists building, there production and resource consumption
 - check build progress of buildings
 - start or pause build 
 - upgrading/downgrading a building (make sure the building doesnt produce something) 
 - deconstruct buildings 
-</br><div id='choice'></div><hr>
-</br><div id='panel'></div>
-</br><a0 id='Tent' onclick='window.gm.buildFacilityQry(this)'>build tent</a>
-<p>[[Menu_Main]]</p>
+</br><div id='choice'></div><hr>facilities:</br><div id='panel'></div><hr>build...</br><div id='panel2'></div>
 </article><article id="LogPanel"></article></section>
 <script>
-window.gm.listBuildOption();
 window.gm.listBuildings();
 </script>
 
@@ -244,62 +243,3 @@ This menu:
 
 :: other
 visit bath/library/arena/stripclub for relaxation
-
-
-:: CS_Forest_Explore
-<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
-<%window.gm.player.location=window.passage.name;%>
-<% if(window.story.state.Map.Crashsite.timesExplored<=1){ %>
-First time forest 
-<%}%>
-A dense forest is close to the crash site. That should make a good source for harvesting wood for construction and making fire. 
-<p>[[Menu_Main]] </p>
-</article><article id="LogPanel"></article></section>
-
-
-:: CS_Forest_Hunt
-<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
-<%window.gm.player.location=window.passage.name;%>
-Your hunter found some trail with paw prints. Should a snare trap be placed here? [[Yes]][[No]]
-<div id='select1' >
-<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1a")'>Yes</a></br>
-<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1b")'>No</a></br>
-</div><div id='choice1a' hidden></br>
-    A lapine is struggling in a trap.
-    <p class="tNPC1">"Please free me. My people will be grateful if you help me."</p> 
-    <div id='select2' >
-    <a0 onclick='if(window.story.state.Map.LapineVillage===undefined){window.story.state.Map.CrashsiteRuins=window.gm.ExploreLib["AreaLapineVillage"]();};window.gm.printTalkLink("div#select2","div#choice2a")'>"Sure. I'm going to release you."</a></br>
-    <a0 onclick='window.story.state.City.Slaves.push(new Operator());window.gm.printTalkLink("div#select2","div#choice2b")'>Lets take the creature back to your camp.</a></br>
-    </div><div id='choice2a' hidden></br>
-    </div>
-    <div id='choice2b'>
-    </div>
-</div>
-<div id='choice1b' hidden></br> 
-</div>
-<p>[[Menu_Main]] </p>
-</article><article id="LogPanel"></article></section>
-
-
-:: CS_Ruins_Explore
-<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
-<%window.gm.player.location=window.passage.name;%>
-<% if(window.story.state.Map.CrashsiteRuins===undefined){window.story.state.Map.CrashsiteRuins=window.gm.ExploreLib["AreaCrashsiteRuins"](); %>
-First time ruins
-<%}%>
-Deeper in the forest your scout spots some overgrown piles of stone.
-<p>[[Menu_Main]] </p>
-</article><article id="LogPanel"></article></section>
-<script></script>
-
-
-
-:: CS_Ruins_Scavenge
-<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
-<%window.gm.player.location=window.passage.name;%>
-Some iron was found in the ruins.
-<p>[[Menu_Main]] </p>
-</article><article id="LogPanel"></article></section>
-<script>
-ResourceChange.add(window.story.state.City.Resources,"Iron",2);
-</script>

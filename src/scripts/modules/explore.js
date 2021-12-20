@@ -14,7 +14,7 @@ class AreaCrashsite extends MapArea {
         }
         return(false);
     }
-    scavenge(PerId) {
+    hunt(PerId) {
         this.nextScene='';
         let _rnd= _.random(0,100);
         if(_rnd>50) {
@@ -25,7 +25,7 @@ class AreaCrashsite extends MapArea {
     }
 }
 class AreaCrashsiteRuins extends MapArea {
-    constructor(){super();this.name='Crashsite';}
+    constructor(){super();this.name='Crashsite Ruins';}
     toJSON() {return window.storage.Generic_toJSON("AreaCrashsiteRuins", this); };
     static fromJSON(value) { return window.storage.Generic_fromJSON(AreaCrashsiteRuins, value.data);};
     explore(PerId) {
@@ -42,10 +42,17 @@ class AreaCrashsiteRuins extends MapArea {
         return(false);
     }
 }
+class AreaLapineVillage extends MapArea {
+    constructor(){super();this.name='Village of the lapines';}
+    toJSON() {return window.storage.Generic_toJSON("AreaLapineVillage", this); };
+    static fromJSON(value) { return window.storage.Generic_fromJSON(AreaLapineVillage, value.data);};
+}
 window.gm.ExploreLib = (function (Lib) {
     window.storage.registerConstructor(AreaCrashsite);
     window.storage.registerConstructor(AreaCrashsiteRuins);
+    window.storage.registerConstructor(AreaLapineVillage);
     Lib['AreaCrashsite']= function () { let x= new AreaCrashsite();return(x);};
     Lib['AreaCrashsiteRuins']= function () { let x= new AreaCrashsiteRuins();return(x);};
+    Lib['AreaLapineVillage']= function () { let x= new AreaLapineVillage();return(x);};
     return Lib; 
 }(window.gm.ExploreLib || {}));

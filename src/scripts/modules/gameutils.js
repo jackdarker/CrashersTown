@@ -23,22 +23,8 @@ window.gm.initGame= function(forceReset,NGP=null) {
         playerPartyRL:[],
         //flags for global states
         qDogSit : 0,   // see park
-        qUnlockCampus : 0,  //see passage into city
-        qUnlockPark : 0,
-        qUnlockMall : 0,
-        qUnlockBeach : 0,
-        qUnlockDowntown : 0,
-        qUnlockNorthlake : 0,
-        qUnlockRedlight : 0,
-        qUnlockBeach : 0,
-        crowBarLeft: 1,
-        //VR flags todo character specific ?
-        wolfKnowledge: 0,
-        wolfSubmit: 0,
-        wolfVictory: 0
         }; 
     }
-    
     if (!window.gm.achievements||forceReset) {  //outside of window.story !
       window.gm.achievements= {
         looseEnd: false //add your flags here
@@ -50,9 +36,9 @@ window.gm.initGame= function(forceReset,NGP=null) {
         Facilities: [window.gm.BuildingsLib.Shipwreck()],
         People: [new Operator(),new Operator(),new Operator()],
         Slaves:[],
-        Resources:{},
-        Known:[]  //list what you have explored and other events you have unlocked
+        Resources:{}
       };
+      s.Known={},s.Known.Slavery=s.Known.Barracks=null;
       s.Map={},s.Map.Crashsite=window.gm.ExploreLib["AreaCrashsite"](); 
       s.Events=[];
     }

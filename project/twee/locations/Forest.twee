@@ -1,0 +1,76 @@
+:: CS_Forest_Explore
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%>
+<% if(window.story.state.Map.Crashsite.timesExplored<=1){ %>
+First time forest 
+<%}%>
+A dense forest is close to the crash site. That should make a good source for harvesting wood for construction and making fire. 
+<p>[[Menu_Main]] </p>
+</article><article id="LogPanel"></article></section>
+
+
+:: CS_Forest_Hunt
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%>
+Your hunter found some trail with paw prints. Should a snare trap be placed here?
+<div id='select1' >
+<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1a")'>Yes</a></br>
+<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1b")'>No</a></br>
+</div><div id='choice1a' hidden></br>
+    A humanoid creature is struggling in a trap.
+    <p class="tNPC1">"Please free me. My people will be grateful if you help me."</p> 
+    <div id='select2' >
+    <a0 onclick='if(window.story.state.Map.LapineVillage===undefined){window.story.state.Map.LapineVillage=window.gm.ExploreLib["AreaLapineVillage"]();};window.gm.printTalkLink("div#select2","div#choice2a")'>"Sure. I'm going to release you."</a></br>
+    <a0 onclick='window.story.state.Events.push(window.gm.EventsLib.SlaveCaptured());window.gm.printTalkLink("div#select2","div#choice2b")'>Lets take the creature back to your camp.</a></br>
+    </div><div id='choice2a' hidden></br>The lapine leads you to its village. You talk with the elders and they offer to trade with you.
+
+        <p>[[Next|_Event]]</p>
+    </div>
+    <div id='choice2b'><p>[[Next|_Event]]</p>
+    </div>
+</div>
+<div id='choice1b' hidden></br> <p>[[Next|_Event]]</p>
+</div>
+</article><article id="LogPanel"></article></section>
+
+
+:: CS_Ruins_Explore
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%>
+<% if(window.story.state.Map.CrashsiteRuins===undefined){window.story.state.Map.CrashsiteRuins=window.gm.ExploreLib["AreaCrashsiteRuins"](); %>
+First time ruins
+<%}%>
+Deeper in the forest your scout spots some overgrown piles of stone.
+<p>[[Next|_Event]]</p>
+</article><article id="LogPanel"></article></section>
+
+
+
+:: CS_Ruins_Scavenge
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%>
+Some iron was found in the ruins.
+<p>[[Next|_Event]]</p>
+</article><article id="LogPanel"></article></section>
+<script>
+ResourceChange.add(window.story.state.City.Resources,"Iron",2);
+</script>
+
+:: CS_LapineVille_Visit
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%>
+<% if(window.story.state.Map.LapineVillage===undefined){window.story.state.Map.LapineVillage=window.gm.ExploreLib["AreaLapineVillage"](); %>
+First time 
+<%}%>
+You visit the settlement of the lapines.
+"Some of our people have gone missing. Maybe those red-tails are behind it."
+<div id='select10' >
+<a0 onclick='window.gm.printTalkLink("div#select10","div#choice10a")'>Ask for details</a>|
+<a0 onclick='window.gm.printTalkLink("div#select10","div#choice10b")'>Dont care</a></br>
+</div><div id='choice10a' hidden></br>"They live in those hills western of here."
+<p>[[Next|_Event]]</p>
+</div>
+<div id='choice10b' hidden></br><p>[[Next|_Event]]</p>
+</div>
+
+</article><article id="LogPanel"></article></section>
