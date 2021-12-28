@@ -6,6 +6,13 @@
  * @class Entity
  */
 export class Entity {
+    /**
+     *returns an int that is a unique ID (unique for duration of the game)
+     *
+     * @static
+     * @return {*} 
+     * @memberof Entity
+     */
     static UID(){Entity.prototype.UID=(Entity.prototype.UID===undefined)?1:Entity.prototype.UID+=1; return(Entity.prototype.UID);};
     constructor() {
         this.id=Entity.UID(),this.name = 'Entity'+this.id;
@@ -76,7 +83,10 @@ class Generator extends Entity {
 class Facility extends Entity{
     constructor() {
         super();
-        this.cost = {Resources:[],time:0}; //how much for building it
+        this.cost = {builders:[],resources:[],time:0}; //how much for building it
+        this.storage ={}; //what resources to store .Iron=2
+        this.operator = []; //what kind of person is required for minimum production
+        this.bonusOperator= []; //who can help with production eg farmhand
     }
 }
 /**
@@ -91,105 +101,19 @@ class Homestead extends Facility {
 }
 
 /**
- * a person that works in a Facility or on their own
- *
- * @class Operator
- */
-class Operator extends Entity { 
-    constructor(){ super(),
-        this.name='Operator'+this.id;
-        this.job=Operator.Job.Nothing;this.jobActive=false;
-        this.traits ={};
-        /*temper    -100=rebellious 100=kind
-        obedience   -100=never obeys 0= 100= always obeys
-        trust/fear  -100=fearsome 100=trustful
-        mood        -100 very sad 100=always happy
-        lust        -100=gets frigid fast 0=no change over time 100=gets eager fast
-        */    
-    }
-    set job(job) {
-        this._job = job; 
-    }
-    get job() {return this._job;}
-    get desc() { 
-        let msg ='Operator#'+this.id;
-        switch(this._job) {
-            case Operator.Job.Nothing:
-                msg ='Has no job assigned.';
-                break;
-            case Operator.Job.Scavenger:
-                msg ='Searchs an area for some useful resources.';
-                break;
-            case Operator.Job.WoodChopper:
-                msg ='Chops wood.';
-                break;
-            default: throw new Error(this.id +' doesnt know '+style);
-        }
-        return(msg);
-    }
-    toJSON() {return window.storage.Generic_toJSON("Operator", this); };
-    static fromJSON(value) { return window.storage.Generic_fromJSON(Operator, value.data);};
-    tick(time) {
-        let delta = window.gm.getDeltaTime(time,this.lastTick);
-        if(delta>(24*60-1)) {
-            this.lastTick=time;
-            let _R;
-            if(this._job===Operator.Job.Hunter) {
-                _R = new ResourceChange();_R.Resource='Food';
-                window.story.state.Events.push(_R);
-            } else if(this._job===Operator.Job.WoodChopper) {
-                _R = new ResourceChange();_R.Resource='Wood';
-                window.story.state.Events.push(_R);
-            }
-            this.needsSatisfied=false; //todo people dont work if hungry
-        }
-        return(false);
-    }
-    getDamage(){}
-    fixDamage(){}
-    // returns list of resources to feed
-    getBasicNeeds(){
-        return([{ResId:'Food',amount:3}]);
-    }
-    satisfyNeeds() {
-        this.needsSatisfied=true;
-    }
-    getTraits(){}
-    getHome(){}
-    setHome(){}
-}
-Operator.Job = {
-    Nothing : 'Nothing',
-    Brewer: 'Brewer',
-    Chemist : 'Chemist',
-    Worker: 'Worker',
-    Builder : 'Builder',
-    Scavenger : 'Scavenger',
-    WoodChopper : 'WoodChopper',
-    Hunter : 'Hunter',
-    Scout : 'Scout',
-    Smith : 'Smith',
-    Technican: 'Technican',
-    Slaver: 'Slaver',
-    Torturer: 'Torturer',
-    BeastTamer: 'BeastTamer',
-    Farmhand: 'Farmhand',
-    Farmer : 'Farmer',
-    Stablehand : 'Stablehand', 
-    Stablemaster: 'Stablemaster',
-    Guard: 'Guard',
-    Soldier: 'Soldier'
-
-}
-/**
  * a Skill, Mallus or Bonus
  *
  * @class Trait
  */
-class Trait extends Entity {
+class Trait {
     constructor() {
-        super();
+        this.id=this.name='';
+        this.level=0;  // tells how strong the trait is; negative values for opposite effect e.g. smart=-10 -> dumb
+        this.hidden=0; // "???" if 
     }
+    toJSON() {return window.storage.Generic_toJSON("Trait", this); };
+    static fromJSON(value) { return window.storage.Generic_fromJSON(Trait, value.data);};
+    desc(){return(this.name);}
     /* */
 } 
 /**
@@ -222,6 +146,7 @@ class MapArea extends Entity {
         this.timesExplored=0;
         this.nextScene='';
     }
+    desc(){return(this.name);}
     explore(PerId) {
         this.nextScene='';  
         return(false);

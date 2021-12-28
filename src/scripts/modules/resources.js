@@ -22,6 +22,12 @@ class Resource extends ResourceBase {
             case Resource.ID.Food: 
                 msg ='Something that your people can eat.';
                 break;
+            case Resource.ID.Fungus: 
+                msg ='A strange fungus.';
+                break;
+            case Resource.ID.Crops: 
+                msg ='Some crops that can be processed to food.';
+                break;
             case Resource.ID.Stone: 
                 msg ='Stones for buildings.';
                 break;
@@ -42,7 +48,9 @@ class Resource extends ResourceBase {
     static fromJSON(value) { return window.storage.Generic_fromJSON(Resource, value.data);};
 }
 Resource.ID = { 
+    Crops : 'Crops',
     Food : 'Food',
+    Fungus : 'Fungus',
     Wood : 'Wood',
     Stone : 'Stone',
     IronOre : 'IronOre',
@@ -51,6 +59,8 @@ Resource.ID = {
 }
 window.gm.ResourcesLib = (function (Lib) {
     window.storage.registerConstructor(Resource);
+    Lib['Crops']= function () { let x= new Resource();x.style=(Resource.ID.Crops);return(x);};
+    Lib['Fungus']= function () { let x= new Resource();x.style=(Resource.ID.Fungus);return(x);};
     Lib['Food']= function () { let x= new Resource();x.style=(Resource.ID.Food);return(x);};
     Lib['Energy']= function () { let x= new Resource();x.style=(Resource.ID.Energy);return(x);};
     Lib['Wood']= function () { let x= new Resource();x.style=(Resource.ID.Wood);return(x);};

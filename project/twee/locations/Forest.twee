@@ -1,36 +1,68 @@
-:: CS_Forest_Explore
+:: CS_Explore
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
 <%window.gm.player.location=window.passage.name;%>
 <% if(window.story.state.Map.Crashsite.timesExplored<=1){ %>
-First time forest 
+    The crashsite is loaceted close to a cliff. In the northern direction, the begin of a large forest can be seen.  
+<%}else if((window.story.state.Map.Crashsite.timesExplored>3) && (!window.story.state.Map.Forest)){window.story.state.Map.Forest=window.gm.ExploreLib['AreaDeepForest']();%>
+    After a lot of bushwacking, your scouts made a pathway to the deeper parts of the forest. 
+    </br><b>Deep Forest</b> now available for exploration.
+<%}else{%>
+    You scout grew more familiar with the closer surroundings of the crashsite.
 <%}%>
-A dense forest is close to the crash site. That should make a good source for harvesting wood for construction and making fire. 
-<p>[[Menu_Main]] </p>
+<% if(window.story.state.Map.Crashsite.timesExplored>10){%>
+    </br> There isn't a lot to find here to scavenge or hunt.
+<%}%>
+<p>[[Next|_Event]]</p>
 </article><article id="LogPanel"></article></section>
 
+:: CS_Forest_Explore
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%>
+<% if(window.story.state.Map.Forest.timesExplored<=1){ %>
+    A dense forest is close to the crash site. That should make a good source for harvesting wood for construction and making fire. 
+<%}else if(window.story.state.Map.Crashsite.timesExplored>3 && window.story.state.Map.Forest===undefined){
+    window.story.state.Map.Forest=window.gm.ExploreLib["AreaDeepForest"]();{%>
+    After a lot of bushwacking, your scouts made a pathway to the deeper parts of the forest. 
+    </br><b>Deep Forest</b> now available for exploration.
+<%}else{%>
+    You scout grew more familiar with the parts of the forest around the forest.
+<%}%>
+<p>[[Next|_Event]]</p>
+</article><article id="LogPanel"></article></section>
 
 :: CS_Forest_Hunt
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
 <%window.gm.player.location=window.passage.name;%>
-Your hunter found some trail with paw prints. Should a snare trap be placed here?
-<div id='select1' >
-<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1a")'>Yes</a></br>
-<a0 onclick='window.gm.printTalkLink("div#select1","div#choice1b")'>No</a></br>
-</div><div id='choice1a' hidden></br>
-    A humanoid creature is struggling in a trap.
+<% if(window.story.state.Map.Forest.trapState===0){%>
+    Your hunter found some trail with paw prints. Should a snare trap be placed there?
+    <div id='select1' >
+    <a0 onclick='window.story.state.Map.Forest.trapState=1,window.story.state.Map.Forest.trapCount++;window.gm.printTalkLink("div#select1","div#choice1a")'>Yes</a></br>
+    [[No|_Event]]</br>
+    </div><div id='choice1a' hidden></br>Your hunters prepared a trap.<p>[[Next|_Event]]</p>
+    </div>
+<% if(window.story.state.Map.Forest.trapState===10){%>
+    A humanoid creature is struggling in the trap you set. To your surprise it speaks to you.
     <p class="tNPC1">"Please free me. My people will be grateful if you help me."</p> 
-    <div id='select2' >
+    <div id='select2'>
     <a0 onclick='if(window.story.state.Map.LapineVillage===undefined){window.story.state.Map.LapineVillage=window.gm.ExploreLib["AreaLapineVillage"]();};window.gm.printTalkLink("div#select2","div#choice2a")'>"Sure. I'm going to release you."</a></br>
     <a0 onclick='window.story.state.Events.push(window.gm.EventsLib.SlaveCaptured());window.gm.printTalkLink("div#select2","div#choice2b")'>Lets take the creature back to your camp.</a></br>
     </div><div id='choice2a' hidden></br>The lapine leads you to its village. You talk with the elders and they offer to trade with you.
-
         <p>[[Next|_Event]]</p>
     </div>
-    <div id='choice2b'><p>[[Next|_Event]]</p>
+    <div id='choice2b' hidden><p>[[Next|_Event]]</p>
     </div>
-</div>
-<div id='choice1b' hidden></br> <p>[[Next|_Event]]</p>
-</div>
+<%} if(window.story.state.Map.Forest.trapState===20){%>
+    The traps your hunter set in the forest where destroyed, possibly by a larger creature.
+    <% if(window.story.state.Map.Forest.trapCount>=5){%>
+        It would be advisable to hunt down the creature before it deals real damage to your people.</br>
+        todo Hunting-Expedition
+    <%}else{%>
+    <%}%>  
+    <p>[[Next|_Event]]</p>
+<%}else{%>
+    <p>Your hunters where able to catch some game to stock up your food.</p>  
+    <a0 onclick='window.gm.addResource(window.story.state.City.Resources,"Food",3);window.story.show("_Event");'>Next</a>
+<%}%>
 </article><article id="LogPanel"></article></section>
 
 
@@ -49,28 +81,29 @@ Deeper in the forest your scout spots some overgrown piles of stone.
 :: CS_Ruins_Scavenge
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
 <%window.gm.player.location=window.passage.name;%>
-Some iron was found in the ruins.
-<p>[[Next|_Event]]</p>
+Some <%=window.story.state.tmp.args[0]%> was found in the ruins.
+<p><a0 onclick='window.gm.addResource(window.story.state.City.Resources,"<%=window.story.state.tmp.args[0]%>",<%=window.story.state.tmp.args[1]%>);window.story.show("_Event");'>Next</a></p>
 </article><article id="LogPanel"></article></section>
-<script>
-ResourceChange.add(window.story.state.City.Resources,"Iron",2);
-</script>
+
 
 :: CS_LapineVille_Visit
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
 <%window.gm.player.location=window.passage.name;%>
 <% if(window.story.state.Map.LapineVillage===undefined){window.story.state.Map.LapineVillage=window.gm.ExploreLib["AreaLapineVillage"](); %>
-First time 
-<%}%>
-You visit the settlement of the lapines.
-"Some of our people have gone missing. Maybe those red-tails are behind it."
-<div id='select10' >
-<a0 onclick='window.gm.printTalkLink("div#select10","div#choice10a")'>Ask for details</a>|
-<a0 onclick='window.gm.printTalkLink("div#select10","div#choice10b")'>Dont care</a></br>
-</div><div id='choice10a' hidden></br>"They live in those hills western of here."
-<p>[[Next|_Event]]</p>
-</div>
-<div id='choice10b' hidden></br><p>[[Next|_Event]]</p>
-</div>
-
+todo First time visit of lapine village.
+<%}else{%>
+    You visit the settlement of the lapines.
+    <% window.gm.quests.addQuest("qLapineMissing",1); if(window.gm.quests.getMilestoneState("qLapineMissing").id<=1) {%>
+        "Some of our people have gone missing. Maybe those red-tails are behind it."
+        <div id='select10' >
+        <a0 onclick='window.gm.printTalkLink("div#select10","div#choice10a")'>Ask for details</a>|
+        <a0 onclick='window.gm.printTalkLink("div#select10","div#choice10b")'>Dont care</a></br>
+        </div><div id='choice10a' hidden></br>"The red-tails live in those hills north-western of here."
+        <a0 onclick='window.gm.quests.forceQuestMilestone("qLapineMissing",100,1);window.story.show("_Event");'>Promisse to do something</a>
+        </div>
+        <div id='choice10b' hidden></br><p>[[Next|_Event]]</p>
+        </div>
+    <%}else{%>
+    <p>[[Next|_Event]]</p>
+<%}}%>
 </article><article id="LogPanel"></article></section>

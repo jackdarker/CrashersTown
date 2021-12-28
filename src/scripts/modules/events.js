@@ -8,14 +8,6 @@ class ResourceChange extends GMEvent {
     }
     toJSON() {return window.storage.Generic_toJSON("ResourceChange", this); }
     static fromJSON(value) {let x=window.storage.Generic_fromJSON(ResourceChange, value.data);return(x);}
-    static add(array,ResId,gain) {
-        let _R = array[ResId];
-        if(_R===null || _R===undefined) {
-            _R = window.gm.ResourcesLib[ResId]();
-            array[ResId]=(_R);
-        }
-        _R.consume(-1*gain);
-    }
     tick(time) {
         this.lastTick=time;
         if(this.common) { //add common gains to summary event
@@ -23,7 +15,7 @@ class ResourceChange extends GMEvent {
             this.done=true;
             return(false); //no display now
         } else {
-            ResourceChange.add(window.story.state.City.Resources,this.Resource,this.gain)
+            window.gm.addResource(window.story.state.City.Resources,this.Resource,this.gain)
             this.done=true;
             return(true);
         }
@@ -36,49 +28,71 @@ class ResourceChange extends GMEvent {
         return(true);
     }
 }
-//removes resources consumed by people; checks Housing
+//removes resources consumed by people and limits resources by storage capacity;
 class FoodDrain extends GMEvent {
     constructor() {
         super();
-        this.ResTotal ={};
+        this.ResDrain ={},this.ResSpoil={},this.ResCap={};
     }
     toJSON() {return window.storage.Generic_toJSON("FoodDrain", this); }
     static fromJSON(value) {let x=window.storage.Generic_fromJSON(FoodDrain, value.data);return(x);}
     tick(time) {
         this.lastTick=time;
-        var _R,_P,_list2,Res=[];
+        var _R,_B,_P,_list2,Res=[];
         _list2 = window.story.state.City.People;
-        this.ResTotal=[];
+        this.ResDrain={},this.ResSpoil={},this.ResCap={};
         for(el of _list2) { //check people
             Res=el.getBasicNeeds(); 
             //todo satisfyNeeds   //if enough food
             for(_R of Res) { //sum up resources
-                this.ResTotal[_R.ResId] = this.ResTotal[_R.ResId]|| {amount:0};
-                this.ResTotal[_R.ResId].amount+=_R.amount;
+                this.ResDrain[_R.ResId] = this.ResDrain[_R.ResId]|| {amount:0};
+                this.ResDrain[_R.ResId].amount+=_R.amount;
             }
         }
-        var _list =Object.keys(this.ResTotal);
-        for(el of _list) {
+        var _list =Object.keys(this.ResDrain);
+        for(el of _list) { //drain resources
             _R = window.story.state.City.Resources[el];
             if(_R===null || _R===undefined) {
                 _R = window.gm.ResourcesLib[el]();
                 window.story.state.City.Resources[el]=_R;
             }
-            _R.consume(this.ResTotal[el].amount);
+            _R.consume(this.ResDrain[el].amount);
+        }
+        _list2=window.story.state.City.Facilities;
+        for(var i=_list2.length-1;i>=0;i--) { //sum up storage capacity
+            _list=Object.keys(_list2[i].storage);
+            for(el of _list) {
+                this.ResCap[el] = this.ResCap[el]|| 0;
+                this.ResCap[el]+=_list2[i].storage[el];
+            }
+        }
+        _list2=window.story.state.City.Resources;
+        _list=Object.keys(_list2);
+        for(el of _list) { //limit resources
+            _R = _list2[el];
+            var diff=this.ResCap[el]-_R.amount;
+            if(diff<0) { //todo dont limit rare items
+                this.ResSpoil[el]=-1*diff;
+                _R.consume(-1*diff);
+            }
         }
         this.done=true;
         return(true);
     }
     renderTick() {
-        var entry = document.createElement('p');
+        var panel=$("div#panel")[0],entry = document.createElement('p');
         entry.textContent = 'Rations used:';
-        $("div#panel")[0].appendChild(entry);
-        var _list =Object.keys(this.ResTotal);
+        panel.appendChild(entry);
+        var _list =Object.keys(Resource.ID);
         for(el of _list) {
+            var _show=false;
             entry = document.createElement('li');
-            entry.textContent = el+': '+this.ResTotal[el].amount+' ';
-            $("div#panel")[0].appendChild(entry);
+            entry.textContent = el+': ';
+            if(this.ResDrain[el]) {_show=true,entry.textContent+= this.ResDrain[el].amount+' ('+window.story.state.City.Resources[el].amount+' left)';}
+            if(this.ResSpoil[el]) {_show=true,entry.textContent+= this.ResSpoil[el]+' lost ';}
+            if(_show) panel.appendChild(entry);
         }
+        entry = document.createElement('p');entry.textContent = 'If resources are lost, there might not be enough storage space.';panel.appendChild(entry);
         GMEvent.createNextBt('Next');
         return(true);
     }
@@ -103,7 +117,7 @@ class ResourceChangeSummary extends GMEvent {
         }
         var _list =Object.keys(this.ResTotal);
         for(el of _list) {
-            ResourceChange.add(window.story.state.City.Resources,el,this.ResTotal[el].amount);
+            window.gm.addResource(window.story.state.City.Resources,el,this.ResTotal[el].amount);
         }
         this.done=true;
         return(true);
@@ -165,9 +179,8 @@ class ScoutProgress extends GMEvent {
         if(delta>=(24*60)) {
             this.daysLeft-=1,this.lastTick=time;
             let _Area=window.story.state.Map[this.Area];
-            
-            if(this.daysLeft<=0) {
-                this.done=true;
+            if(this.daysLeft<=0) {this.done=true;
+                window.gm.getById(window.story.state.City.People,this.Person).jobActive=false;
             } else {
                 _Area.explore(this.Person);
             }
@@ -283,6 +296,8 @@ class SlaveCaptured extends GMEvent {
         return(true);
     }
 }
+//SlaveEscaped - send a crew into the area to get him back and punish him
+//class PeopleMissing someone has gone missing-send someone to get him back - might lead to a fight with a beast or a tribe
 window.gm.EventsLib = (function (Lib) {
     window.storage.registerConstructor(FoodDrain);
     window.storage.registerConstructor(ResourceChange);
@@ -291,6 +306,7 @@ window.gm.EventsLib = (function (Lib) {
     window.storage.registerConstructor(HuntProgress);
     window.storage.registerConstructor(ScavengeProgress);
     window.storage.registerConstructor(SlaveCaptured);
+    Lib['ResourceChange'] = function () { let x= new ResourceChange();return(x);};
     Lib['SlaveCaptured'] = function () { let x= new SlaveCaptured();return(x);};
     return Lib; 
 }(window.gm.EventsLib || {}));

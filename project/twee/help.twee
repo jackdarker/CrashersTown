@@ -13,25 +13,22 @@ Here you can find some information about the gameplay.</br>
 
 :: Help_background [_back_]
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
-Of course you want to escape from this strange netherworld and get back to your old life.</br>
-The most prospective way to solve this is to satisfy the keepers requests.</br>
-Or maybe find some portal elsewhere...</br>
+TODO</br>
 </br>[[Back|_back_]]</br>
 </article><article id="LogPanel"></article></section>
 
 :: Help_Basics [_back_]
 <section> 
 <aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<p>At the start you only have a few people that you can assign a job. The first thing is to assign a scout (in the people menu) and then tell the scout which region to explore (in the explore menu).
+After some days the scout returns with some information that might unlock more regions to explore.</p>
+<p>Once you know a region, ou can send a hunter or a scavenger there. The scavenger searches for raw material that you need to build something. The hunter hunts for food or might be able to catch a beast.</p>
+<p>By gathering knowledge, you learn to build different facilities that will help you harvesting raw materials or producing goods. Use the build-menu to order to build something with the material you scavenged.
+After the building is done, you can check on it in the same menu.</p>
+<p>Some buildings need operators with special training to work properly. And often they need materials and energy to produce anything.</p>
+<p>While someone is working on a job, he gains in the related skill and even unlocks other skills. F.e. a scavenger might gain the skill "Prospector" while someone working in the smithy gains "Smith". You might also find people out there that have special skills.</p>
+<p>Keep an eye on your food and energy-production. Those resources are consumed every turn by your people and buildings. Shortfall might result in reduced effectiveness and successrate. </br>Todo You can send people to cryostasis or disable facilities to reduce consumption.</p>
 <hr></br>
-For many activities you have to spend energy and time. F.e. walking into the city takes some time and effort.</br>
-Energy can be recovered by sleeping. Also some activities, food or drugs can restore energy.</br>
-Use the sleep-option in your own bedroom to rest.</br>
-</br>Combat</br><hr></br>
-You defeat enemys by damaging their health. If you have the skill, you can tease them until they are to aroused to bother fighting.
-Postbattle scenes might differ if the victor is excited !
-For some actions you need energy, f.e. a heavy strike or blocking with shield. Energy is recovered slowly on each turn.
-Will can be used to cast magic.
-Be aware that running out of energy/will might get you in a weakened condition.</br>
 [[Back|_back_]]</br>
 </article><article id="LogPanel"></article></section>
 

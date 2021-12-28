@@ -46,9 +46,10 @@ if(!halt) window.story.show('Menu_Main')
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
 <%window.gm.player.location=window.passage.name;%>
 From this menu you can access other menus.</br>
-<p>[[Menu_Social]] [[Menu_Exploration]]</p>
-<p>[[Menu_Market]] [[Menu_Slave]] [[Menu_Breed]]</p>
-<p>[[Menu_Build]] [[Menu_Production]] [[Menu_Resources]] </p>
+<p>[[Exploration|Menu_Exploration]] [[Mission|Menu_Mission]] [[Policing|Menu_Intelligence]]</p>
+<p>[[Your people|Menu_Social]] [[Slaves|Menu_Slave]]</p>
+<p>[[Buildings|Menu_Build]] [[Production|Menu_Production]] [[Breeding|Menu_Breed]] </p>
+<p>[[Trading|Menu_Market]] [[Resources|Menu_Resources]]  </p>
 <p> Press the button below to progress time.</p>
 <a0 onclick='window.gm.newTurn()'>-> END THIS DAY <-</a>
 </article><article id="LogPanel"></article></section>
@@ -56,32 +57,29 @@ From this menu you can access other menus.</br>
 
 :: Menu_Map
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
-<%window.gm.player.location=window.passage.name;%>
+<%window.gm.player.location=window.passage.name;%><p>[[Menu_Main]]</p>
 This menu:
 - worldmap
 - exploration progress
 - influence
 - other tribes
-[[Menu_Main]]
 </article><article id="LogPanel"></article></section>
 
 
 :: Menu_Administration
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
-<%window.gm.player.location=window.passage.name;%>
+<%window.gm.player.location=window.passage.name;%><p>[[Menu_Main]]</p>
 This menu:
 - define rules
 - check overall happiness of personal
 - list diplomatic relations
 - list resource storage, consumption and generation
 - list heros and assign office
-[[Menu_Main]]
 </article><article id="LogPanel"></article></section>
 
 :: Menu_Resources
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
-<%window.gm.player.location=window.passage.name;%>
-<p>[[Menu_Main]]</p>
+<%window.gm.player.location=window.passage.name;%><p>[[Menu_Main]]</p>
 This menu:</br>
 - list resource storage, consumption and generation</br>
 </br><div id='choice'></div>
@@ -93,30 +91,28 @@ window.gm.listResources();
 
 :: Menu_Defense
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
-<%window.gm.player.location=window.passage.name;%>
+<%window.gm.player.location=window.passage.name;%><p>[[Menu_Main]]</p>
 This menu:
 - lists facilities related to defense and combat
 - assign combatants
-[[Menu_Main]]
 </article><article id="LogPanel"></article></section>
 
 
 :: Menu_Intelligence
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
-<%window.gm.player.location=window.passage.name;%>
-This menu:
-- list spys in service and progress 
-- assign missions to spy
-- initiate propaganda
-- decide what to do with unruly citizen (sell, enslave, brainwash, arena)
-[[Menu_Main]]
+<%window.gm.player.location=window.passage.name;%><p>[[Menu_Main]]</p>
+This menu:</br>
+- list spys in service and progress</br> 
+- assign missions to spy</br>
+- initiate propaganda</br>
+- decide what to do with unruly citizen (sell, enslave, brainwash, arena)</br>
+<hr>
 </article><article id="LogPanel"></article></section>
 
 
 :: Menu_Social
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
-<%window.gm.player.location=window.passage.name;%>
-<p>[[Menu_Main]]</p>
+<%window.gm.player.location=window.passage.name;%><p>[[Menu_Main]]</p>
 This menu:
 - lists all people and their activity and State
 - overview on job distribution
@@ -130,7 +126,7 @@ window.gm.listPeople();
 
 :: Menu_Person
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
-<%=(window.story.state.tmp.args[1]==="Slave")?"Menu_Slave":"Menu_Social"%>
+<p>[[Menu_Main]]</p>
 This menu:</br>
 - detail information for a person</br>
 - assign them new work or training</br>
@@ -190,8 +186,26 @@ This menu:
 </br><div id='panel'></div></br><hr><div id='panel2'></div>
 </article><article id="LogPanel"></article></section>
 <script>
+window.gm.listAreas();
 window.gm.listScouts();
 </script>
+
+
+:: Menu_Mission
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<%window.gm.player.location=window.passage.name;%><p>[[Menu_Main]]</p>
+This menu:
+<li>lists available missions</li>
+<li>lists result of the last mission</li>
+</br>A mission is a story branch that you have to finish (with or without success) before returning to normal duty. 
+</br>You have to decide who will be sent and what special equipment they will take with them to help them. The mission statement should give some hints what kind of skills should be useful.
+</br>You can only run one mission at a time.
+</br><div id='choice'></div>
+</br><div id='panel'></div></br><hr><div id='panel2'></div>
+</article><article id="LogPanel"></article></section>
+<script>
+</script>
+
 
 :: Menu_Production
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>

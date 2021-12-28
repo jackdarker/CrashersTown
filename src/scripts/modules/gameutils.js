@@ -38,7 +38,10 @@ window.gm.initGame= function(forceReset,NGP=null) {
         Slaves:[],
         Resources:{}
       };
+      window.gm.addResource(s.City.Resources,'Iron',5);
       s.Known={},s.Known.Slavery=s.Known.Barracks=null;
+      s.Known.Scout=null; //initial job-knowledge
+      //initial Area-knowledge
       s.Map={},s.Map.Crashsite=window.gm.ExploreLib["AreaCrashsite"](); 
       s.Events=[];
     }
