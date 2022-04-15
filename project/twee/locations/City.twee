@@ -155,7 +155,10 @@ This menu:
 This menu:
 - list wares on the market place for selling and buying
 - buy & sell slaves and animals
-[[Menu_Main]]
+
+<a0 onclick='window.story.state.Events.push(window.gm.EventsLib.SlaveCaptured());'>Get a slave.</a></br>
+    
+</br>[[Menu_Main]]
 </article><article id="LogPanel"></article></section>
 
 
@@ -182,8 +185,8 @@ This menu:
 <li>assign or abort exploration</li>
 </br>Units designated as scout are listed here. Click on a idle one to select a new scouting target.
 </br>You can only start one scout-operation per area.
-</br><div id='choice'></div>
-</br><div id='panel'></div></br><hr><div id='panel2'></div>
+</br><hr><div id='choice'></div>
+</br><hr><p>Designated Scouts & Scavengers:</p><div id='panel'></div></br><hr><p>Known Areas:</p><div id='panel2'></div>
 </article><article id="LogPanel"></article></section>
 <script>
 window.gm.listAreas();

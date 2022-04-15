@@ -20,9 +20,7 @@ window.gm.initGame= function(forceReset,NGP=null) {
         inVR: false,
         spawnAt: 'ForestRespawnPodExit',
         playerPartyVR:[],
-        playerPartyRL:[],
-        //flags for global states
-        qDogSit : 0,   // see park
+        playerPartyRL:[]
         }; 
     }
     if (!window.gm.achievements||forceReset) {  //outside of window.story !

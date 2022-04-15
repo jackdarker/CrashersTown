@@ -43,12 +43,27 @@ class AreaLapineVillage extends MapArea {
     static fromJSON(value) { return window.storage.Generic_fromJSON(AreaLapineVillage, value.data);};
 }
 ///////////////////////////////////////////////////
-class AreaDeepForest extends MapArea {
+class AreaForest extends MapArea {
     constructor(){super();this.name='Forest northern of the crashsite';
         this.trapState=this.trapCount=0;
     }
     toJSON() {return window.storage.Generic_toJSON("AreaForest", this); };
     static fromJSON(value) { return window.storage.Generic_fromJSON(AreaForest, value.data);};
+    explore(PerId) {
+        this.nextScene='';this.timesExplored+=1;
+        this.nextScene='CS_Forest_Explore';return(true);
+    }
+    scavenge(PerId) {
+        this.nextScene='';
+        let _rnd= _.random(0,100);
+        if(_rnd>30) {
+            this.nextScene='CS_Forest_Scavenge';
+            if(_rnd>60) window.story.state.tmp.args=['RedGel',1];
+            else window.story.state.tmp.args=['Wood',2];
+            return(true);
+        }  
+        return(false);
+    }
     hunt(PerId) {
         this.nextScene='';
         let _rnd= _.random(0,100);
@@ -68,10 +83,11 @@ window.gm.ExploreLib = (function (Lib) {
     window.storage.registerConstructor(AreaCrashsite);
     window.storage.registerConstructor(AreaCrashsiteRuins);
     window.storage.registerConstructor(AreaLapineVillage);
-    window.storage.registerConstructor(AreaDeepForest);
+    window.storage.registerConstructor(AreaForest);
     Lib['AreaCrashsite']= function () { let x= new AreaCrashsite();return(x);};
     Lib['AreaCrashsiteRuins']= function () { let x= new AreaCrashsiteRuins();return(x);};
     Lib['AreaLapineVillage']= function () { let x= new AreaLapineVillage();return(x);};
-    Lib['AreaDeepForest']= function () { let x= new AreaDeepForest();return(x);};
+    Lib['AreaForest']= function () { let x= new AreaForest();return(x);};
+    //Lib['AreaDeepForest']= function () { let x= new AreaDeepForest();return(x);};
     return Lib; 
 }(window.gm.ExploreLib || {}));

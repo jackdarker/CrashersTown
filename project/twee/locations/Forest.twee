@@ -3,9 +3,9 @@
 <%window.gm.player.location=window.passage.name;%>
 <% if(window.story.state.Map.Crashsite.timesExplored<=1){ %>
     The crashsite is loaceted close to a cliff. In the northern direction, the begin of a large forest can be seen.  
-<%}else if((window.story.state.Map.Crashsite.timesExplored>3) && (!window.story.state.Map.Forest)){window.story.state.Map.Forest=window.gm.ExploreLib['AreaDeepForest']();%>
+<%}else if((window.story.state.Map.Crashsite.timesExplored>2) && (!window.story.state.Map.Forest)){window.story.state.Map.Forest=window.gm.ExploreLib['AreaForest']();%>
     After a lot of bushwacking, your scouts made a pathway to the deeper parts of the forest. 
-    </br><b>Deep Forest</b> now available for exploration.
+    </br><b>Forest</b> now available for exploration.
 <%}else{%>
     You scout grew more familiar with the closer surroundings of the crashsite.
 <%}%>
@@ -18,10 +18,12 @@
 :: CS_Forest_Explore
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
 <%window.gm.player.location=window.passage.name;%>
+<% window.story.state.Known.Scavenger=window.story.state.Known.Scavenger||{}; window.story.state.Known.Hunter=window.story.state.Known.Hunter||{};%>
 <% if(window.story.state.Map.Forest.timesExplored<=1){ %>
     A dense forest is close to the crash site. That should make a good source for harvesting wood for construction and making fire. 
-<%}else if(window.story.state.Map.Crashsite.timesExplored>3 && window.story.state.Map.Forest===undefined){
-    window.story.state.Map.Forest=window.gm.ExploreLib["AreaDeepForest"]();{%>
+    </br><b>You might send someone here to scavenge resources or hunt.</b>
+<%}else if(window.story.state.Map.Crashsite.timesExplored>3 && window.story.state.Map.DeepForest===undefined){%>
+    window.story.state.Map.DeepForest=window.gm.ExploreLib["AreaDeepForest"]();{%>
     After a lot of bushwacking, your scouts made a pathway to the deeper parts of the forest. 
     </br><b>Deep Forest</b> now available for exploration.
 <%}else{%>
@@ -29,6 +31,15 @@
 <%}%>
 <p>[[Next|_Event]]</p>
 </article><article id="LogPanel"></article></section>
+
+
+:: CS_Forest_Scavenge
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%>
+Some <%=window.story.state.tmp.args[0]%> was found in the forest around the crashsite.
+<p><a0 onclick='window.gm.addResource(window.story.state.City.Resources,"<%=window.story.state.tmp.args[0]%>",<%=window.story.state.tmp.args[1]%>);window.story.show("_Event");'>Next</a></p>
+</article><article id="LogPanel"></article></section>
+
 
 :: CS_Forest_Hunt
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
@@ -40,7 +51,7 @@
     [[No|_Event]]</br>
     </div><div id='choice1a' hidden></br>Your hunters prepared a trap.<p>[[Next|_Event]]</p>
     </div>
-<% if(window.story.state.Map.Forest.trapState===10){%>
+<%}else if(window.story.state.Map.Forest.trapState===10){%>
     A humanoid creature is struggling in the trap you set. To your surprise it speaks to you.
     <p class="tNPC1">"Please free me. My people will be grateful if you help me."</p> 
     <div id='select2'>
@@ -51,7 +62,7 @@
     </div>
     <div id='choice2b' hidden><p>[[Next|_Event]]</p>
     </div>
-<%} if(window.story.state.Map.Forest.trapState===20){%>
+<%}else if(window.story.state.Map.Forest.trapState===20){%>
     The traps your hunter set in the forest where destroyed, possibly by a larger creature.
     <% if(window.story.state.Map.Forest.trapCount>=5){%>
         It would be advisable to hunt down the creature before it deals real damage to your people.</br>
@@ -75,7 +86,6 @@ First time ruins
 Deeper in the forest your scout spots some overgrown piles of stone.
 <p>[[Next|_Event]]</p>
 </article><article id="LogPanel"></article></section>
-
 
 
 :: CS_Ruins_Scavenge

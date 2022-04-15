@@ -54,7 +54,6 @@ window.gm.listScouts=function() {
     //find people assigned to scout
     _list = window.story.state.Events;
     _list2 = window.story.state.City.People; 
-    link = document.createElement('hr'); panel.appendChild(link);
     for(_P of _list2){
         if(_P.job===Operator.Job.Scout || _P.job===Operator.Job.Hunter || _P.job===Operator.Job.Scavenger){
             for(_J of _list) { //check if person has already job assigned

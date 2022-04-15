@@ -40,6 +40,11 @@ class Resource extends ResourceBase {
             case Resource.ID.Energy: 
                 msg ='Electrical energy to power devices.';
                 break;
+            case Resource.ID.BlueGel: 
+            case Resource.ID.RedGel: 
+            case Resource.ID.BlackGel: 
+                msg ='Could be used for chemical experiments.';
+                break;
             default: throw new Error(this.id +' doesnt know '+style);
         }
         return(msg);
@@ -55,7 +60,10 @@ Resource.ID = {
     Stone : 'Stone',
     IronOre : 'IronOre',
     Iron : 'Iron',
-    Energy: 'Energy'
+    Energy: 'Energy',
+    BlueGel: 'BlueGel',
+    RedGel: 'RedGel',
+    BlackGel: 'BlackGel'
 }
 window.gm.ResourcesLib = (function (Lib) {
     window.storage.registerConstructor(Resource);
@@ -67,5 +75,8 @@ window.gm.ResourcesLib = (function (Lib) {
     Lib['Stone']= function () { let x= new Resource();x.style=(Resource.ID.Stone);return(x);};
     Lib['IronOre']= function () { let x= new Resource();x.style=(Resource.ID.IronOre);return(x);};
     Lib['Iron']= function () { let x= new Resource();x.style=(Resource.ID.Iron);return(x);};
+    Lib['BlueGel']= function () { let x= new Resource();x.style=(Resource.ID.BlueGel);return(x);};
+    Lib['RedGel']= function () { let x= new Resource();x.style=(Resource.ID.RedGel);return(x);};
+    Lib['BlackGel']= function () { let x= new Resource();x.style=(Resource.ID.BlackGel);return(x);};
     return Lib; 
 }(window.gm.ResourcesLib || {}));
