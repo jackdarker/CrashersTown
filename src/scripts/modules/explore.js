@@ -6,7 +6,7 @@ class AreaCrashsite extends MapArea {
     static fromJSON(value) { return window.storage.Generic_fromJSON(AreaCrashsite, value.data);};
     explore(PerId) {
         this.nextScene='';this.timesExplored+=1;
-        if(this.timesExplored>5 && (window.story.state.Map.CrashsiteRuins===undefined)){
+        if(this.timesExplored>2 && (window.story.state.Map.CrashsiteRuins===undefined)){
             this.nextScene='CS_Ruins_Explore';return(true);
         } 
         this.nextScene='CS_Explore';return(true);

@@ -22,8 +22,7 @@
 <% if(window.story.state.Map.Forest.timesExplored<=1){ %>
     A dense forest is close to the crash site. That should make a good source for harvesting wood for construction and making fire. 
     </br><b>You might send someone here to scavenge resources or hunt.</b>
-<%}else if(window.story.state.Map.Crashsite.timesExplored>3 && window.story.state.Map.DeepForest===undefined){%>
-    window.story.state.Map.DeepForest=window.gm.ExploreLib["AreaDeepForest"]();{%>
+<%}else if(window.story.state.Map.Crashsite.timesExplored>3 && window.story.state.Map.DeepForest===undefined){window.story.state.Map.DeepForest=window.gm.ExploreLib["AreaDeepForest"]();{%>
     After a lot of bushwacking, your scouts made a pathway to the deeper parts of the forest. 
     </br><b>Deep Forest</b> now available for exploration.
 <%}else{%>
