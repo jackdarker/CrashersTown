@@ -4,7 +4,7 @@
   "description": "A basic project setup for Tweego with all the trimmings using Node.",
   "main": "./dist/index.html",
   "config": {
-    "format": "sugarcube-2"
+    "format": "snowman-2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
