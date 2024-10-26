@@ -477,6 +477,23 @@ class Hornett extends Mob {
 }
 /////////////////////////////////////////////////////////
 // special NPC
+class Lydia extends Operator {
+    constructor() {
+        super();
+        this.name = 'Lydia';
+        this.pic= 'unknown';
+        this.Outfit.addItem(new BaseHumanoid());
+        this.Outfit.addItem(new SkinHuman());
+        this.Outfit.addItem(HandsHuman.factory('human'));
+        this.Outfit.addItem(FaceHuman.factory('human'));
+        this.Outfit.addItem(BreastHuman.factory('human'));
+        this.Outfit.addItem(VulvaHuman.factory('human'));
+        this.Outfit.addItem(new BikiniBottomLeather());
+        this.Outfit.addItem(new BikiniTopLeather());
+        this.levelUp(3);
+        this.autoLeveling();
+    }
+}
 class Carlia extends Mob {
   constructor() {
       super();
@@ -487,7 +504,6 @@ class Carlia extends Mob {
       this.Outfit.addItem(HandsHuman.factory('cat'));
       this.Outfit.addItem(FaceWolf.factory('cat'));
       this.Outfit.addItem(BreastHuman.factory('human'));
-      CSS
       this.Outfit.addItem(VulvaHuman.factory('human'));
       this.Outfit.addItem(new BikiniBottomLeather());
       this.Outfit.addItem(new BikiniTopLeather());

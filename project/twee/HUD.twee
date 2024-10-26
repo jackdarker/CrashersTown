@@ -15,6 +15,8 @@
 <div <%=window.gm.player.canLevelUp?"class=\"green\"":""%>>XP/Level: <%=window.gm.player._data.XP+"/"+window.gm.player._data.level%></div>-->
 <hr>
 <form>
+<p> Press the button below to progress time.</p>
+<button onclick='window.gm.newTurn()'>-> Advance Daytime <-</button>
 <button type="button" id="status">Status</button>
 <button type="button" id="inv">Inventory</button>
 <button type="button" id="quests">Quests</button>

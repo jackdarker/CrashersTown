@@ -22,16 +22,12 @@ All explicit images are performed by consenting adults aged 18 or older. Images 
 <p class='author'>You might see a lot of links that are formated red-strikethrough. Those are currently broken and you shouldnt use them.</p>
 <p class='author'>Loading of savegame is only possible in game. Saving might be disabled in some locations.</p>
 </br><hr>
-<p> That space vessel of yours crashed right into its destination instead of taking orbit.</br>
-Of course a lot of damage was caused to technical systems and also the cryopods.You now have to make the best out of it and set up the first settlement that should hopefully be the base to establish human society here.</p>
-<p><a0 onclick='start();'>Colonize a new world</a></p><hr>
-There are also some options to make a fastforward (might behave oddly): </br>
-...nothing right now...
+<p> This game is about building your own fortune by enslaving and training people. It is placed in a fantasy medieval setting.<p>
+<p> the game is heavily inspired by games like Strive4Power, Free Cities and others.</p>
+<a0 onclick='start();'>Start Game (skip Prolog)</a></p><hr>
 </article>
 <script> function start() {
-    /*window.gm.enterVR();
-    window.gm.player.levelUp(5);window.gm.player.autoLeveling();*/
-    window.story.show('Menu_Main');
+    window.story.show('Aquire_Lydia');
 }
 </script>
 

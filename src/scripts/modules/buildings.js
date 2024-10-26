@@ -11,12 +11,27 @@
         this.name='Operator'+this.id;
         this.job=Operator.Job.Nothing;this.jobActive=false;
         this.traits ={};
+        this.civil="free";  //"worker", "slave", "prisoner", "pet?"
+        this.RestOptions=[];    //
+        this.WorkOptions=[window.gm.LibJobs.Rest()];
+        this.WorkSchedule={};   //{Monday:{Dawn:{Rest:{}},{Morning:{}} } }
         this.temper=0,      //  -100=rebellious 100=kind
         this.obedience=0,   //  -100=never obeys 0= 100= always obeys
         this.trust=0;       //  -100=fearsome 100=trustful
         //mood        -100 very sad 100=always happy
         //lust        -100=gets frigid fast 0=no change over time 100=gets eager fast
-            
+    }
+    getWorkOption(jobid){
+        return(window.gm.getArrayElementById(this.WorkOptions,jobid));
+    }
+    addWorkOption(job){
+        let _x=window.gm.getArrayIndexById(this.WorkOptions,job.id); 
+        if(_x>=0) this.WorkOptions[_x]=job;
+        else this.WorkOptions.push(job);
+    }
+    dropWorkOption(job){
+        let _x=window.gm.getArrayIndexById(this.WorkOptions,job.id); 
+        if(_x>=0) this.WorkOptions.splice(_x,1);
     }
     set job(job) {
         this._job = job; 
@@ -101,7 +116,7 @@ class Shipwreck extends Homestead {
         this._style = style; 
         switch(style) {
         case 0: 
-            this.id=this.name='Shipwreck';
+            this.id=this.name='Mansion';
             break;
         default: throw new Error(this.id +' doesnt know '+style);
         }
@@ -111,7 +126,7 @@ class Shipwreck extends Homestead {
         let msg ='';
         switch(this._style) {
             case 0: 
-                msg ='The remains of your crashed ship.</br> It currently acts as a base homestead and storage. </br> Each day it will produce some rations and energy to help survival.';
+                msg ='This is the mansion you call home. </br>';
                 break;
             default: throw new Error(this.id +' doesnt know '+style);
         }
@@ -121,55 +136,20 @@ class Shipwreck extends Homestead {
     static fromJSON(value) { return window.storage.Generic_fromJSON(Shipwreck, value.data);};
     tick(time) {
         let delta = window.gm.getDeltaTime(time,this.lastTick);
-        if(delta>(24*60-1)) {
+        /*if(delta>(24*60-1)) {
             this.gain=5,this.lastTick=time;
             let _R = new ResourceChange();_R.Resource='Food',_R.gain=(9);
             window.story.state.Events.push(_R);
             _R = new ResourceChange();_R.Resource='Energy',_R.gain=(3);
             window.story.state.Events.push(_R);
-        }
+        }*/
         return(false);
     }
     getCapacity(typ) {
         if(typ==='people') return(3);
-        retur(0); 
-    }
-}
-class Housing extends Homestead {
-    constructor(){super(); this.style='Tent';}
-    set style(style) {
-        this.id=this.name=this._style = style; 
-        this.cost = {builders:[],resources:[],time:0};
-        switch(style) {
-        case 'Tent': 
-            this.cost.resources.push({ResId:'Wood',amount:3}),this.cost.time=2;
-            break;
-        case 'Cabin': 
-            this.cost.resources=[{ResId:'Wood',amount:8},{ResId:'Stone',amount:3}],this.cost.time=3;
-            break;
-        default: throw new Error(this.id +' doesnt know '+style);
-        }
-    }
-    get style() {return this._style;}
-    get desc() { 
-        let msg ='';
-        switch(this._style) {
-            case 'Tent': 
-                msg ='A tent made from wood and other scavenged material.';
-                break;
-            case 'Cabin': 
-                msg ='A wooden cabin.';
-                break;
-            default: throw new Error(this.id +' doesnt know '+style);
-        }
-        return(msg);
-    }
-    getCapacity(typ) {
-        if(typ==='people') return(3);
+        if(typ==='slave') return(3);
         return(0); 
     }
-    toJSON() {return window.storage.Generic_toJSON("Housing", this); };
-    static fromJSON(value) { return window.storage.Generic_fromJSON(Housing, value.data);};
 }
 class SlavePen extends Homestead {
     constructor(){super(); this.style='SlavePen';}
@@ -276,22 +256,12 @@ class Farm extends Facility {
         return(false);
     }
 }
-class Windmill extends Facility {}
-class Wall extends Facility {}
-//repressor-field
-//ambulance, clinic
-//brewery, canteen
-
-
 
 window.gm.BuildingsLib = (function (Lib) {
     window.storage.registerConstructor(Operator); //todo operator-Lib?
     window.storage.registerConstructor(Shipwreck);
-    window.storage.registerConstructor(Housing);
     window.storage.registerConstructor(Smithy);
     Lib['Shipwreck']= function () { let x= new Shipwreck();return(x);};
-    Lib['Tent']= function () { let x= new Housing();return(x);};
-    Lib['Cabin']= function () { let x= new Housing();x.style='Cabin';return(x);};
     Lib['Smithy']= function () { let x= new Smithy();return(x);};
     Lib['SlavePen']= function () { let x= new SlavePen();return(x);};
     return Lib; 

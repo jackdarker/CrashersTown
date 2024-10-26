@@ -30,50 +30,27 @@ window.gm.initGame= function(forceReset,NGP=null) {
       window.storage.loadAchivementsFromBrowser();
     }
     if (!s.City||forceReset) {
-      s.City = {
+      s.City = {  //things you own
         Facilities: [window.gm.BuildingsLib.Shipwreck()],
-        People: [new Operator(),new Operator(),new Operator()],
+        People: [],
         Slaves:[],
         Resources:{}
       };
       window.gm.addResource(s.City.Resources,'Iron',5);
-      s.Known={},s.Known.Slavery=s.Known.Barracks=null;
+      s.Known={};
       s.Known.Scout=null; //initial job-knowledge
+      s.timeslots=["Night","Dawn","Morning","Noon","Afternoon","Evening"];
+      s.dayslots=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
       //initial Area-knowledge
       s.Map={},s.Map.Crashsite=window.gm.ExploreLib["AreaCrashsite"](); 
       s.Events=[];
     }
-    if (!s.Cyril||forceReset) {  //
-      let ch = new Character()
-      ch.name=ch.id="Cyril";
-      ch.faction="Player";
-      //add some basic inventory
-      ch.Outfit.addItem(new BaseHumanoid());
-      ch.Outfit.addItem(new SkinHuman());
-      ch.Outfit.addItem(HandsHuman.factory('human'));
-      ch.Outfit.addItem(new FaceHuman());
-      ch.Wardrobe.addItem(new Jeans());
-      ch.Wardrobe.addItem(new TankShirt());
-      ch.Outfit.addItem(new Jeans());
-      ch.Outfit.addItem(new TankShirt());
-      ch.Stats.increment('strength',3);
-      s.Cyril = ch;
-    }
-    if (!s.Carlia||forceReset) {  //the cat/dog-woman
-      let ch = new Carlia()
-      s.Carlia = ch;
-    }
-    if (!s.Ruff||forceReset) {  //Ruff the wolf
-      let ch = new Ruff()
-      s.Ruff = ch;
-    }
-    if (!s.Trent||forceReset) {  //the horse-bully from the bridge
-      let ch = new Trent()
-      ch.name=ch.id="Trent";
-      s.Trent = ch;
+    if (!s.Lydia||forceReset) {  //the cat/dog-woman
+      let ch = new Lydia()
+      s.Lydia = ch;
     }
     if (!s.PlayerVR||forceReset) {  
-      let ch = new Character();
+      let ch = new Operator();
       ch.id="PlayerVR";
       ch.name="Zeph";
       ch.faction="Player";
@@ -84,44 +61,10 @@ window.gm.initGame= function(forceReset,NGP=null) {
       ch.Outfit.addItem(HandsHuman.factory('human'));
       ch.Outfit.addItem(AnusHuman.factory('human'));
       ch.Outfit.addItem(PenisHuman.factory('human'));
-      if(s._gm.debug) {
-        ch.Skills.addItem(new SkillInspect());
-        ch.Skills.addItem(new SkillUltraKill());
-        ch.Skills.addItem(SkillCallHelp.factory('Wolf'));
-        ch.Skills.addItem(SkillDetermined.factory());
-      }
       s.PlayerVR=ch;
     }
     if (!s.PlayerRL||forceReset) {  
-        let ch = new Character();
-        ch.id="PlayerRL";
-        ch.name="Andrew";
-        ch.faction="Player";
-        ch.Effects.addItem(new skCooking());
-        //add some basic inventory
-        ch.Inv.addItem(new Money(),20);
-        ch.Inv.addItem(new LighterDad());
-        ch.Inv.addItem(new FlashBang(),2);
-        ch.Inv.addItem(new CanOfCoffee(),2);
-        ch.Wardrobe.addItem(new Jeans());
-        ch.Wardrobe.addItem(new Briefs());
-        ch.Wardrobe.addItem(new Sneakers());
-        ch.Wardrobe.addItem(new TankShirt());
-        ch.Wardrobe.addItem(new Pullover());
-        ch.Outfit.addItem(new BaseHumanoid());
-        ch.Outfit.addItem(new FaceHuman());
-        ch.Outfit.addItem(HandsHuman.factory('human'));
-        ch.Outfit.addItem(new SkinHuman());
-        ch.Outfit.addItem(AnusHuman.factory('human'));
-        ch.Outfit.addItem(PenisHuman.factory('human'));
-        ch.Wardrobe.addItem(new Briefs());
-        ch.Outfit.addItem(new Jeans());
-        ch.Outfit.addItem(new Sneakers());
-        ch.Outfit.addItem(new Pullover());
-        //special skills
-        ch.Effects.addItem(new effNotTired()); //depending on sleep Tired will be set to NotTired or Tired
-        //ch.Skills.addItem(SkillCallHelp.factory('Mole'));
-        s.PlayerRL=ch;
+        s.PlayerRL=s.PlayerVR;  //Todo remove
     } 
     
     window.gm.initGameFlags(forceReset,NGP);
@@ -134,9 +77,6 @@ window.gm.initGameFlags = function(forceReset,NGP=null) {
   let s= window.story.state;
   if (forceReset) {  
     s.PrcEvent=null; 
-  }
-  let Ship = {
-    cryoStore: []
   }
   let PrcEvent={};
   //see comment in rebuildFromSave why this is done

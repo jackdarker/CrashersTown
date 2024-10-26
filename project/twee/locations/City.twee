@@ -1,36 +1,3 @@
-:: Evt_
-Your scouts found:
-- ruins with information
-- a tribe
-- a monster
-- some resources/food
-- a location where resources can be mined
-
-Buildings:
-- built
-- damaged by disaster
-- run out of resources
-- production completed
-
-People:
-- breeding done
-- people needs not fullfilled
-- training done
-- diseas spreading
-- people gone missing
-
-Intelligence:
-- diplomatic contact
-- declaration of war/ peace offer / trading offer / tribute payment
-
-Research:
-- new technology
-
-Others:
-- attack by monsters
-- attack by tribe
-- trading caravan
-- travelers with information or rare goods
 
 :: _Event [_nodeffered_]
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
@@ -46,12 +13,27 @@ if(!halt) window.story.show('Menu_Main')
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
 <%window.gm.player.location=window.passage.name;%>
 From this menu you can access other menus.</br>
-<p>[[Exploration|Menu_Exploration]] [[Mission|Menu_Mission]] [[Policing|Menu_Intelligence]]</p>
-<p>[[Your people|Menu_Social]] [[Slaves|Menu_Slave]]</p>
-<p>[[Buildings|Menu_Build]] [[Production|Menu_Production]] [[Breeding|Menu_Breed]] </p>
-<p>[[Trading|Menu_Market]] [[Resources|Menu_Resources]]  </p>
-<p> Press the button below to progress time.</p>
-<a0 onclick='window.gm.newTurn()'>-> END THIS DAY <-</a>
+<p>[[Porthcrawl|Menu_City]] [[Worldmap|Menu_Map]]</p>
+<p>[[Exploration|Menu_Exploration]] [[Mission|Menu_Mission]] [[Policing|Menu_Administration]]</p>
+<p>[[People|Menu_Social]] [[Slaves|Menu_Slaves]]</p>
+<p>[[Facilities|Menu_Build]] [[Production|Menu_Production]] [[Breeding|Menu_Breed]] </p>
+<p>[[Trading|Menu_Market]] [[Inventory|Menu_Resources]]  </p>
+</article><article id="LogPanel"></article></section>
+
+
+:: Menu_City
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<%window.gm.player.location=window.passage.name;%><p>[[Return to Mansion|Menu_Main]]</p>
+This menu:
+- traders
+- Slavers Guild
+- Craftsmen Guild
+- Adventurers Guild
+- Service Guild
+- Arcane Academy
+- Temple
+- Administration
+- Pillory
 </article><article id="LogPanel"></article></section>
 
 
@@ -61,8 +43,9 @@ From this menu you can access other menus.</br>
 This menu:
 - worldmap
 - exploration progress
+- cities & dungeons
 - influence
-- other tribes
+- travel
 </article><article id="LogPanel"></article></section>
 
 
@@ -124,18 +107,40 @@ window.gm.listPeople();
 </script>
 
 
-:: Menu_Person
+:: Menu_Person [_back_]
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
-<p>[[Menu_Main]]</p>
+<p>[[Back|_back_]]</p>
 This menu:</br>
-- detail information for a person</br>
+- detail information for a person/slave</br>
 - assign them new work or training</br>
+- socialise 
+- set rules
+- take them for a walk
 </br><div id='choice'></div>
 </br><div id='panel'></div></br><hr><div id='panel2'></div>
 </article><article id="LogPanel"></article></section>
 <script>
 if(window.story.state.tmp.args[1]==="Slave") window.gm.listSlave(window.story.state.tmp.args[0]);
 else window.gm.listPerson(window.story.state.tmp.args[0]);
+</script>
+
+
+:: Menu_WorkSchedule [_back_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<p>[[Back|_back_]]</p>
+This menu:</br>
+- Table Day & Timeslot
+- with selectors of activities
+- activities depend on day/time, workerspecialisation, workspace & resource available
+- print preview of side-effect, efficiency & workresult of modified slot
+- indicate overload
+<table id="schedule"><tbody>
+</tbody></table>';
+</br><div id='panel'></div></br><hr><div id='panel2'></div>
+</br><div id='choice'></div>
+</article><article id="LogPanel"></article></section>
+<script>
+window.gm.planWork(window.story.state.tmp.args[0]);
 </script>
 
 
@@ -162,16 +167,15 @@ This menu:
 </article><article id="LogPanel"></article></section>
 
 
-:: Menu_Slave
+:: Menu_Slaves
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
 <%window.gm.player.location=window.passage.name;%><p>[[Menu_Main]]</p>
 This menu:</br>
 - lists slaves and their enslavement-progress</br>
 - decide enslavement tactic</br>
 - assign slaves to work or training</br>
-- making slaves into citizen </br>
-</br><div id='choice'></div>
-</br><div id='panel'></div></br><hr><div id='panel2'></div>
+</br><div id='choice'></div><hr><div id='panel2'></div><hr>
+</br><div id='panel'></div></br>
 </article><article id="LogPanel"></article></section>
 <script>
 window.gm.listSlaves();
@@ -258,5 +262,24 @@ This menu:
 </article><article id="LogPanel"></article></section>
 
 
+:: Aquire_Lydia
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<%window.gm.player.location=window.passage.name;%>
+You saved Lydia from the cutthroats and she now ows you. Therefore she made the proposal to be of service.
+<br>
+<br>Lydia is now enslaved by you !<br>
+<br>
+<a0 onclick='foo();'>Continue</a>
+</article><article id="LogPanel"></article></section>
+<script>function foo(){
+    let s=window.story.state;
+    s.City.Slaves.push(s.Lydia);
+    window.gm.updataJobCapabilitys();
+    window.story.show("Menu_Main");
+}
+</script>
+
 :: other
 visit bath/library/arena/stripclub for relaxation
+
+

@@ -117,6 +117,59 @@ class Trait {
     /* */
 } 
 /**
+ * Work / Leisure / Training
+ *
+ * @class Job
+ */
+ class Job {
+    constructor() {
+        this.id=this.name='';
+        this.level=0;  // 
+        this.hidden=0; // "???" 
+        this.workspaces=[];
+    }
+    toJSON() {return window.storage.Generic_toJSON("Job", this); };
+    static fromJSON(value) { return window.storage.Generic_fromJSON(Job, value.data);};
+    desc(){return(this.name);}
+    requiredWorkspace(){    // [[]]
+        return(this.workspaces);
+    }
+    requiredResource(){ //for 100% Build
+        return([]);
+    }
+    requiredEnergy(){
+        return(30);
+    }
+    requiredBoss(){ //
+        return([]);
+    }
+    params(){return({})}
+    startJob(time,workspace){
+        this.workspace=workspace;
+        this.lastTick=time;
+    }
+    tick(time){ //overwrite this with the result of the work
+        let delta = window.gm.getDeltaTime(time,this.lastTick);  
+        if(delta>(4*60-1)) {
+            this.lastTick=time;
+        }          
+    }
+} 
+/**
+ * this is a building or equipment, it keeps track of the workprogress
+ */
+class Workspace {
+    constructor() {
+        this.id=this.name='';
+        this.level=0;  // 
+        this.produce=[]; //a stack of items to produce {id: "Iron", count:-1 }
+        this.progress=0;    // 100%
+    }
+    toJSON() {return window.storage.Generic_toJSON("Workspace", this); };
+    static fromJSON(value) { return window.storage.Generic_fromJSON(Workspace, value.data);};
+    desc(){return(this.name);}
+}
+/**
  * base class for the events
  */
 class GMEvent extends Entity {

@@ -4,7 +4,7 @@
 // display is done in _event-Passage
 window.gm.newTurn=function() {
     //daycount++
-    window.gm.addTime(24*60);
+    window.gm.addTime(4*60); //6 slots a day    //TODO ensure proper time slot cycle  22-2-6-10-14-18-22 
     window.story.state.PrcEvent=null;
     window.story.state.Summary={ResourceChange:new ResourceChangeSummary(),FoodDrain:new FoodDrain()};
     window.story.show("_Event");
@@ -14,38 +14,38 @@ window.gm.processEvents=function() {
     window.story.state.PrcEvent = window.story.state.PrcEvent || {i:-1, list:'', group:['Facilities','People','Events','Summary']};
     let _list2,_E,now = window.gm.getTime(), PrcEvent=window.story.state.PrcEvent;
     while(true){
-    if(PrcEvent.list==='') {
-        if(PrcEvent.group.length>0) {
-        PrcEvent.list=PrcEvent.group.shift(),PrcEvent.i=-1;
-        } else {
-        return(false); //all list done
+        if(PrcEvent.list==='') {
+            if(PrcEvent.group.length>0) {
+            PrcEvent.list=PrcEvent.group.shift(),PrcEvent.i=-1;
+            } else {
+            return(false); //all list done
+            }
         }
-    }
-    if(PrcEvent.list==='Facilities') _list2= window.story.state.City.Facilities;
-    if(PrcEvent.list==='People') _list2= window.story.state.City.People;
-    else if(PrcEvent.list==='Events') _list2= window.story.state.Events;
-    else if(PrcEvent.list==='Summary') {
-        var _list = Object.keys(window.story.state.Summary); _list2=[];
-        for(el of _list){
-        _list2.push(window.story.state.Summary[el]); 
-        //todo because Summary is no array, the removal of done events doesnt work
+        if(PrcEvent.list==='Facilities') _list2= window.story.state.City.Facilities;
+        if(PrcEvent.list==='People') _list2= window.story.state.City.People;
+        else if(PrcEvent.list==='Events') _list2= window.story.state.Events;
+        else if(PrcEvent.list==='Summary') {
+            var _list = Object.keys(window.story.state.Summary); _list2=[];
+            for(el of _list){
+            _list2.push(window.story.state.Summary[el]); 
+            //todo because Summary is no array, the removal of done events doesnt work
+            }
         }
-    }
-    while(PrcEvent.i+1<_list2.length) {
-        PrcEvent.i=1+PrcEvent.i;
-        _E =_list2[PrcEvent.i];
-        if(_E.tick(now) && _E.renderTick()) { //if there is a event triggered and output requires interaction, halt the processing
-        return(true);
+        while(PrcEvent.i+1<_list2.length) {
+            PrcEvent.i=1+PrcEvent.i;
+            _E =_list2[PrcEvent.i];
+            if(_E.tick(now) && _E.renderTick()) { //if there is a event triggered and output requires interaction, halt the processing
+                return(true);
+            }
         }
-    }
-    //remove all done events
-    PrcEvent.i = _list2.length-1;
-    while(PrcEvent.i>=0) {
-        _E =_list2[PrcEvent.i];
-        if(_E.done ) { _list2.splice(PrcEvent.i,1);  }
-        PrcEvent.i -=1;
-    }
-    PrcEvent.list='';
+        //remove all done events
+        PrcEvent.i = _list2.length-1;
+        while(PrcEvent.i>=0) {
+            _E =_list2[PrcEvent.i];
+            if(_E.done ) { _list2.splice(PrcEvent.i,1);  }
+            PrcEvent.i -=1;
+        }
+        PrcEvent.list='';
     }
 };
 //
@@ -247,7 +247,9 @@ window.gm.listResources=function() {
         $("div#panel")[0].appendChild(link);
     }
 };
-//
+/** renders slave description and options
+ * 
+ */
 window.gm.listSlave=function(id){
     var _P,_list,id=Number(id),panel=$("div#panel")[0];
     _list = window.story.state.City.Slaves;
@@ -263,12 +265,18 @@ window.gm.listSlave=function(id){
     link.textContent=_P.name+' is a slave with a obedience= '+_P.obedience+' and a trust= '+_P.trust;
     panel.appendChild(link);
     link = document.createElement('hr');panel.appendChild(link);
+    link = document.createElement('p');link.textContent='The slave has to attend...';panel.appendChild(link);
+    link = document.createElement('button'),link.textContent='Work & Training Schedule';
+    link.addEventListener("click", function(me){window.story.show("Menu_WorkSchedule");}),panel.appendChild(link);
+    link = document.createElement('p');link.textContent='Possible options for work or training depends on available facilities and trainers.';panel.appendChild(link);
+    link = document.createElement('hr');panel.appendChild(link);
     link = document.createElement('p');link.textContent='While resting, the slave should...';panel.appendChild(link);
     _list=['outside','cell','shackled','restrain'];
     for(var i=_list.length-1;i>=0;i--) { 
         link = document.createElement('button'),link.id=_list[i];
         link.textContent='...may leave the cell';
-        switch(_list[i]) {
+        const _option=_list[i];
+        switch(_option) {
             case 'outside':
                 break;
             case 'cell':
@@ -282,9 +290,10 @@ window.gm.listSlave=function(id){
                 break;
             default:
         }
-        link.addEventListener("click", function(me){}),panel.appendChild(link);
+        link.addEventListener("click", function(me){_P.RestOption=_option;window.gm.refreshAllPanel();}),panel.appendChild(link);
     }
     link = document.createElement('p');link.textContent='There is a high risk that the slave might flee if it is allowed to move around outside the cell. Having a slave restrained might help with breaking its will, but might also reduce its fitness or healthyness.';panel.appendChild(link);
+    link = document.createElement('hr');panel.appendChild(link);
     link = document.createElement('p');link.textContent='The slave may wear...';panel.appendChild(link);
     _list=['nude','tatters','anything'];
     for(var i=_list.length-1;i>=0;i--) { 
@@ -301,17 +310,18 @@ window.gm.listSlave=function(id){
                 break;
             default:
         }
-        
         link.addEventListener("click", function(me){}),panel.appendChild(link);
     }
     link = document.createElement('p');link.textContent='Having the slave walk around nude might humilate him. Beside this clothing restriction, the slave has to wear the assigned gear and may only switch if training or work requires it.';panel.appendChild(link);
+    link = document.createElement('hr');panel.appendChild(link);
     link = document.createElement('p');link.textContent='The slave might...';panel.appendChild(link);
     //command other slaves to fullfill his need, may talk to other slaves, has to stay silent
     //may reject inappropiate commands of other slaves 
-    link = document.createElement('p');link.textContent='The slave has to attend...';panel.appendChild(link);
-    link = document.createElement('p');link.textContent='Possible options for work or training depends on available facilities and trainers.';panel.appendChild(link);
     link = document.createElement('hr');panel.appendChild(link);
 };
+/**  
+ * prints a list of slaves as link to a node 
+*/
 window.gm.listSlaves=function() {
     var _list={},_list2,panel2=$("div#panel2")[0],panel=$("div#panel")[0];;
     _list2 = window.story.state.City.Slaves;
@@ -333,27 +343,174 @@ window.gm.listSlaves=function() {
         panel.appendChild(link);
     }
 };
+/** 
+ * print Schedule-table for worker. It requires:
+ * #schedule>tbody to display day & Time assignment of Jobs
+ * div#panel2 to display job selector
+ * div#choice to display info for selected job
+ */
+window.gm.planWork=function(id,params) {
+    let showall=(params&&params.showall)?params.showall:false;
+    let s=window.story.state;
+    var _P,_list,link,link2,id=Number(id);
+    var panel=document.querySelector("#schedule>tbody"),panel2=document.querySelector("div#panel2"),choice=document.querySelector("div#choice");;
+    _list = window.story.state.City.Slaves;
+    _P=window.gm.getArrayElementById(_list,id);
+    if(!_P) return;
+    
+    //link = document.createElement('p');link.textContent = 'Click on timeslot and select work from list below.';panel.appendChild(link);
+    //link = document.createElement('hr');panel.appendChild(link);
+    const at='@'
+    link2=document.createElement('tr');panel.appendChild(link2);
+    link=document.createElement('th'),link.textContent="   ";link2.appendChild(link);
+    link=document.createElement('th'),link.textContent="   ";link2.appendChild(link);
+    s.timeslots.forEach((x)=>{link=document.createElement('th'),link.textContent=x;link2.appendChild(link);});
+
+    s.dayslots.forEach((x)=>{dayWork(x)});
+
+    function dayWork(day){
+        var row = document.createElement('tr');panel.appendChild(row);
+        link=document.createElement('td');link.textContent="   ";link.id=day+"_alert";row.appendChild(link);  //Todo indicator for overload
+        link=document.createElement('td');link.textContent=day;row.appendChild(link);
+        link=document.createElement('td'),link.textContent="   ";link2.appendChild(link);   
+        //["2-6","6-10","10-14","14-18","18-22","22-2"]
+        s.timeslots.forEach((x)=>{timeWork(x,day,row)});
+    }
+    function timeWork(time,day,dayrow){
+        link=document.createElement('td');dayrow.appendChild(link);
+        link2 = document.createElement('button'),link2.id=day+at+time,link2.textContent=Object.keys(_P.WorkSchedule[day][time])[0];
+        link2.addEventListener("click", function(me){createSelector(me.currentTarget.id)});
+        link.appendChild(link2);
+    }
+    function createSelector(day_time){
+        while(panel2.hasChildNodes()) {
+            panel2.removeChild(panel2.children[0]);
+        }
+        _P.WorkOptions.forEach((x)=>{addOption(day_time,x.id)}); //Todo filter options that are general unavailable (missing workspace)
+    }
+    function addOption(day_time,work){
+        link = document.createElement('button');link.id=day_time+at+work, link.textContent = work;panel2.appendChild(link);
+        link.addEventListener("click", function(me){workPreview(me.currentTarget.id)});
+    }
+    function workPreview(day_time_work){
+        var info=day_time_work.split(at),    //Monday_Dawn_Maid_Inn
+            day=info[0],time=info[1],work=info[2];
+        while(choice.hasChildNodes()) {
+            choice.removeChild(choice.children[0]);
+        }
+        var _res=window.gm.workPreview(_P,day,time,work);
+        if(_res.OK==true){
+            link = document.createElement('p');link.textContent=day_time_work;choice.appendChild(link);
+            _P.WorkSchedule[day]=_P.WorkSchedule[day]||{};
+            _P.WorkSchedule[day][time]={};
+            _P.WorkSchedule[day][time][work]=_res.work.params;    
+            dayPreview(day);
+            document.getElementById(day+at+time).textContent=_res.msg;
+        } else {
+            link = document.createElement('p');link.textContent=_res.msg;choice.appendChild(link);
+        }
+    }
+    function dayPreview(day){
+        let _res={OK:true,msg:""},_en=0;
+        s.timeslots.forEach((x)=>{
+            Object.keys(_P.WorkSchedule[day][x]).forEach((y)=>{
+                _en+=_P.getWorkOption(y).requiredEnergy();  //Resting has 0 Energy
+            })
+        })
+        if(_en>100){    //Todo _P.stats.maxEnergy
+            _res.OK=false,_res.msg="Jobs require to much energy and might fail. "
+        }
+        if(_res.OK==false){
+            document.getElementById(day+"_alert").textContent=_res.msg;
+        } else {
+            document.getElementById(day+"_alert").textContent="  ";
+        }
+    }
+};
+/**
+ * estimate effect of work
+*/
+window.gm.workPreview=function(person,day,time,work){
+    let _res={msg:'',OK:true}
+    //P has WorkOption + add. requirements
+    let _work=person.getWorkOption(work)
+    if(_work==null){
+        _res.OK=false, _res.msg="doesnt know about "+work+"!";
+    }
+    if(_res.OK==true) {
+        //Time ok
+        if(work!="Rest" && (time=="Night" || time=="Dawn")) {
+            _res.OK=false, _res.msg="People rest at this time!";
+        }
+    }
+    if(_res.OK==true) {
+        //Workplace avaliable
+    }
+    if(_res.OK==true) {
+        //Resources available
+    }
+    if(_res.OK==true) {
+        //Resources available
+        _res.msg=person.name+" will use "+_work.workspaces[0]+ " to "+_work.desc()+".<br> Requires "+_work.requiredEnergy()+" energy.";
+        _res.work=_work;
+    }
+    return(_res)
+}
+/** 
+ * update available jobs for someone; this will also remove the active job if it becomes unavailable 
+*/
+window.gm.updataJobCapabilitys=function(person){
+    let s=window.story.state;
+    if(person==null) { //check all people & slaves
+        s.City.Slaves.forEach((x)=>{window.gm.updataJobCapabilitys(x.id)});
+        s.City.People.forEach((x)=>{window.gm.updataJobCapabilitys(x.id)});
+        return;
+    }
+    let _P = window.gm.getArrayElementById(window.story.state.City.Slaves,person);
+    if(_P==null) {
+        _P = window.gm.getArrayElementById(window.story.state.City.People,person);
+    }
+    Object.keys(window.gm.LibJobs).forEach((x)=>{_P.addWorkOption(window.gm.LibJobs[x]())});    
+    s.dayslots.forEach((x)=>{
+        s.timeslots.forEach((y)=>{  //make sure a valid schedule is active
+            if(!_P.WorkSchedule[x]) { _P.WorkSchedule[x]={}; }
+            if(!_P.WorkSchedule[x][y]){ _P.WorkSchedule[x][y]={};}
+            if(Object.keys(_P.WorkSchedule[x][y]).length==0) {_P.WorkSchedule[x][y]={Rest:{}};}
+        })
+    })
+}
 window.gm.randomizePerson=function(params) {
     let slave=(params&&params.slave)?params.slave:false;
+    //Todo name,gender,race,traits,stats
     let _P= new Operator();
     if(slave) { _P.slave=slave; 
         _P.obedience=-70,_P.trust=-70; //todo values depends on race and attitude to humans
     }
     return _P;
 };
-window.gm.getById=function(array,id) {
-    var _id=Number(id),_p;
+window.gm.getArrayElementById=function(array,id) {
+    var _id=Number(id),_p;  //id is either a number or string
     for(el of array){
         _p=el;
-        if(_p.id===_id) break;
+        if(_p.id===id || _p.id===_id) break;
         _p=null;
     }
     return(_p);
 }
+window.gm.getArrayIndexById=function(array,id) {
+    var _id=Number(id),_p,i=0;
+    for(el of array){
+        _p=el;
+        if(_p.id===id || _p.id===_id) break;
+        i++;
+        _p=null;
+    }
+    return((_p==null)?-1:i);
+}
 window.gm.listPerson=function(id){
     var _p,_list,_list2,_AreaJobs=["Hunter","Scout","Scavenger"], panel=$("div#panel")[0];
     _list = window.story.state.City.People;
-    _p=window.gm.getById(_list,id);
+    _p=window.gm.getArrayElementById(_list,id);
     if(!_p) return;
     var link = document.createElement('p');
     link.textContent=_p.name+' is currently working as '+_p.job+'. Change to...';

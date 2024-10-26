@@ -180,7 +180,7 @@ class ScoutProgress extends GMEvent {
             this.daysLeft-=1,this.lastTick=time;
             let _Area=window.story.state.Map[this.Area];
             if(this.daysLeft<=0) {this.done=true;
-                window.gm.getById(window.story.state.City.People,this.Person).jobActive=false;
+                window.gm.getArrayElementById(window.story.state.City.People,this.Person).jobActive=false;
             } else {
                 _Area.explore(this.Person);
             }
