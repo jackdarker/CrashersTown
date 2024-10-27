@@ -6,20 +6,18 @@
  * @class Entity
  */
 export class Entity {
-    /**
-     *returns an int that is a unique ID (unique for duration of the game)
-     *
-     * @static
-     * @return {*} 
-     * @memberof Entity
-     */
-    static UID(){Entity.prototype.UID=(Entity.prototype.UID===undefined)?1:Entity.prototype.UID+=1; return(Entity.prototype.UID);};
+    //static UID(){Entity.prototype.UID=(Entity.prototype.UID===undefined)?1:Entity.prototype.UID+=1; return(Entity.prototype.UID);};
     constructor() {
-        this.id=Entity.UID(),this.name = 'Entity'+this.id;
+        this.id=IDGenerator.createID(),this.name = 'Entity'+this.id;
         this.tags = [], this.lastTick = window.gm.getTime();
     }
     get parent() {return this._parent?this._parent():null;}
     _relinkItems(parent){this._parent=window.gm.util.refToParent(parent);}
+    _updateId(){ 
+        var _oldId = this.id;
+        this.id=IDGenerator.createID();
+        if(this.parent) this.parent._updateId(_oldId);  //TODO required?
+    }
     //tag or [tag]
     hasTag(tags) {
         if(tags instanceof Array) {
@@ -126,13 +124,14 @@ class Trait {
         this.id=this.name='';
         this.level=0;  // 
         this.hidden=0; // "???" 
+        this.workspace=null;
         this.workspaces=[];
     }
     toJSON() {return window.storage.Generic_toJSON("Job", this); };
     static fromJSON(value) { return window.storage.Generic_fromJSON(Job, value.data);};
     desc(){return(this.name);}
     requiredWorkspace(){    // [[]]
-        return(this.workspaces);
+        return([this.workspaces]);
     }
     requiredResource(){ //for 100% Build
         return([]);
@@ -144,16 +143,6 @@ class Trait {
         return([]);
     }
     params(){return({})}
-    startJob(time,workspace){
-        this.workspace=workspace;
-        this.lastTick=time;
-    }
-    tick(time){ //overwrite this with the result of the work
-        let delta = window.gm.getDeltaTime(time,this.lastTick);  
-        if(delta>(4*60-1)) {
-            this.lastTick=time;
-        }          
-    }
 } 
 /**
  * this is a building or equipment, it keeps track of the workprogress
@@ -162,11 +151,50 @@ class Workspace {
     constructor() {
         this.id=this.name='';
         this.level=0;  // 
-        this.produce=[]; //a stack of items to produce {id: "Iron", count:-1 }
+        this.maxPeople=1;
+        this.produceStack=[]; //a stack of items to produce {id: "Iron", count:-1 }
+        this.produce="";    //current produce
         this.progress=0;    // 100%
+        this.lastTick="";
     }
     toJSON() {return window.storage.Generic_toJSON("Workspace", this); };
     static fromJSON(value) { return window.storage.Generic_fromJSON(Workspace, value.data);};
+    desc(){return(this.name);}
+    doJob(people,now){
+        this.lastTick=now;
+        if(true){
+            var entry = document.createElement('p');
+            entry.textContent = "Someone worked here.";
+            document.querySelector("div#panel").appendChild(entry);
+            GMEvent.createNextBt('Next');
+            return(true); //halt for display
+        }
+        return(false);
+    }
+    renderTick() {
+        return(true);
+    }
+    /*tick(time){ //overwrite this with the result of the work
+        let delta = window.gm.getDeltaTime(time,this.lastTick);  
+        if(delta>(4*60-1)) {
+            this.lastTick=time;
+        }          
+    }*/
+}
+class WS_Maid extends Workspace{
+    constructor() {
+        super();
+    }
+    toJSON() {return window.storage.Generic_toJSON("WS_Maid", this); };
+    static fromJSON(value) { return window.storage.Generic_fromJSON(WS_Maid, value.data);};
+    desc(){return(this.name);}
+}
+class WS_Smithy extends Workspace{
+    constructor() {
+        super();
+    }
+    toJSON() {return window.storage.Generic_toJSON("WS_Smithy", this); };
+    static fromJSON(value) { return window.storage.Generic_fromJSON(WS_Smithy, value.data);};
     desc(){return(this.name);}
 }
 /**

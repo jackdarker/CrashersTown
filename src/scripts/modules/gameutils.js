@@ -31,7 +31,8 @@ window.gm.initGame= function(forceReset,NGP=null) {
     }
     if (!s.City||forceReset) {
       s.City = {  //things you own
-        Facilities: [window.gm.BuildingsLib.Shipwreck()],
+        Facilities: [window.gm.LibFacilities.Mansion()],
+        Workspaces: [window.gm.LibWorkspace.Rest_Mansion(),window.gm.LibWorkspace.Maid_Mansion(),window.gm.LibWorkspace.Maid_Inn()],
         People: [],
         Slaves:[],
         Resources:{}
@@ -39,11 +40,10 @@ window.gm.initGame= function(forceReset,NGP=null) {
       window.gm.addResource(s.City.Resources,'Iron',5);
       s.Known={};
       s.Known.Scout=null; //initial job-knowledge
-      s.timeslots=["Night","Dawn","Morning","Noon","Afternoon","Evening"];
-      s.dayslots=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
       //initial Area-knowledge
       s.Map={},s.Map.Crashsite=window.gm.ExploreLib["AreaCrashsite"](); 
-      s.Events=[];
+      s.Events=[];  //stack of events to run on next tick
+      s.Schedule=new JobSchedule();
     }
     if (!s.Lydia||forceReset) {  //the cat/dog-woman
       let ch = new Lydia()

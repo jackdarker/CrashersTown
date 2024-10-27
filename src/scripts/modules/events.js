@@ -150,7 +150,7 @@ class BuildProgress extends GMEvent {
         if(delta>(24*60-1)) {
             this.daysLeft-=1,this.lastTick=time;
             if(this.daysLeft<=0) {
-                window.story.state.City.Facilities.push(window.gm.BuildingsLib[this.Facility]());
+                window.story.state.City.Facilities.push(window.gm.LibFacilities[this.Facility]());
                 this.done=true;
             }
             return(true);

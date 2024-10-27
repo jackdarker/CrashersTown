@@ -2,7 +2,26 @@
 
 window.gm = window.gm || {}; //game related operations
 window.gm.util = window.gm.util || {};  //utility functions
-
+class IDGenerator {//extends Singleton{
+  constructor(){
+      if(IDGenerator._instance){ return IDGenerator._instance; }
+      IDGenerator._instance = this;
+      this._idCounter=1;
+      window.storage.registerConstructor(IDGenerator);
+  }
+  static instance() {
+      if(!IDGenerator._instance){return new IDGenerator(); }
+      return IDGenerator._instance;
+  }
+  static resetID(useID){ //this should be only called after reload
+    //hack: reloading save causes constructor calls causes calls to createID which would increase counter (the ids are reverted by merging loaded data into the constructed objects)
+    //so we need a way to revert this increase
+    IDGenerator.instance()._idCounter=useID;
+  }
+  static createID() {let x=IDGenerator.instance()._idCounter++;return("_"+x);} //add _ or queryselector() might not work if id starts with number ?!
+  toJSON(){return window.storage.Generic_toJSON("IDGenerator", this); }
+  static fromJSON(value){return(window.storage.Generic_fromJSON(IDGenerator, value.data));}
+}
 // helper for publisher/subscriber-pattern; myObject.ps =PubSub(); myObject.ps.subscribe(...
 // !! warning, dont use for objects that need to be loaded from savegame
 // the reviver calls constructor of nested objects multiple times which lead to multiple registrations with partially incomplete objects in the PubSub;
@@ -134,8 +153,10 @@ window.gm.initGame= function(forceReset,NGP=null) {
     if (!s._gm||forceReset) {
       s._gm = {
         version : window.gm.getSaveVersion(),
-        style: 'default', //ss profile to use
+        style: 'default', //css profile to use
         log : [],
+        IDGenBkup:0,
+        IDGen: new IDGenerator(),
         passageStack : [], //used for passage [back] functionality
         defferedStack : [], //used for deffered events
         onholdStack : [], //used for deffered events
@@ -196,9 +217,15 @@ window.gm.newGamePlus = function() {
 //reimplement this to handle version upgrades on load !
 window.gm.rebuildObjects= function(){ 
   var s = window.story.state;
+  IDGenerator.resetID(s.IDGenBkup);
   window.styleSwitcher.loadStyle(); //since style is loaded from savegame
   window.gm.quests.setQuestData(s.quests); //necessary for load support
   window.gm.switchPlayer(s._gm.activePlayer);
+}
+//called before data is serialized
+window.gm.preSave=function(){
+  var s = window.story.state;
+  s.IDGenBkup=IDGenerator.instance()._idCounter;
 }
 //--------------- time management --------------
 //returns timestamp since start of game
@@ -245,21 +272,26 @@ window.gm.getTimeStruct=function() {
   var v=window.story.state._gm;
   var m=v.time%100;
   var h=((v.time-m)/100);
-  var daytime = '';
-  if(v.time>500 && v.time<1000) {
-    daytime = 'morning';
+  var daytime = ''; 
+  //"Night","Dawn","Morning","Noon","Afternoon","Evening"
+  //"22-2"  "2-6" "6-10"  "10-14" "14-18" "18-22" "22-2"]
+  if(v.time>200 && v.time<600) {
+    daytime = 'Dawn';
+  } else if(v.time>600 && v.time<1000) {
+    daytime = 'Morning';
   } else if(v.time>=1000 && v.time<1400) {
-    daytime = 'noon';
+    daytime = 'Noon';
   } else if(v.time>=1400 && v.time<1800) {
-    daytime = 'afternoon';
+    daytime = 'Afternoon';
   } else if(v.time>=1800 && v.time<2200) {
-    daytime = 'evening';
+    daytime = 'Evening';
   } else {
-    daytime = 'night';
+    daytime = 'Night';
   }
   var DoW = window.story.state._gm.day%7;
   return({'hour':h,'min':m, 'daytime': daytime, 'DoW':DoW});
 };
+window.gm.timeslots=["Night","Dawn","Morning","Noon","Afternoon","Evening"];
 window.gm.DoWs = ['Monday', 'Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
 window.gm.getDateString= function() {
   var v=window.story.state._gm;

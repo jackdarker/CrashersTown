@@ -7,13 +7,12 @@
  */
  class Operator extends Character { 
     constructor(){ super(),
-        this.id = Entity.UID();
+        this.id = IDGenerator.createID();
         this.name='Operator'+this.id;
         this.job=Operator.Job.Nothing;this.jobActive=false;
         this.traits ={};
-        this.civil="free";  //"worker", "slave", "prisoner", "pet?"
-        this.RestOptions=[];    //
-        this.WorkOptions=[window.gm.LibJobs.Rest()];
+        this.civil="free";  //"worker", "slave", "prisoner", "pet?"//
+        this.WorkOptions=[window.gm.LibJobs.Rest_Mansion()];
         this.WorkSchedule={};   //{Monday:{Dawn:{Rest:{}},{Morning:{}} } }
         this.temper=0,      //  -100=rebellious 100=kind
         this.obedience=0,   //  -100=never obeys 0= 100= always obeys
@@ -55,22 +54,6 @@
     }
     toJSON() {return window.storage.Generic_toJSON("Operator", this); };
     static fromJSON(value) { return window.storage.Generic_fromJSON(Operator, value.data);};
-    tick(time) {
-        let delta = window.gm.getDeltaTime(time,this.lastTick);
-        if(delta>(24*60-1)) {
-            this.lastTick=time;
-            let _R;
-            if(this._job===Operator.Job.Hunter) {
-                _R = new ResourceChange();_R.Resource='Food';
-                window.story.state.Events.push(_R);
-            } else if(this._job===Operator.Job.WoodChopper) {
-                _R = new ResourceChange();_R.Resource='Wood';
-                window.story.state.Events.push(_R);
-            }
-            this.needsSatisfied=false; //todo people dont work if hungry
-        }
-        return(false);
-    }
     getDamage(){}
     fixDamage(){}
     // returns list of resources to feed
@@ -107,7 +90,7 @@ Operator.Job = {
     Soldier: 'Soldier'
 
 }
-class Shipwreck extends Homestead {
+class Mansion extends Homestead {
     constructor(){super(); this.style=0;
         this.storage[Resource.ID.Wood]=10,this.storage[Resource.ID.Iron]=10,this.storage[Resource.ID.IronOre]=10,
         this.storage[Resource.ID.Food]=8,this.storage[Resource.ID.Energy]=4,this.storage[Resource.ID.Stone]=10;
@@ -132,8 +115,8 @@ class Shipwreck extends Homestead {
         }
         return(msg);
     }
-    toJSON() {return window.storage.Generic_toJSON("Shipwreck", this); };
-    static fromJSON(value) { return window.storage.Generic_fromJSON(Shipwreck, value.data);};
+    toJSON() {return window.storage.Generic_toJSON("Mansion", this); };
+    static fromJSON(value) { return window.storage.Generic_fromJSON(Mansion, value.data);};
     tick(time) {
         let delta = window.gm.getDeltaTime(time,this.lastTick);
         /*if(delta>(24*60-1)) {
@@ -257,12 +240,12 @@ class Farm extends Facility {
     }
 }
 
-window.gm.BuildingsLib = (function (Lib) {
+window.gm.LibFacilities = (function (Lib) {
     window.storage.registerConstructor(Operator); //todo operator-Lib?
-    window.storage.registerConstructor(Shipwreck);
+    window.storage.registerConstructor(Mansion);
     window.storage.registerConstructor(Smithy);
-    Lib['Shipwreck']= function () { let x= new Shipwreck();return(x);};
+    Lib['Mansion']= function () { let x= new Mansion();return(x);};
     Lib['Smithy']= function () { let x= new Smithy();return(x);};
     Lib['SlavePen']= function () { let x= new SlavePen();return(x);};
     return Lib; 
-}(window.gm.BuildingsLib || {}));
+}(window.gm.LibFacilities || {}));
