@@ -60,15 +60,19 @@ class Character {
     static fromJSON(value) { 
         var _x = window.storage.Generic_fromJSON(Character, value.data);
         //need to recreate parent links
-        _x.Effects._relinkItems();
-        _x.Stats._relinkItems();
-        _x.Inv._relinkItems();
-        _x.Outfit._relinkItems();
-        _x.Wardrobe._relinkItems();
-        _x.Rel._relinkItems();
-        _x.Skills._relinkItems();
+        _x._relinkItems();
         return(_x);
     };
+    _relinkItems(){
+        this.Effects._relinkItems();
+        this.Stats._relinkItems();
+        this.Inv._relinkItems();
+        this.Outfit._relinkItems();
+        this.Wardrobe._relinkItems();
+        this.Rel._relinkItems();
+        this.Skills._relinkItems();
+    }
+
     /**
     * calculates how many levels you can upgrade
     * @param {int} XP available

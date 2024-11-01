@@ -117,6 +117,7 @@ class ResourceChangeSummary extends GMEvent {
         }
         var _list =Object.keys(this.ResTotal);
         for(el of _list) {
+            //Todo money goes into players pocket?
             window.gm.addResource(window.story.state.City.Resources,el,this.ResTotal[el].amount);
         }
         this.done=true;
@@ -125,12 +126,12 @@ class ResourceChangeSummary extends GMEvent {
     renderTick() {
         var entry = document.createElement('p');
         entry.textContent = 'Other resources produced:';
-        $("div#panel")[0].appendChild(entry);
+        document.querySelector("div#panel").appendChild(entry);
         var _list =Object.keys(this.ResTotal);
         for(el of _list) {
             entry = document.createElement('li');
             entry.textContent = el+': '+this.ResTotal[el].amount+' ';
-            $("div#panel")[0].appendChild(entry);
+            document.querySelector("div#panel").appendChild(entry);
         }
         GMEvent.createNextBt('Next');
         return(true);

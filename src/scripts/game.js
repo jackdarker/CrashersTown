@@ -292,7 +292,7 @@ window.gm.getTimeStruct=function() {
   return({'hour':h,'min':m, 'daytime': daytime, 'DoW':DoW});
 };
 window.gm.timeslots=["Night","Dawn","Morning","Noon","Afternoon","Evening"];
-window.gm.DoWs = ['Monday', 'Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+window.gm.DoWs = ['Sunday','Monday', 'Tuesday','Wednesday','Thursday','Friday','Saturday']; //DoW=1 -> Monday
 window.gm.getDateString= function() {
   var v=window.story.state._gm;
   return v.day.toString()+". day "+ window.gm.DoWs[(v.day%8)-1];

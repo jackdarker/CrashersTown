@@ -7,6 +7,10 @@ window.gm.initGame= function(forceReset,NGP=null) {
   _origInitGame(forceReset,NGP);
   window.gm.images = imagesBattlers(window.gm.images||{});
   window.gm.images = imagesMaps(window.gm.images);
+  window.gm.images = imagesEquip(window.gm.images);
+  window.gm.images = imagesIcons(window.gm.images);
+  window.gm.images = imagesScenes(window.gm.images);
+  window.gm.images = imagesItems(window.gm.images);
     var s = window.story.state;
     s._gm.timeRL= s._gm.timeVR = s._gm.time;
     s._gm.dayRL= s._gm.dayVR = s._gm.day;

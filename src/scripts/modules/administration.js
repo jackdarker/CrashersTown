@@ -115,6 +115,100 @@ class Trait {
     /* */
 } 
 /**
+ * a person that works in a Facility or on their own
+ *
+ * @class Operator
+ */
+ class Operator extends Character { 
+    constructor(){ super(),
+        this.id = IDGenerator.createID();
+        this.name='Operator'+this.id;
+        this.job=Operator.Job.Nothing;this.jobActive=false;
+        this.traits ={};
+        this.civil="free";  //"worker", "slave", "prisoner", "pet?"//
+        this.WorkOptions=[window.gm.LibJobs.Rest_Mansion()];
+        this.WorkSchedule={};   //{Monday:{Dawn:{Rest:{}},{Morning:{}} } }
+        this.temper=0,      //  -100=rebellious 100=kind
+        this.obedience=0,   //  -100=never obeys 0= 100= always obeys
+        this.trust=0;       //  -100=fearsome 100=trustful
+        //mood        -100 very sad 100=always happy
+        //lust        -100=gets frigid fast 0=no change over time 100=gets eager fast
+    }
+    getWorkOption(jobid){
+        return(window.gm.getArrayElementById(this.WorkOptions,jobid));
+    }
+    addWorkOption(job){
+        let _x=window.gm.getArrayIndexById(this.WorkOptions,job.id); 
+        if(_x>=0) this.WorkOptions[_x]=job;
+        else this.WorkOptions.push(job);
+    }
+    dropWorkOption(job){
+        let _x=window.gm.getArrayIndexById(this.WorkOptions,job.id); 
+        if(_x>=0) this.WorkOptions.splice(_x,1);
+    }
+    set job(job) {
+        this._job = job; 
+    }
+    get job() {return this._job;}
+    get desc() { 
+        let msg ='Operator#'+this.id;
+        switch(this._job) {
+            case Operator.Job.Nothing:
+                msg ='Has no job assigned.';
+                break;
+            case Operator.Job.Scavenger:
+                msg ='Searchs an area for some useful resources.';
+                break;
+            case Operator.Job.WoodChopper:
+                msg ='Chops wood.';
+                break;
+            default: throw new Error(this.id +' doesnt know '+style);
+        }
+        return(msg);
+    }
+    toJSON() {return window.storage.Generic_toJSON("Operator", this); };
+    static fromJSON(value) { 
+        let _x= window.storage.Generic_fromJSON(Operator, value.data);
+        _x._relinkItems();
+        return(_x);
+    };
+    getDamage(){}
+    fixDamage(){}
+    // returns list of resources to feed
+    getBasicNeeds(){
+        return([{ResId:'Food',amount:3}]);
+    }
+    satisfyNeeds() {
+        this.needsSatisfied=true;
+    }
+    getTraits(){}
+    getHome(){}
+    setHome(){}
+}
+Operator.Job = {
+    Nothing : 'Nothing',
+    Brewer: 'Brewer',
+    Chemist : 'Chemist',
+    Worker: 'Worker',
+    Builder : 'Builder',
+    Scavenger : 'Scavenger',
+    WoodChopper : 'WoodChopper',
+    Hunter : 'Hunter',
+    Scout : 'Scout',
+    Smith : 'Smith',
+    Technican: 'Technican',
+    Slaver: 'Slaver',
+    Torturer: 'Torturer',
+    BeastTamer: 'BeastTamer',
+    Farmhand: 'Farmhand',
+    Farmer : 'Farmer',
+    Stablehand : 'Stablehand', 
+    Stablemaster: 'Stablemaster',
+    Guard: 'Guard',
+    Soldier: 'Soldier'
+
+}
+/**
  * Work / Leisure / Training
  *
  * @class Job
@@ -124,6 +218,7 @@ class Trait {
         this.id=this.name='';
         this.level=0;  // 
         this.hidden=0; // "???" 
+        this.reqEnergy=30;
         this.workspace=null;
         this.workspaces=[];
     }
@@ -137,7 +232,7 @@ class Trait {
         return([]);
     }
     requiredEnergy(){
-        return(30);
+        return(this.reqEnergy);
     }
     requiredBoss(){ //
         return([]);
@@ -160,7 +255,7 @@ class Workspace {
     toJSON() {return window.storage.Generic_toJSON("Workspace", this); };
     static fromJSON(value) { return window.storage.Generic_fromJSON(Workspace, value.data);};
     desc(){return(this.name);}
-    doJob(people,now){
+    doJob(people,now){  //this is called by schedule per timeslot. 
         this.lastTick=now;
         if(true){
             var entry = document.createElement('p');
@@ -171,7 +266,7 @@ class Workspace {
         }
         return(false);
     }
-    renderTick() {
+    renderTick() { //OBSOLETE?
         return(true);
     }
     /*tick(time){ //overwrite this with the result of the work
@@ -181,22 +276,6 @@ class Workspace {
         }          
     }*/
 }
-class WS_Maid extends Workspace{
-    constructor() {
-        super();
-    }
-    toJSON() {return window.storage.Generic_toJSON("WS_Maid", this); };
-    static fromJSON(value) { return window.storage.Generic_fromJSON(WS_Maid, value.data);};
-    desc(){return(this.name);}
-}
-class WS_Smithy extends Workspace{
-    constructor() {
-        super();
-    }
-    toJSON() {return window.storage.Generic_toJSON("WS_Smithy", this); };
-    static fromJSON(value) { return window.storage.Generic_fromJSON(WS_Smithy, value.data);};
-    desc(){return(this.name);}
-}
 /**
  * base class for the events
  */
@@ -205,19 +284,21 @@ class GMEvent extends Entity {
         let link = document.createElement('a');
         link.href='javascript:void(0)',link.addEventListener("click", function(){foo();});
         link.textContent=label;
-        $("div#panel")[0].appendChild(link);
+        document.querySelector("div#panel").appendChild(link);
     }
     static createNextBt(label) {
         let link = document.createElement('a');
         link.href='javascript:void(0)',link.addEventListener("click", function(){window.story.show('_Event');});
         link.textContent=label;
-        $("div#panel")[0].appendChild(link);
+        document.querySelector("div#panel").appendChild(link);
     }
     constructor() {
         super();
         this.done=false;
     }
 }
+
+
 /**
  * represents an area you can explore or do some resource gathering
  */

@@ -16,6 +16,8 @@ class Resource extends ResourceBase {
     get desc() { 
         let msg ='';
         switch(this._style) {
+            case Resource.ID.Money:
+                msg='Coins' 
             case Resource.ID.Wood: 
                 msg ='Wood for building and making fire.';
                 break;
@@ -53,6 +55,7 @@ class Resource extends ResourceBase {
     static fromJSON(value) { return window.storage.Generic_fromJSON(Resource, value.data);};
 }
 Resource.ID = { 
+    Money : 'Money',
     Crops : 'Crops',
     Food : 'Food',
     Fungus : 'Fungus',
@@ -67,6 +70,7 @@ Resource.ID = {
 }
 window.gm.ResourcesLib = (function (Lib) {
     window.storage.registerConstructor(Resource);
+    Lib['Crops']= function () { let x= new Resource();x.style=(Resource.ID.Money);return(x);};
     Lib['Crops']= function () { let x= new Resource();x.style=(Resource.ID.Crops);return(x);};
     Lib['Fungus']= function () { let x= new Resource();x.style=(Resource.ID.Fungus);return(x);};
     Lib['Food']= function () { let x= new Resource();x.style=(Resource.ID.Food);return(x);};

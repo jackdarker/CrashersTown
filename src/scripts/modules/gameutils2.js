@@ -12,7 +12,7 @@ window.gm.newTurn=function() {
 window.gm.processEvents=function() {
     // events were sorted into groups and the groups are evaluated here left to right !
     window.story.state.PrcEvent = window.story.state.PrcEvent || {i:-1, list:'', group:['Facilities','Jobs','People','Events','Summary']};
-    let _list2,_E,now = window.gm.getTime(), {day,time}= window.gm.getTimeStruct(), PrcEvent=window.story.state.PrcEvent;
+    let _list2,_E,now = window.gm.getTime(), {daytime,DoW}= window.gm.getTimeStruct(), PrcEvent=window.story.state.PrcEvent;
 
     while(true){
         if(PrcEvent.list==='') {    //proceed to next group
@@ -23,7 +23,7 @@ window.gm.processEvents=function() {
             }
         }
         if(PrcEvent.list==='Facilities') _list2= window.story.state.City.Facilities;
-        else if(PrcEvent.list==='Jobs') _list2=window.story.state.Schedule.getJobsAtTime(day,time);
+        else if(PrcEvent.list==='Jobs') _list2=window.story.state.Schedule.getJobsAtTime(window.gm.DoWs[DoW],daytime);
         else if(PrcEvent.list==='People') _list2= window.story.state.City.People;
         else if(PrcEvent.list==='Events') _list2= window.story.state.Events;
         else if(PrcEvent.list==='Summary') {
@@ -219,7 +219,7 @@ window.gm.listBuildings =function(){
         }
     }
 };
-window.gm.addResource=function(array,ResId,gain) {
+window.gm.addResource=function(array,ResId,gain) { //adds the resource to a a list
     let _R = array[ResId];
     if(_R===null || _R===undefined) {
         _R = window.gm.ResourcesLib[ResId]();
@@ -382,7 +382,7 @@ window.gm.planWork=function(personid,params) {
         link=document.createElement('td');dayrow.appendChild(link);
         let _j=s.Schedule.getJobAtTimePerson(day,time,personid);
         link2 = document.createElement('button'),link2.id=day+at+time,
-            link2.textContent=_j.job;//Object.keys(_P.WorkSchedule[day][time])[0];  
+            link2.textContent=_j.job;
         link2.addEventListener("click", function(me){createSelector(me.currentTarget.id)});
         link.appendChild(link2);
     }
@@ -406,9 +406,6 @@ window.gm.planWork=function(personid,params) {
         if(_res.OK==true){
             link = document.createElement('p');link.textContent=day_time_work;choice.appendChild(link);
             s.Schedule.setJob(day,time,work,personid,_res.work.params());
-            /*_P.WorkSchedule[day]=_P.WorkSchedule[day]||{};
-            _P.WorkSchedule[day][time]={};
-            _P.WorkSchedule[day][time][work]=_res.work.params();   */ 
             dayPreview(day);
             document.getElementById(day+at+time).textContent=_res.msg;
         } else {
@@ -422,17 +419,15 @@ window.gm.planWork=function(personid,params) {
             if(_j){
                 _en+=_P.getWorkOption(_j.job).requiredEnergy();  //Resting has 0 Energy
             }
-            /*Object.keys(_P.WorkSchedule[day][x]).forEach((y)=>{
-                _en+=_P.getWorkOption(y).requiredEnergy();  //Resting has 0 Energy
-            })*/
         })
-        if(_en>100){    //Todo _P.stats.maxEnergy
+        if(_en>_P.Stats.get('energyMax').value){
             _res.OK=false,_res.msg="Jobs require to much energy and might fail. "
         }
         if(_res.OK==false){
-            document.getElementById(day+"_alert").textContent=_res.msg;
+            document.getElementById(day+"_alert").innerHTML='<div class="popup combateff"><div class="combaticon">'+window.gm.images.ic_warn()+'</div><span class="popuptext" id="myPopup2">'+_res.msg+'</span></div>';
+            
         } else {
-            document.getElementById(day+"_alert").textContent="  ";
+            document.getElementById(day+"_alert").innerHTML="";
         }
     }
 };
@@ -481,6 +476,25 @@ window.gm.updataJobCapabilitys=function(person){
     }
     Object.keys(window.gm.LibJobs).forEach((x)=>{_P.addWorkOption(window.gm.LibJobs[x]())});   
     window.story.state.Schedule.presetJob("Rest_Mansion",person,{}) 
+}
+/*
+*   calculates work-output and skill-gain 
+*/
+window.gm.calcWorkforce=function(ws,people){
+    let _res ={OK:true,msg:'',output:0.0, gain:[]}
+    //a job requires skill-level and minimum stats (1 or more)
+    //stats & skill above cap are ignored
+    
+    //for each person
+    //wf= sqrt(1+capped_skill)*sum(capped_stats)/N   
+    // + bonus if boss present
+    
+    // chance to increase skill/stats: low skill -> higher chance to increase; skill=>cap -> no increase
+    // only one increase
+    // gain.push({id:Strength,gain:1})
+
+    //output= Item*wf          Item is either coin/h  or  Item/wf (50% Axe)
+    return(_res);
 }
 window.gm.randomizePerson=function(params) {
     let slave=(params&&params.slave)?params.slave:false;

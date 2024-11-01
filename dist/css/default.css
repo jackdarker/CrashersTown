@@ -1,6 +1,6 @@
 
 body {
-  background-image:url('assets/bg_hex.jpg');
+  background-image:url('../assets/bg/bg_hex.jpg');
   color:black;
   padding:0;
   margin:0;
@@ -18,18 +18,27 @@ section {
   grid-template-rows: 80% 20%;
   height:100vh;
   /*width:95vw;*/ /*scrollbars*/  }
-.section_swap {
+
+.log_fullview { /*log is 2.row of flexgrid*/
   grid-template-rows: 2% ;
+}
+.log_hideview {
+  grid-template-rows: 95% ;
 }
 
 section h2 {
   grid-column: 1 / -1;
 }
 a {
-    line-height: 120%;
+    /*line-height: 150%;*/
     background-color: transparent;
     margin-left:0.25em;
     margin-right:0.25em;
+}
+.nolink {
+  /*makes a link look like plain texr*/
+  color: unset;
+  text-decoration:unset;
 }
 a:hover {
     color: #008929;
@@ -82,6 +91,37 @@ dialog::backdrop, #backdrop {
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);    
+}
+#svgpopup {
+  min-width: 40px;
+  padding: 6px;
+  background-color: white;
+  border-radius: 4px;
+  position: absolute;
+  display: none;
+}
+#svgpopup::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  transform: rotate(45deg);
+  background-color: white;
+  position: absolute;
+  left: -6px;
+  top: 6px;
+}
+.combateff {
+  line-height:32px;
+}
+.combateff > .combaticon {
+  float: left;
+  margin-right:0.1em;
+}
+
+.combateff > .combaticon > svg {
+  width: 32px;
+  height: 32px;
+  vertical-align: top;
 }
 .popup {
   position: relative;
