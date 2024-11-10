@@ -134,8 +134,15 @@ This menu:</br>
 - activities depend on day/time, workerspecialisation, workspace & resource available
 - print preview of side-effect, efficiency & workresult of modified slot
 - indicate overload
+<a0 id='hint' onclick='(function($event){document.querySelector("#"+id+"~p").toggleAttribute("hidden");})(this);'>Hint</a>
+<p class='speech' hidden>
+- most workspaces can only be used by a limited number of workers at a time<br>
+- to produce an item, you have also to configure the workspace in the facility-menu. If there is nothing selected, they will just do random work for money.<br>
+- trainings require a trainer. This person has to have trainer-skill and be slave with enough loyality or non-slave. <br>
+- some jobs require a boss to get decent result. This person has to be slave with enough loyality or non-slave. Also their skill must outmatch the other workers <br>
+</p>
 <table id="schedule"><tbody>
-</tbody></table>';
+</tbody></table>
 </br><div id='panel'></div></br><hr><div id='panel2'></div>
 </br><div id='choice'></div>
 </article><article id="LogPanel"></article></section>
@@ -273,7 +280,7 @@ You saved Lydia from the cutthroats and she now ows you. Therefore she made the 
 </article><article id="LogPanel"></article></section>
 <script>function foo(){
     let s=window.story.state;
-    s.City.Slaves.push(s.Lydia);
+    s.City.Slaves.push(s.Lydia);s.City.Slaves.push(s.Trent);
     window.gm.updataJobCapabilitys();
     window.story.show("Menu_Main");
 }

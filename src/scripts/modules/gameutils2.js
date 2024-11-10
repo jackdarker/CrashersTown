@@ -334,33 +334,34 @@ window.gm.listSlaves=function() {
         var link = document.createElement('a');
         link.id=_P.id,link.href='javascript:void(0)',
         link.addEventListener("click", function(me){window.story.state.tmp.args=[me.currentTarget.id,"Slave"];window.story.show('Menu_Person');});
-        link.textContent=_P.name+':'+_P.job;
+        link.textContent=_P.name;//+':'+_P.job; TODO job in current time slot & train-stats
         panel2.appendChild(link);panel2.appendChild(document.createElement("br"));
     }
-    _list2 = Object.keys(_list);
+    /*_list2 = Object.keys(_list);
     for(var i=_list2.length-1;i>=0;i--) { //list job-overview
         var link = document.createElement('a');
         link.href='javascript:void(0)',link.addEventListener("click", function(){});
         link.textContent=_list2[i]+':'+_list[_list2[i]];
         panel.appendChild(link);
-    }
+    }*/
 };
 /** 
  * print Schedule-table for worker. It requires:
  * #schedule>tbody to display day & Time assignment of Jobs
+ * div#panel1 to display person-info
  * div#panel2 to display job selector
  * div#choice to display info for selected job
  */
 window.gm.planWork=function(personid,params) {
-    let showall=(params&&params.showall)?params.showall:false;
+    //let showall=(params&&params.showall)?params.showall:false;
     let s=window.story.state;
     var _P,_list,link,link2;
-    var panel=document.querySelector("#schedule>tbody"),panel2=document.querySelector("div#panel2"),choice=document.querySelector("div#choice");;
+    var panel=document.querySelector("#schedule>tbody"),panel1=document.querySelector("div#panel"),panel2=document.querySelector("div#panel2"),choice=document.querySelector("div#choice");
     _list = window.story.state.City.Slaves;
     _P=window.gm.getArrayElementById(_list,personid);
     if(!_P) return;
     
-    //link = document.createElement('p');link.textContent = 'Click on timeslot and select work from list below.';panel.appendChild(link);
+    link = document.createElement('p');link.textContent = _P.name+' has '+_P.Stats.get('energyMax').value+' energy/day.';panel1.appendChild(link);
     //link = document.createElement('hr');panel.appendChild(link);
     const at='@';   //delimiter for ids
     //Todo instead of selecting timeslot and then work -> select work then time 
@@ -386,18 +387,18 @@ window.gm.planWork=function(personid,params) {
         link2.addEventListener("click", function(me){createSelector(me.currentTarget.id)});
         link.appendChild(link2);
     }
-    function createSelector(day_time){
+    function createSelector(day_time){  //workspace-selector
         while(panel2.hasChildNodes()) {
             panel2.removeChild(panel2.children[0]);
         }
-        _P.WorkOptions.forEach((x)=>{addOption(day_time,x.id)}); //Todo filter options that are general unavailable (missing workspace)
+        _P.WorkOptions.forEach((x)=>{x.workspaces.forEach((y)=>{addOption(day_time,y);})}); //Todo filter options that are general unavailable (missing workspace)
     }
     function addOption(day_time,work){
         link = document.createElement('button');link.id=day_time+at+work, link.textContent = work;panel2.appendChild(link);
         link.addEventListener("click", function(me){workPreview(me.currentTarget.id)});
     }
     function workPreview(day_time_work){
-        var info=day_time_work.split(at),    //Monday_Dawn_Maid_Inn
+        var info=day_time_work.split(at),    //Monday@Dawn@Maid_Inn
             day=info[0],time=info[1],work=info[2];
         while(choice.hasChildNodes()) {
             choice.removeChild(choice.children[0]);
@@ -417,7 +418,8 @@ window.gm.planWork=function(personid,params) {
         window.gm.timeslots.forEach((x)=>{
             let _j=s.Schedule.getJobAtTimePerson(day,x,personid);
             if(_j){
-                _en+=_P.getWorkOption(_j.job).requiredEnergy();  //Resting has 0 Energy
+                _en+=window.gm.getArrayElementById(s.City.Workspaces,_j.job).requiredEnergy();
+                //_en+=_P.getWorkOption(_j.job).requiredEnergy();  //Resting has 0 Energy
             }
         })
         if(_en>_P.Stats.get('energyMax').value){
@@ -434,9 +436,10 @@ window.gm.planWork=function(personid,params) {
 /**
  * estimate effect of work
 */
-window.gm.workPreview=function(person,day,time,work){
+window.gm.workPreview=function(person,day,time,workspace){
     let _res={msg:'',OK:true}
     //P has WorkOption + add. requirements
+    var work=workspace.split("_")[0];  //"Rest_Mansion"
     let _work=person.getWorkOption(work)
     if(_work==null){
         _res.OK=false, _res.msg="doesnt know about "+work+"!";
@@ -455,7 +458,7 @@ window.gm.workPreview=function(person,day,time,work){
     }
     if(_res.OK==true) {
         //Resources available
-        _res.msg=person.name+" will use "+_work.workspaces[0]+ " to "+_work.desc()+".<br> Requires "+_work.requiredEnergy()+" energy.";
+        _res.msg=person.name+" will use "+_work.workspaces[0]+ ". Requires ?? energy.";
         _res.work=_work;
     }
     return(_res)
@@ -476,25 +479,6 @@ window.gm.updataJobCapabilitys=function(person){
     }
     Object.keys(window.gm.LibJobs).forEach((x)=>{_P.addWorkOption(window.gm.LibJobs[x]())});   
     window.story.state.Schedule.presetJob("Rest_Mansion",person,{}) 
-}
-/*
-*   calculates work-output and skill-gain 
-*/
-window.gm.calcWorkforce=function(ws,people){
-    let _res ={OK:true,msg:'',output:0.0, gain:[]}
-    //a job requires skill-level and minimum stats (1 or more)
-    //stats & skill above cap are ignored
-    
-    //for each person
-    //wf= sqrt(1+capped_skill)*sum(capped_stats)/N   
-    // + bonus if boss present
-    
-    // chance to increase skill/stats: low skill -> higher chance to increase; skill=>cap -> no increase
-    // only one increase
-    // gain.push({id:Strength,gain:1})
-
-    //output= Item*wf          Item is either coin/h  or  Item/wf (50% Axe)
-    return(_res);
 }
 window.gm.randomizePerson=function(params) {
     let slave=(params&&params.slave)?params.slave:false;

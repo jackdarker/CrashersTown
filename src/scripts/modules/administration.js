@@ -126,7 +126,7 @@ class Trait {
         this.job=Operator.Job.Nothing;this.jobActive=false;
         this.traits ={};
         this.civil="free";  //"worker", "slave", "prisoner", "pet?"//
-        this.WorkOptions=[window.gm.LibJobs.Rest_Mansion()];
+        this.WorkOptions=[window.gm.LibJobs.Rest()];
         this.WorkSchedule={};   //{Monday:{Dawn:{Rest:{}},{Morning:{}} } }
         this.temper=0,      //  -100=rebellious 100=kind
         this.obedience=0,   //  -100=never obeys 0= 100= always obeys
@@ -217,25 +217,13 @@ Operator.Job = {
     constructor() {
         this.id=this.name='';
         this.level=0;  // 
-        this.hidden=0; // "???" 
-        this.reqEnergy=30;
-        this.workspace=null;
         this.workspaces=[];
     }
     toJSON() {return window.storage.Generic_toJSON("Job", this); };
     static fromJSON(value) { return window.storage.Generic_fromJSON(Job, value.data);};
     desc(){return(this.name);}
-    requiredWorkspace(){    // [[]]
-        return([this.workspaces]);
-    }
-    requiredResource(){ //for 100% Build
-        return([]);
-    }
-    requiredEnergy(){
-        return(this.reqEnergy);
-    }
-    requiredBoss(){ //
-        return([]);
+    requiredWorkspace(){    
+        return(this.workspaces);
     }
     params(){return({})}
 } 
@@ -245,9 +233,12 @@ Operator.Job = {
 class Workspace {
     constructor() {
         this.id=this.name='';
-        this.level=0;  // 
+        this.reqStats=[];//[{id:"strength",min:5,max:10}];
+        this.reqSkills=[];//[{id:"Smithing",min:0,max:5}];
+        this.reqEnergy=0;
         this.maxPeople=1;
-        this.produceStack=[]; //a stack of items to produce {id: "Iron", count:-1 }
+        this.produces=false;    //flag set if was/is producing
+        this.produceStack=[]; //a configured stack of items to produce {id: "Iron", count:-1 }
         this.produce="";    //current produce
         this.progress=0;    // 100%
         this.lastTick="";
@@ -255,16 +246,155 @@ class Workspace {
     toJSON() {return window.storage.Generic_toJSON("Workspace", this); };
     static fromJSON(value) { return window.storage.Generic_fromJSON(Workspace, value.data);};
     desc(){return(this.name);}
+    requiredEnergy(){
+        return(this.reqEnergy);
+    }
+    /*
+    *   calculates work-output and skill-gain 
+    *   first person is boss
+    */
+    calcWorkforce(people,run){
+        let _res ={OK:true,msg:'',output:[], gain:[], finished:false};
+        //gain = {id:"strength",gain:1, person:"Lydia"}
+        //output = {id:"Money", gain:5}    {id:"Potion", gain:0}    
+        //finished is set when non-unlimited producestack cleared
+        let cappedStats=[],cappedSkills=[],wf,g,z,_P,temp;
+        let wfFactor=0.5; //TODO depends on job/produce
+        //a job requires skill-level and minimum stats (1 or more)
+        //stats & skill above cap are ignored
+
+        //for each person...
+        people.forEach((person)=>{
+            _P = window.gm.getArrayElementById(window.story.state.City.Slaves,person);
+            if(_P.Stats.get("energy").value<this.reqEnergy){ //ignore person if outof energy
+                _res.OK=false;
+                _res.msg+=_P.name+'doesnt have enough energy.'
+            } else {    //calc capped Stats
+                // chance to increase skill/stats: low skill -> higher chance to increase; skill>=cap -> no increase
+                // gain=(skill_ul-capped_skill)/(skill_ul*2)        (5-2)/(5*2)=30%     
+                temp=[];
+                this.reqStats.forEach((x)=>{ //capped stats
+                    z=Math.min(x.max,_P.Stats.get(x.id).value);
+                    cappedStats.push(z); 
+                    if(z<x.max){
+                        g=(x.max-z)/(2*x.max);
+                        temp.push({id:x.id,gain:g,person:_P.id});
+                    }
+                });
+                this.reqSkills.forEach((x)=>{ //capped job-skills
+                    z=Math.min(x.max,_P.getWorkOption(x.id).level);
+                    cappedSkills.push(z); 
+                    if(z<x.max){
+                        g=(x.max-z)/(2*x.max);
+                        temp.push({id:x.id,gain:g,person:_P.id});
+                    }
+                });
+                // only one increase (stat or skill) per person
+                if(temp.length>0){  //pick gain with biggest chance
+                    temp.sort((a,b)=>{return(b.gain-a.gain);});
+                    _res.gain.push(temp[0]);
+                }
+                _.random(0,temp.length-1);
+            }
+        })
+
+        
+        //wf= sqrt(1+capped_skill)*sum(capped_stats)/N   
+        wf=1;
+        if(cappedSkills.length>0){
+            cappedSkills.forEach((x)=>{wf+=x;});
+            wf=Math.sqrt(wf);
+        }
+        z=0;
+        if(cappedStats.length>0){
+            cappedStats.forEach((x)=>{z+=x;});
+            z=z/(cappedStats.length/people.length);
+        }
+        wf=wf*z;        
+        // + bonus for outfit
+        // + bonus if boss present
+
+        //output= Item*wf  Item is either coin/h  or  Item/wf (50% Axe)
+        while(wf>0){ //after creating item, use remaining wf on next item
+            if(this.produce=="" && this.produceStack.length>0) { //pull next item to produce
+                this.produces=true;
+                this.produce=this.produceStack[0].id;
+                this.progress=0.0;  //todo deduct resources depending recipe
+                if(this.produceStack[0].count>1){
+                    this.produceStack[0].count-=1;
+                } else if(this.produceStack[0].count==1){
+                    this.produceStack.shift();
+                } //else unlimited
+            }
+            if(this.produces==true && this.produce!="") { //working on item
+                z=(1-this.progress)-wf*wfFactor;//work left
+                if(z>0.0) { //still work to do
+                    this.progress=1-z;
+                    break;
+                }else if(z<=0.0){ //no or some wf left
+                    wf=-1*z/wfFactor;
+                    _res.output.push({id:this.produce, gain: 1});   //TODO combine multiple Iron:1 to Iron:5
+                    this.produce="";this.progress=0;
+                }
+            } else if(this.produces==true && this.produce=="") {    //stack finished
+                _res.finished=true;//Todo set job to Rest
+                break;
+            } else {    //other work for money
+                _res.output.push({id:"Money", gain: Math.floor(wf*wfFactor)});
+                this.progress=0; //100% ?
+                break;
+            }
+        }
+    
+        if(run==true){
+            people.forEach((person)=>{ //for each person...
+                _P = window.gm.getArrayElementById(window.story.state.City.Slaves,person);
+                if(_P.Stats.get("energy").value>=this.reqEnergy){ //ignore person if outof energy
+                    _P.Stats.increment("energy",-1*this.reqEnergy);    //remove energy
+                                    //apply skillgain
+                }
+            })
+            //resource-gain needs to be handled outside,see _res.output !
+            //skill-gain needs to be handled outside,see _res.gain !
+        }
+        return(_res);
+    }
+    canDo(person){  //check if the person can do the job in generell
+        let _res={OK:true,msg:""};
+        //dont check energy!
+        //check skill
+        //check Stats
+        this.reqStats.forEach((x)=>{
+            if(person.Stats.get(x.id).value<x.min){
+                _res.OK=false;
+                _res.msg=person.name+'doesnt have enough '+x.id+'.'
+            }
+        })
+        return(_res);
+    }
     doJob(people,now){  //this is called by schedule per timeslot. 
-        this.lastTick=now;
-        if(true){
-            var entry = document.createElement('p');
-            entry.textContent = "Someone worked here.";
-            document.querySelector("div#panel").appendChild(entry);
+        let _res=_doJob(people,now);
+        if(_res.OK==false){ //something was nok
             GMEvent.createNextBt('Next');
             return(true); //halt for display
         }
         return(false);
+    }
+    _doJob(people,now){
+        this.lastTick=now;
+        let entry, _res=this.calcWorkforce(people);
+        _res.output.forEach((x)=>{
+            let _R = new ResourceChange();_R.Resource=x.id,_R.gain=x.gain;
+                window.story.state.Events.push(_R);
+        })
+        if(_res.OK==false){
+            entry = document.createElement('p');
+            entry.textContent = _res.msg;
+            document.querySelector("div#panel").appendChild(entry);
+            GMEvent.createNextBt('Next');
+            return(true); //halt for display
+        }
+        return(_res);
     }
     renderTick() { //OBSOLETE?
         return(true);

@@ -36,7 +36,7 @@ window.gm.initGame= function(forceReset,NGP=null) {
     if (!s.City||forceReset) {
       s.City = {  //things you own
         Facilities: [window.gm.LibFacilities.Mansion()],
-        Workspaces: [window.gm.LibWorkspace.Rest_Mansion(),window.gm.LibWorkspace.Maid_Mansion(),window.gm.LibWorkspace.Maid_Inn()],
+        Workspaces: [window.gm.LibWorkspace.Rest_Mansion(),window.gm.LibWorkspace.Maid_Mansion(),window.gm.LibWorkspace.Maid_Inn(),window.gm.LibWorkspace.Farmer_Farm()],
         People: [],
         Slaves:[],
         Resources:{}
@@ -49,9 +49,13 @@ window.gm.initGame= function(forceReset,NGP=null) {
       s.Events=[];  //stack of events to run on next tick
       s.Schedule=new JobSchedule();
     }
-    if (!s.Lydia||forceReset) {  //the cat/dog-woman
+    if (!s.Lydia||forceReset) {
       let ch = new Lydia()
       s.Lydia = ch;
+    }
+    if (!s.Trent||forceReset) {
+      let ch = new Trent()
+      s.Trent = ch;
     }
     if (!s.PlayerVR||forceReset) {  
       let ch = new Operator();

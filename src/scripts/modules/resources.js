@@ -70,7 +70,7 @@ Resource.ID = {
 }
 window.gm.ResourcesLib = (function (Lib) {
     window.storage.registerConstructor(Resource);
-    Lib['Crops']= function () { let x= new Resource();x.style=(Resource.ID.Money);return(x);};
+    Lib['Money']= function () { let x= new Resource();x.style=(Resource.ID.Money);return(x);};
     Lib['Crops']= function () { let x= new Resource();x.style=(Resource.ID.Crops);return(x);};
     Lib['Fungus']= function () { let x= new Resource();x.style=(Resource.ID.Fungus);return(x);};
     Lib['Food']= function () { let x= new Resource();x.style=(Resource.ID.Food);return(x);};

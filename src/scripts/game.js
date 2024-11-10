@@ -295,7 +295,7 @@ window.gm.timeslots=["Night","Dawn","Morning","Noon","Afternoon","Evening"];
 window.gm.DoWs = ['Sunday','Monday', 'Tuesday','Wednesday','Thursday','Friday','Saturday']; //DoW=1 -> Monday
 window.gm.getDateString= function() {
   var v=window.story.state._gm;
-  return v.day.toString()+". day "+ window.gm.DoWs[(v.day%8)-1];
+  return v.day.toString()+". day "+ window.gm.DoWs[(v.day%7)];
 };
 //forward time to until (1025 = 10:25), regenerate player
 //warning dont write 0700 because this would be take as octal number

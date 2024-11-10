@@ -494,7 +494,7 @@ class Lydia extends Operator {
         this.autoLeveling();
     }
 }
-class Carlia extends Mob {
+class Carlia extends Operator {
   constructor() {
       super();
       this.name = this.id = 'Carlia';
@@ -511,7 +511,7 @@ class Carlia extends Mob {
       this.autoLeveling();
   }
 }
-class Ruff extends Wolf {
+class Ruff extends Operator {
     constructor() {
         super();
         this.name = this.id = 'Ruff';
@@ -522,7 +522,7 @@ class Ruff extends Wolf {
         this.autoLeveling();
     }
 }
-class Trent extends Mob {
+class Trent extends Operator {
     constructor() {
         super();
         this.name = this.id = 'Trent';

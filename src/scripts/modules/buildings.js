@@ -3,6 +3,7 @@
 
 class Mansion extends Homestead {
     constructor(){super(); this.style=0;
+        this.storage[Resource.ID.Money]=10000;
         this.storage[Resource.ID.Wood]=10,this.storage[Resource.ID.Iron]=10,this.storage[Resource.ID.IronOre]=10,
         this.storage[Resource.ID.Food]=8,this.storage[Resource.ID.Energy]=4,this.storage[Resource.ID.Stone]=10;
     }
