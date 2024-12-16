@@ -258,7 +258,7 @@ class Workspace {
         //gain = {id:"strength",gain:1, person:"Lydia"}
         //output = {id:"Money", gain:5}    {id:"Potion", gain:0}    
         //finished is set when non-unlimited producestack cleared
-        let cappedStats=[],cappedSkills=[],wf,g,z,_P,temp;
+        let cappedStats=[],cappedSkills=[],wf,g,z,_P,temp, _Item;
         let wfFactor=0.5; //TODO depends on job/produce
         //a job requires skill-level and minimum stats (1 or more)
         //stats & skill above cap are ignored
@@ -311,20 +311,28 @@ class Workspace {
             z=z/(cappedStats.length/people.length);
         }
         wf=wf*z;        
-        // + bonus for outfit
+        //TODO + bonus for outfit
         // + bonus if boss present
 
         //output= Item*wf  Item is either coin/h  or  Item/wf (50% Axe)
         while(wf>0){ //after creating item, use remaining wf on next item
             if(this.produce=="" && this.produceStack.length>0) { //pull next item to produce
-                this.produces=true;
-                this.produce=this.produceStack[0].id;
-                this.progress=0.0;  //todo deduct resources depending recipe
-                if(this.produceStack[0].count>1){
-                    this.produceStack[0].count-=1;
-                } else if(this.produceStack[0].count==1){
-                    this.produceStack.shift();
-                } //else unlimited
+                this.progress=0.0; 
+                this.produces=false;
+                _Item=this.produceStack[0].id;
+                let _res2=this.calcResources(_Item,false); //enough resources?
+                if(_res2==true){  
+                    this.produces=true;
+                    this.produce=_Item;
+                    this.calcResources(_Item,run);//deduct resources depending recipe
+                    if(this.produceStack[0].count>1){
+                        this.produceStack[0].count-=1;
+                    } else if(this.produceStack[0].count==1){
+                        this.produceStack.shift();
+                    } //else unlimited
+                } else {
+                    _res.OK=false,_res.msg+=_res2.msg;
+                }
             }
             if(this.produces==true && this.produce!="") { //working on item
                 z=(1-this.progress)-wf*wfFactor;//work left
@@ -373,7 +381,7 @@ class Workspace {
         return(_res);
     }
     doJob(people,now){  //this is called by schedule per timeslot. 
-        let _res=_doJob(people,now);
+        let _res=this._doJob(people,now);
         if(_res.OK==false){ //something was nok
             GMEvent.createNextBt('Next');
             return(true); //halt for display
@@ -389,11 +397,35 @@ class Workspace {
         })
         if(_res.OK==false){
             entry = document.createElement('p');
-            entry.textContent = _res.msg;
+            entry.textContent =this.name+": "+ _res.msg;
+            window.gm.pushLog(entry.textContent);
             document.querySelector("div#panel").appendChild(entry);
             GMEvent.createNextBt('Next');
             return(true); //halt for display
         }
+        return(_res);
+    }
+    getProducables(){ //returns list of configurable produces or null if none
+        //[{id: "cheap Iron", item:"Iron",count:1, 
+        //  resources:[{item:'IronOre',count:2},{item:'Wood',count:2}], 
+        //  wf:{skill:'Smithy', minLevel:0, eff:3} //eff = #timeslots
+        // }]
+        return(null);
+    }
+    calcResources(rec_id,run){  //check if enough resources are available for the recipe
+        let _res ={OK:true,msg:''};
+        let _rec= window.gm.getArrayElementById(this.getProducables(), rec_id);
+        if(_rec==null) {_res.OK=false,_res.msg="unknown recipe "+rec_id;return(_res)};
+        _rec.resources.forEach((x)=>{
+            if(window.gm.hasResource(window.story.state.City.Resources,x.item)<x.count){
+                _res.OK=false, _res.msg+=" not enough "+x.item; 
+            }
+        });
+        if(run==true && _res.OK==true){
+            _rec.resources.forEach((x)=>{
+                window.gm.addResource(window.story.state.City.Resources,x.item,-1*x.count);
+            });
+        } 
         return(_res);
     }
     renderTick() { //OBSOLETE?

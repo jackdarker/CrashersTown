@@ -46,12 +46,17 @@ This menu:
 - cities & dungeons
 - influence
 - travel
+<%if(){%>
+
+<%}else{%>
+
+<%}%>>
 </article><article id="LogPanel"></article></section>
 
 
 :: Menu_Administration
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
-<%window.gm.player.location=window.passage.name;%><p>[[Menu_Main]]</p>
+<%window.gm.player.location=window.passage.name;%>p>[[Menu_Main]]</p><
 This menu:
 - define rules
 - check overall happiness of personal
@@ -223,18 +228,37 @@ This menu:
 
 :: Menu_Production
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
-<%window.gm.player.location=window.passage.name;%>
+<%window.gm.player.location=window.passage.name;%><p>[[Menu_Main]]</p>
+<a0 id='hint' onclick='(function($event){document.querySelector("#"+id+"~p").toggleAttribute("hidden");})(this);'>Hint</a>
+<p class='speech' hidden>
+- beside configuring the item to produce here, you also have to assign at least one worker to the workspace<br>
+- some items require resources for their construction. All required resources are deducted when the production starts. If not enough resources are available the start will be delayed!<br>
+- you can flush the production-stack of a worplace wthout loosing resources. But you will loose all related resources if aborting a already started production! <br>
+</p>
 This menu:
 - lists facilities and their production progress
-- list of workers
-- assign, pause or abort production
-[[Menu_Main]]
+</br><div id='choice'></div><hr><div id='panel2'></div><hr>
+</br><div id='panel'></div></br>
 </article><article id="LogPanel"></article></section>
+<script>window.gm.listProduction();
+</script>
+
+
+:: Menu_ProductionWS [_back_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
+<p>[[Back|_back_]]</p>
+This menu:
+- assign, pause or abort production
+</br><div id='choice'></div><hr><div id='panel2'></div><hr>
+</br><div id='panel'></div></br>
+</article><article id="LogPanel"></article></section>
+<script>window.gm.listProductionWS(window.story.state.tmp.args[0]);
+</script>
 
 
 :: Menu_Research
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
-<%window.gm.player.location=window.passage.name;%>
+<%window.gm.player.location=window.passage.name;%><p>[[Menu_Main]]</p>
 This menu:
 - lists research facilities and their research progress
 - list of scientists

@@ -227,6 +227,13 @@ window.gm.addResource=function(array,ResId,gain) { //adds the resource to a a li
     }
     _R.consume(-1*gain);
 }
+window.gm.hasResource=function(array,ResId) { //returns number of resource
+    let _R = array[ResId];
+    if(_R===null || _R===undefined) {
+        return(0);
+    }
+    return(_R.amount);
+}
 //
 window.gm.listResources=function() {
     var _list={},_list2,Cap={};
@@ -458,7 +465,7 @@ window.gm.workPreview=function(person,day,time,workspace){
     }
     if(_res.OK==true) {
         //Resources available
-        _res.msg=person.name+" will use "+_work.workspaces[0]+ ". Requires ?? energy.";
+        _res.msg=person.name+" will use "+_work.workspaces[0]+ ". Requires TODO?? energy.";
         _res.work=_work;
     }
     return(_res)
@@ -490,21 +497,19 @@ window.gm.randomizePerson=function(params) {
     return _P;
 };
 window.gm.getArrayElementById=function(array,id) {
-    var _id=Number(id),_p;  //id is either a number or string
+    var _id=Number(id),_p=null;  //id is either a number or string
     for(el of array){
         _p=el;
         if(_p.id===id || _p.id===_id) break;
-        _p=null;
     }
     return(_p);
 }
 window.gm.getArrayIndexById=function(array,id) {
-    var _id=Number(id),_p,i=0;
+    var _id=Number(id),_p=null,i=0;
     for(el of array){
         _p=el;
         if(_p.id===id || _p.id===_id) break;
         i++;
-        _p=null;
     }
     return((_p==null)?-1:i);
 }
@@ -553,3 +558,68 @@ window.gm.listPeople=function() {
         panel.appendChild(link);
     }
 };
+/* lists the available workspaces (that support production) and their configured producestack & productivity
+* 
+*/
+window.gm.listProduction=function() {
+    var _list={},_list2,panel2=$("div#panel2")[0],panel=$("div#panel")[0];
+    _list2 = window.story.state.City.Workspaces;
+    for(var i=_list2.length-1;i>=0;i--){ //for each ws...
+        var _ws = _list2[i],_rec=_ws.getProducables();
+        if(_rec===null) break; //produce nothing - skip
+        var link = document.createElement('a');
+        link.id=_ws.id,link.href='javascript:void(0)',
+        link.addEventListener("click", function(me){window.story.state.tmp.args=[{ws_id:me.currentTarget.id}];window.story.show('Menu_ProductionWS');});
+        if(_ws.produce!=""){
+            link.textContent=_ws.name+" produces actually "+ _ws.produce + " and " +_ws.produceStack.length +" more.";
+        } else {
+            link.textContent=_ws.name+" is preparing for " +_ws.produceStack.length +" more.";
+        }
+        panel2.appendChild(link);panel2.appendChild(document.createElement("br"));
+    }
+}
+/* lists producables on workspace
+* 
+*/
+window.gm.listProductionWS=function(params) {
+    var ws_id=(params?.ws_id)??"";
+    var _list={},_list2,panel2=$("div#panel2")[0],panel=$("div#panel")[0];
+    let _ws = window.gm.getArrayElementById(window.story.state.City.Workspaces,ws_id);
+    link = document.createElement('a');
+    link.id=_ws.id,link.href='javascript:void(0)',
+    link.addEventListener("click", function(me){
+        let _ws = window.gm.getArrayElementById(window.story.state.City.Workspaces,me.currentTarget.id);
+        _ws.produceStack=[];
+        window.story.show('Menu_ProductionWS');});
+    link.textContent="flush production-stack (but not active production)"; 
+    panel2.appendChild(link);
+
+    _list2=_ws.getProducables();
+    var link = document.createElement('p');
+    link.textContent=_ws.name + " has the follwoing production-stack: "; 
+    _ws.produceStack.forEach((x)=>{
+        link.textContent=link.textContent+" "+x.id+":"+x.count; 
+    });
+    panel2.appendChild(link);
+    link = document.createElement('p');
+    link.textContent=_ws.name + " could produce:"; 
+    panel2.appendChild(link);panel2.appendChild(document.createElement("br"));
+    for(var i=_list2.length-1;i>=0;i--){ //for each recipe...
+        let _rec=_list2[i];
+        link = document.createElement('a');
+        link.id=_ws.id+"@"+_rec.id,link.href='javascript:void(0)',
+        link.addEventListener("click", function(me){
+            let _d=me.currentTarget.id.split('@');  //ws_id@rec_id
+            let _ws = window.gm.getArrayElementById(window.story.state.City.Workspaces, _d[0]);
+            _ws.produceStack.push({id:_d[1], count:1});     //TODO confiure count
+            window.story.show('Menu_ProductionWS');
+        });
+        _list=_rec.resources;
+        _list.forEach((x)=>{
+            link.textContent+= x.item+":"+x.count+" ";
+        });
+        link.textContent=_rec.item +" with "+link.textContent;  //iron with ironore:2 wood:2 
+        panel2.appendChild(link);
+        panel2.appendChild(document.createElement("br"));
+    }
+}

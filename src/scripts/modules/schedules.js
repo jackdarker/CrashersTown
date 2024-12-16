@@ -86,7 +86,9 @@ window.gm.LibJobs = (function (Lib) {
     //Jobs
     Lib['Farmer']= function () { let x= new Job();x.id=x.name='Farmer';x.workspaces=['Farmer_Farm'];return(x);};
     Lib['Maid']= function () { let x= new Job();x.id=x.name='Maid';x.workspaces=['Maid_Mansion','Maid_Inn'];return(x);};
+    Lib['Smith']= function () { let x= new Job();x.id=x.name='Smith';x.workspaces=['Smith_Mansion'];return(x);};
     Lib['Trader']= function () { let x= new Job();x.id=x.name='Trader';return(x);};
+    Lib['Scavenger']= function () { let x= new Job();x.id=x.name='Scavenger';x.workspaces=['Scavenger_Hills'];return(x);};
     //Trainee / Trainer
     Lib['LearnCharm']= function () { let x= new Job();x.id=x.name='LearnCharm';x.workspaces=['Study_Mansion'];return(x);};
     return Lib; 
@@ -105,7 +107,7 @@ class WS_Maid extends Workspace{
     static fromJSON(value) { return window.storage.Generic_fromJSON(WS_Maid, value.data);};
     desc(){return(this.name);}
     doJob(people,now){  //this is called by schedule per timeslot. 
-        let _res=this._doJob(people,now);
+        let entry,_res=this._doJob(people,now);
         if(_res.OK==true){
            //there is a chance something odd happens
             entry = document.createElement('p');
@@ -125,13 +127,56 @@ class WS_Maid extends Workspace{
         return(false);
     }
 }
+class WS_Scavenger extends Workspace{
+    constructor() {
+        super();
+        this.reqStats=[{id:"strength",min:1,max:5}];
+        this.reqSkills=[];//[{id:"Smithing",min:0,max:5}];
+        this.reqEnergy=25;
+        this.maxPeople=1;
+    }
+    toJSON() {return window.storage.Generic_toJSON("WS_Scavenger", this); };
+    static fromJSON(value) { return window.storage.Generic_fromJSON(WS_Scavenger, value.data);};
+    desc(){return(this.name);}
+    doJob(people,now){  //Scavengers find random resources
+        let entry,_res=this._doJob(people,now);
+        if(_res.OK==true){
+            let _R,_rnd= _.random(0,100);
+            if(_rnd>60) {
+                _R = new ResourceChange();_R.Resource=Resource.ID.IronOre,_R.gain=1;
+                window.story.state.Events.push(_R);
+            } else if(_rnd>30) {
+                _R = new ResourceChange();_R.Resource=Resource.ID.Wood,_R.gain=1;
+                window.story.state.Events.push(_R);
+            } else {
+                entry = document.createElement('p');
+                entry.textContent =people[0]+" didnt find anything useful.";
+                window.gm.pushLog(entry.textContent);
+                document.querySelector("div#panel").appendChild(entry);
+            }
+        }
+        return(false);
+    }
+}
 class WS_Smithy extends Workspace{
     constructor() {
         super();
+        this.reqStats=[{id:"strength",min:1,max:5}];
+        this.reqSkills=[];//[{id:"Smithing",min:0,max:5}];
+        this.reqEnergy=35;
+        this.maxPeople=2;
     }
     toJSON() {return window.storage.Generic_toJSON("WS_Smithy", this); };
     static fromJSON(value) { return window.storage.Generic_fromJSON(WS_Smithy, value.data);};
     desc(){return(this.name);}
+    getProducables(){
+        let _list=[];
+        _list.push({id:"Iron", item:"Iron",count:1, 
+          resources:[{item:'IronOre',count:2},{item:'Wood',count:2}], 
+          wf:{skill:'Smithy', minLevel:0, eff:3} //eff = #timeslots
+        })
+        return(_list);
+    }
 }
 class WS_Farm extends Workspace{
     constructor() {
@@ -150,12 +195,15 @@ window.gm.LibWorkspace = (function (Lib) {
     window.storage.registerConstructor(WS_Maid);
     window.storage.registerConstructor(WS_Smithy);
     window.storage.registerConstructor(WS_Farm);
+    window.storage.registerConstructor(WS_Scavenger);
     //Leisure
     Lib['Rest_Mansion']= function () { let x= new Workspace();x.id=x.name='Rest_Mansion';return(x);};
     //Jobs
     Lib['Maid_Mansion']= function () { let x= new WS_Maid();x.id=x.name='Maid_Mansion';return(x);};
     Lib['Maid_Inn']= function () { let x= new WS_Maid();x.id=x.name='Maid_Inn';return(x);};
     Lib['Smith_Mansion']= function () { let x= new WS_Smithy();x.id=x.name='Smith_Mansion';return(x);};
+    Lib['Scavenger_Hills']= function () { let x= new WS_Scavenger();x.id=x.name='Scavenger_Hills';return(x);};
+    Lib['Scavenger_Forest']= function () { let x= new WS_Scavenger();x.id=x.name='Scavenger_Forest';return(x);};
     Lib['Farmer_Farm']= function () { let x= new WS_Farm();x.id=x.name='Farmer_Farm';return(x);};
     //Trainee / Trainer
     Lib['Study_Mansion']= function () { let x= new Workspace();x.id=x.name='Study_Mansion';return(x);};
