@@ -133,26 +133,37 @@ else window.gm.listPerson(window.story.state.tmp.args[0]);
 :: Menu_WorkSchedule [_back_]
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
 <p>[[Back|_back_]]</p>
-This menu:</br>
-- Table Day & Timeslot
-- with selectors of activities
-- activities depend on day/time, workerspecialisation, workspace & resource available
-- print preview of side-effect, efficiency & workresult of modified slot
-- indicate overload
 <a0 id='hint' onclick='(function($event){document.querySelector("#"+id+"~p").toggleAttribute("hidden");})(this);'>Hint</a>
+<p class='speech' hidden>
+Pick a job with the buttons below the table, then click on the desired time in the table. <br>
+The change is applied immediatly.<br>
+A display next to the day indicates how much energy is consumed by the activities. However, this is only a forecast and the numbers might be affected by other events.<br>
+F.e. it is assumed that the person starts every day with full energy recovered.<br> 
+</p>
+<a0 id='hint2' onclick='(function($event){document.querySelector("#"+id+"~p").toggleAttribute("hidden");})(this);'>Hint</a>
 <p class='speech' hidden>
 - most workspaces can only be used by a limited number of workers at a time<br>
 - to produce an item, you have also to configure the workspace in the facility-menu. If there is nothing selected, they will just do random work for money.<br>
 - trainings require a trainer. This person has to have trainer-skill and be slave with enough loyality or non-slave. <br>
 - some jobs require a boss to get decent result. This person has to be slave with enough loyality or non-slave. Also their skill must outmatch the other workers <br>
 </p>
-<table id="schedule"><tbody>
-</tbody></table>
+This menu:</br>
+- Table Day & Timeslot with selectors of activities<br>
+- activities depend on day/time, workerspecialisation, workspace & resource available<br>
+- print preview of side-effect, efficiency & workresult of modified slot<br>
+- indicate overload<br>
+<label> plan weekwise (allows different setup for each day) <input type="checkbox" id="planweek" onchange="foo();" value="week"></label>
+<br> 
+<table id="schedule"><tbody></tbody></table>
 </br><div id='panel'></div></br><hr><div id='panel2'></div>
 </br><div id='choice'></div>
 </article><article id="LogPanel"></article></section>
-<script>
-window.gm.planWork(window.story.state.tmp.args[0]);
+<script>function foo(){
+    window.gm.planWork(window.story.state.tmp.args[0],document.getElementById("planweek").checked);
+}
+_P=window.gm.getArrayElementById(window.story.state.City.Slaves,window.story.state.tmp.args[0]);
+document.getElementById("planweek").checked=_P.planWeek;
+foo();
 </script>
 
 
@@ -311,6 +322,6 @@ You saved Lydia from the cutthroats and she now ows you. Therefore she made the 
 </script>
 
 :: other
-visit bath/library/arena/stripclub for relaxation
+TODO visit bath/library/arena/stripclub for relaxation
 
 

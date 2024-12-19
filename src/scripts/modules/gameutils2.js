@@ -85,7 +85,7 @@ window.gm.listScouts=function() {
         }
     }
 };
-window.gm.listAreas=function() {
+window.gm.listAreas=function() { //prints a list of links that unfolds a description    TODO render full page instead?
     var _A,link,div,_list={},_list2,panel=$("div#panel2")[0];
     _list=window.story.state.Map,_list2=Object.keys(_list);
     for(el of _list2){
@@ -359,7 +359,137 @@ window.gm.listSlaves=function() {
  * div#panel2 to display job selector
  * div#choice to display info for selected job
  */
-window.gm.planWork=function(personid,params) {
+ window.gm.planWork=function(personid,weekwise) {
+    let s=window.story.state,selJob="Rest_Mansion";
+    var _P,_list,link,link2;
+    var panel=document.querySelector("#schedule>tbody"),panel1=document.querySelector("div#panel"),panel2=document.querySelector("div#panel2"),choice=document.querySelector("div#choice");
+    function removeChildNodes(parent){
+        while(parent.hasChildNodes()) {//clearout existing table
+            parent.removeChild(parent.children[0]);
+        }
+    }
+    removeChildNodes(panel),removeChildNodes(panel1),removeChildNodes(panel2);
+    _list = window.story.state.City.Slaves;
+    _P=window.gm.getArrayElementById(_list,personid);
+    if(!_P) return;
+
+    _P.planWeek=weekwise; //this is to store the UI-config in data
+    link = document.createElement('p');link.textContent = _P.name+' has '+_P.Stats.get('energyMax').value+' energy/day.';panel1.appendChild(link);
+    //link = document.createElement('hr');panel.appendChild(link);
+    const at='@';   //delimiter for ids
+    //Todo instead of selecting timeslot and then work -> select work then time 
+    //-- print table day-time
+    link2=document.createElement('tr');panel.appendChild(link2);
+    link=document.createElement('th'),link.textContent="   ";link2.appendChild(link);
+    link=document.createElement('th'),link.textContent="   ";link2.appendChild(link);
+    
+    window.gm.timeslots.forEach((x)=>{link=document.createElement('th'),link.textContent=x;link2.appendChild(link);});
+    if(weekwise!=true){
+        dayWork(window.gm.DoWs[0]);
+        window.gm.timeslots.forEach((y)=>{
+            var _job,_res;
+            window.gm.DoWs.forEach((x,i)=>{
+                if(i==0) {
+                    _job=s.Schedule.getJobAtTimePerson(x,y,personid);
+                } else { //copy first day to others
+                    //TODO this could cause oddities if the workspace at this time is already occupied - verify with workPreview?
+                    s.Schedule.setJob(x,y,_job.job,personid,_job.params);
+                }
+            })
+        })
+    } else window.gm.DoWs.forEach((x)=>{dayWork(x)});
+    //-- print possible jobs
+    _P.WorkOptions.forEach((x)=>{x.workspaces.forEach((y)=>{addOption(y);})});  //Todo filter options that are general unavailable (missing workspace)
+
+    function dayWork(day){
+        var row = document.createElement('tr');panel.appendChild(row);
+        link=document.createElement('td');link.textContent="   ";link.id=day+"_alert";row.appendChild(link);  //Todo indicator for overload
+        link=document.createElement('td');link.textContent=(weekwise)?day:'each day';row.appendChild(link);
+        link=document.createElement('td'),link.textContent="   ";link2.appendChild(link);   
+        window.gm.timeslots.forEach((x)=>{timeWork(x,day,row)});
+        dayPreview(day);
+    }
+    function timeWork(time,day,dayrow){
+        link=document.createElement('td');dayrow.appendChild(link);
+        let _j=s.Schedule.getJobAtTimePerson(day,time,personid);
+        link2 = document.createElement('button'),link2.id=day+at+time,
+        styleJobButton(link2,_j.job);
+        link2.addEventListener("click", function(me){workPreview(me.currentTarget.id,selJob)});
+        link.appendChild(link2);
+    }
+
+    function addOption(work){
+        link = document.createElement('button');link.id=work, link.textContent = work;panel2.appendChild(link);
+        link.addEventListener("click", function(me){selJob=me.currentTarget.id});
+    }
+    function workPreview(day_time,work){
+        var _res,_x,info=day_time.split(at),    //Monday@Dawn  Maid_Inn
+            day=info[0],time=info[1];
+            removeChildNodes(choice);
+        if(weekwise!=true){ 
+            window.gm.DoWs.forEach((x,i)=>{
+            _res=window.gm.workPreview(_P,x,time,work);
+            if(_res.OK==true){;
+                s.Schedule.setJob(x,time,work,personid,_res.work.params());
+                if(i==0) {
+                    dayPreview(x);
+                    styleJobButton(document.getElementById(x+at+time),work);
+                }
+            }
+            });
+        } else {
+            _res=window.gm.workPreview(_P,day,time,work);
+            if(_res.OK==true){;
+                s.Schedule.setJob(day,time,work,personid,_res.work.params());
+                dayPreview(day);
+                styleJobButton(document.getElementById(day+at+time),work);
+            }
+        }
+        link = document.createElement('p');link.textContent=_res.msg;choice.appendChild(link);  //describe work
+    }
+    function dayPreview(day){
+        let _res={OK:true,msg:""},_en=0,_maxEn=_P.Stats.get('energyMax').value;
+        window.gm.timeslots.forEach((x)=>{
+            let _j=s.Schedule.getJobAtTimePerson(day,x,personid);
+            if(_j){
+                _en+=window.gm.getArrayElementById(s.City.Workspaces,_j.job).requiredEnergy();
+                //_en+=_P.getWorkOption(_j.job).requiredEnergy();  //Resting has 0 Energy
+            }
+        })
+        if(_en>_maxEn){
+            _res.OK=false,_res.msg="Jobs require to much energy and might fail. "
+        }
+        if(_res.OK==false){
+            document.getElementById(day+"_alert").innerHTML='<div class="popup combateff"><div class="combaticon">'+window.gm.images.ic_warn()+'</div><span class="popuptext" id="myPopup2">'+_res.msg+'</span></div>';
+        } else {
+            document.getElementById(day+"_alert").innerHTML='<div style="max-width: fit-content;">'+window.gm.util.formatNumber(_en,1)+'/ '+window.gm.util.formatNumber(_maxEn,1)+'</div>';
+        }
+    }
+    function styleJobButton(button,work){   
+        let bc="unset";
+        switch(work){   //TODO hardcode in Job
+            case "Rest_Mansion":
+                bc="darkgray";
+                break;
+            case "Scavenger_Hills":
+                bc="cyan";
+                break;
+            default:
+                break;
+        }
+        button.textContent=work.replaceAll("_"," ");
+        button.style.maxWidth="fit-content";
+        button.style.backgroundColor=bc;
+    }
+};
+/** 
+ * print Schedule-table for worker. It requires:
+ * #schedule>tbody to display day & Time assignment of Jobs
+ * div#panel1 to display person-info
+ * div#panel2 to display job selector
+ * div#choice to display info for selected job
+ */
+window.gm.planWork_OLD=function(personid,params) {
     //let showall=(params&&params.showall)?params.showall:false;
     let s=window.story.state;
     var _P,_list,link,link2;
@@ -440,6 +570,7 @@ window.gm.planWork=function(personid,params) {
         }
     }
 };
+
 /**
  * estimate effect of work
 */
@@ -465,7 +596,7 @@ window.gm.workPreview=function(person,day,time,workspace){
     }
     if(_res.OK==true) {
         //Resources available
-        _res.msg=person.name+" will use "+_work.workspaces[0]+ ". Requires TODO?? energy.";
+        _res.msg=person.name+" will use "+_work.workspaces[0]+ ".";
         _res.work=_work;
     }
     return(_res)

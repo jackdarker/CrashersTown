@@ -497,7 +497,7 @@ class Lydia extends Operator {
 class Carlia extends Operator {
   constructor() {
       super();
-      this.name = this.id = 'Carlia';
+      this.name = 'Carlia';
       this.pic= 'unknown';
       this.Outfit.addItem(new BaseHumanoid());
       this.Outfit.addItem(new SkinHuman());
@@ -514,7 +514,7 @@ class Carlia extends Operator {
 class Ruff extends Operator {
     constructor() {
         super();
-        this.name = this.id = 'Ruff';
+        this.name = 'Ruff';
         this.pic= 'unknown';
         this.Outfit.addItem(AnusHuman.factory('wolf'));
         this.Outfit.addItem(PenisHuman.factory('wolf'));
@@ -525,7 +525,7 @@ class Ruff extends Operator {
 class Trent extends Operator {
     constructor() {
         super();
-        this.name = this.id = 'Trent';
+        this.name = 'Trent';
         this.pic= 'unknown';
         this.Outfit.addItem(new BaseHumanoid());
         this.Outfit.addItem(SkinFur.factory('horse', 'brown'));

@@ -273,25 +273,40 @@ window.gm.getTimeStruct=function() {
   var m=v.time%100;
   var h=((v.time-m)/100);
   var daytime = ''; 
-  //"Night","Dawn","Morning","Noon","Afternoon","Evening"
-  //"22-2"  "2-6" "6-10"  "10-14" "14-18" "18-22" "22-2"]
-  if(v.time>200 && v.time<600) {
-    daytime = 'Dawn';
-  } else if(v.time>600 && v.time<1000) {
-    daytime = 'Morning';
-  } else if(v.time>=1000 && v.time<1400) {
-    daytime = 'Noon';
-  } else if(v.time>=1400 && v.time<1800) {
-    daytime = 'Afternoon';
-  } else if(v.time>=1800 && v.time<2200) {
-    daytime = 'Evening';
-  } else {
-    daytime = 'Night';
+  if(window.gm.timeslots.length===6) {
+    //"Night","Dawn","Morning","Noon","Afternoon","Evening"
+    //"22-2"  "2-6" "6-10"  "10-14" "14-18" "18-22" "22-2"]
+    if(v.time>200 && v.time<600) {
+      daytime = 'Dawn';
+    } else if(v.time>600 && v.time<1000) {
+      daytime = 'Morning';
+    } else if(v.time>=1000 && v.time<1400) {
+      daytime = 'Noon';
+    } else if(v.time>=1400 && v.time<1800) {
+      daytime = 'Afternoon';
+    } else if(v.time>=1800 && v.time<2200) {
+      daytime = 'Evening';
+    } else {
+      daytime = 'Night';
+    }
+  }else {
+    //"Night","Morning","Afternoon","Evening"
+    //"0-6"   "6-12"    "12-18"     "18-24"]
+    if(v.time>600 && v.time<1200) {
+      daytime = 'Morning';
+    } else if(v.time>=1200 && v.time<1800) {
+      daytime = 'Afternoon';
+    } else if(v.time>=1800 && v.time<2400) {
+      daytime = 'Evening';
+    } else {
+      daytime = 'Night';
+    }
   }
+
   var DoW = window.story.state._gm.day%7;
   return({'hour':h,'min':m, 'daytime': daytime, 'DoW':DoW});
 };
-window.gm.timeslots=["Night","Dawn","Morning","Noon","Afternoon","Evening"];
+window.gm.timeslots=["Night","Morning","Afternoon","Evening"]; //["Night","Dawn","Morning","Noon","Afternoon","Evening"];
 window.gm.DoWs = ['Sunday','Monday', 'Tuesday','Wednesday','Thursday','Friday','Saturday']; //DoW=1 -> Monday
 window.gm.getDateString= function() {
   var v=window.story.state._gm;

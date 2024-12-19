@@ -38,6 +38,7 @@ window.gm.initGame= function(forceReset,NGP=null) {
         Facilities: [window.gm.LibFacilities.Mansion()],
         Workspaces: [window.gm.LibWorkspace.Rest_Mansion(),
           window.gm.LibWorkspace.Maid_Mansion(),window.gm.LibWorkspace.Maid_Inn(),
+          window.gm.LibWorkspace.Scavenger_Hills(),
           window.gm.LibWorkspace.Farmer_Farm(),window.gm.LibWorkspace.Smith_Mansion()],
         People: [],
         Slaves:[],

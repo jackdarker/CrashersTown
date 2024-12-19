@@ -123,11 +123,11 @@ class Trait {
     constructor(){ super(),
         this.id = IDGenerator.createID();
         this.name='Operator'+this.id;
-        this.job=Operator.Job.Nothing;this.jobActive=false;
+        this.job=Operator.Job.Nothing;this.jobActive=false; //TODO obsolete
         this.traits ={};
         this.civil="free";  //"worker", "slave", "prisoner", "pet?"//
         this.WorkOptions=[window.gm.LibJobs.Rest()];
-        this.WorkSchedule={};   //{Monday:{Dawn:{Rest:{}},{Morning:{}} } }
+        this.planWeek=false,
         this.temper=0,      //  -100=rebellious 100=kind
         this.obedience=0,   //  -100=never obeys 0= 100= always obeys
         this.trust=0;       //  -100=fearsome 100=trustful

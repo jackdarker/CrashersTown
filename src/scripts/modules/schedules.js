@@ -110,8 +110,9 @@ class WS_Maid extends Workspace{
         let entry,_res=this._doJob(people,now);
         if(_res.OK==true){
            //there is a chance something odd happens
+            let _P = window.gm.getArrayElementById(window.story.state.City.Slaves,people[0]);
             entry = document.createElement('p');
-            entry.textContent = 'As '+ people[0];
+            entry.textContent = 'As '+ _P.name;
             if(this.id=='Maid_Mansion'){
                 entry.textContent += ' cleaned the mansion, something happened... '
             } else {
@@ -149,8 +150,9 @@ class WS_Scavenger extends Workspace{
                 _R = new ResourceChange();_R.Resource=Resource.ID.Wood,_R.gain=1;
                 window.story.state.Events.push(_R);
             } else {
+                let _P = window.gm.getArrayElementById(window.story.state.City.Slaves,people[0]);
                 entry = document.createElement('p');
-                entry.textContent =people[0]+" didnt find anything useful.";
+                entry.textContent =_P.name+" didnt find anything useful.";
                 window.gm.pushLog(entry.textContent);
                 document.querySelector("div#panel").appendChild(entry);
             }
