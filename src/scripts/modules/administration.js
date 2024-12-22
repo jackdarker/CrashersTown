@@ -86,18 +86,23 @@ class Facility extends Entity{
         this.operator = []; //what kind of person is required for minimum production
         this.bonusOperator= []; //who can help with production eg farmhand
     }
-}
-/**
- * a building that is used as home for someone
- */
-class Homestead extends Facility {
-    constructor() {
-        super();
-    }
     // how many people/animals can life here
-    getCapacity(typ) {retur(0); }
-}
+    getCapacity(typ) {return(0); }
+    getUpgrades(){   
+        //Building a facility works like other producables and will create a Building-Item. The Item gets consumed and creates the facility
+        //Build recipes are restricted by already created facilities and remaining space
+        let _list=[];
 
+        _list.push({id:"ClearRoom1", item:"Build_Room1",count:1, 
+            desc:'Clear out a room to have some more space.',    
+            preCond:function(){return({OK:true,msg:""});},
+            resources:[{item:'Stone',count:5},{item:'Wood',count:5}], 
+            wf:{skill:'Build', minLevel:0, eff:15} //eff = #timeslots
+        })
+
+        return(_list);
+    }
+}
 /**
  * a Skill, Mallus or Bonus
  *
@@ -471,15 +476,15 @@ class MapArea extends Entity {
         this.nextScene='';
     }
     desc(){return(this.name);}
-    explore(PerId) {
+    explore() {
         this.nextScene='';  
         return(false);
     }
-    hunt(PerId) {
+    hunt() {
         this.nextScene='';  //todo if we hunt&explore at same time we would need separate scene
         return(false);
     }
-    scavenge(PerId) {
+    scavenge() {
         this.nextScene='';  
         return(false);
     }

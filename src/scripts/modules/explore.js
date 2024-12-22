@@ -1,10 +1,27 @@
 "using strict";
-
+/**
+ * an Area stores information about the state of a location and also handles the "exploration" of the player
+ */
+class AreaPorthcrawl extends MapArea {
+    constructor(){super();
+        this.name='Porthcrawl';
+        this.FlagMarket=0,
+        this.FlagInn=0;
+    }
+    toJSON() {return window.storage.Generic_toJSON("AreaPorthcrawl", this); };
+    static fromJSON(value) { return window.storage.Generic_fromJSON(AreaPorthcrawl, value.data);};
+    explore() {
+        this.nextScene='';this.timesExplored+=1;
+        window.story.state.tmp.args[2]=_.random(0,100); //rng
+        this.nextScene='City_Explore';return(true);
+    }
+    desc(){return('This town might now be your new home.');}
+}
 class AreaCrashsite extends MapArea {
     constructor(){super();this.name='Crashsite';}
     toJSON() {return window.storage.Generic_toJSON("AreaCrashsite", this); };
     static fromJSON(value) { return window.storage.Generic_fromJSON(AreaCrashsite, value.data);};
-    explore(PerId) {
+    explore() {
         this.nextScene='';this.timesExplored+=1;
         if(this.timesExplored>2 && (window.story.state.Map.CrashsiteRuins===undefined)){
             this.nextScene='CS_Ruins_Explore';return(true);
@@ -41,6 +58,19 @@ class AreaLapineVillage extends MapArea {
     }
     toJSON() {return window.storage.Generic_toJSON("AreaLapineVillage", this); };
     static fromJSON(value) { return window.storage.Generic_fromJSON(AreaLapineVillage, value.data);};
+}
+///////////////////////////////////////////////////
+class AreaHills extends MapArea {
+    constructor(){super();
+        this.name='Hills';
+    }
+    toJSON() {return window.storage.Generic_toJSON("AreaHills", this); };
+    static fromJSON(value) { return window.storage.Generic_fromJSON(AreaHills, value.data);};
+    explore() {
+        this.nextScene='';this.timesExplored+=1;
+        this.nextScene='Hills_Explore';return(true);
+    }
+    desc(){return("Directly outside the town are the 'Hills'. Large areas of gras and several fields of grain and vegetables are covering there flat flanks.");}
 }
 ///////////////////////////////////////////////////
 class AreaForest extends MapArea {
@@ -80,14 +110,18 @@ class AreaForest extends MapArea {
     }
 }
 window.gm.ExploreLib = (function (Lib) {
+    window.storage.registerConstructor(AreaPorthcrawl);
     window.storage.registerConstructor(AreaCrashsite);
     window.storage.registerConstructor(AreaCrashsiteRuins);
     window.storage.registerConstructor(AreaLapineVillage);
     window.storage.registerConstructor(AreaForest);
+    window.storage.registerConstructor(AreaHills);
+    Lib['AreaPorthcrawl']= function () { let x= new AreaPorthcrawl();return(x);};
     Lib['AreaCrashsite']= function () { let x= new AreaCrashsite();return(x);};
     Lib['AreaCrashsiteRuins']= function () { let x= new AreaCrashsiteRuins();return(x);};
     Lib['AreaLapineVillage']= function () { let x= new AreaLapineVillage();return(x);};
     Lib['AreaForest']= function () { let x= new AreaForest();return(x);};
+    Lib['AreaHills']= function () { let x= new AreaHills();return(x);};
     //Lib['AreaDeepForest']= function () { let x= new AreaDeepForest();return(x);};
     return Lib; 
 }(window.gm.ExploreLib || {}));

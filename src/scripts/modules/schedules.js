@@ -84,6 +84,7 @@ window.gm.LibJobs = (function (Lib) {
     //Leisure
     Lib['Rest']= function () { let x= new Job();x.id=x.name='Rest';x.workspaces=['Rest_Mansion'];return(x);};
     //Jobs
+    Lib['Builder']= function () { let x= new Job();x.id=x.name='Builder';x.workspaces=['Build_Mansion'];return(x);};
     Lib['Farmer']= function () { let x= new Job();x.id=x.name='Farmer';x.workspaces=['Farmer_Farm'];return(x);};
     Lib['Maid']= function () { let x= new Job();x.id=x.name='Maid';x.workspaces=['Maid_Mansion','Maid_Inn'];return(x);};
     Lib['Smith']= function () { let x= new Job();x.id=x.name='Smith';x.workspaces=['Smith_Mansion'];return(x);};
@@ -174,9 +175,30 @@ class WS_Smithy extends Workspace{
     getProducables(){
         let _list=[];
         _list.push({id:"Iron", item:"Iron",count:1, 
+          desc:"Melt some iron from ore.",
+          preCond:function(){return({OK:true,msg:""});},
           resources:[{item:'IronOre',count:2},{item:'Wood',count:2}], 
           wf:{skill:'Smithy', minLevel:0, eff:3} //eff = #timeslots
         })
+        return(_list);
+    }
+}
+//the builder constructs upgrades for associated facilities
+class WS_Builder extends Workspace{
+    constructor() {
+        super();
+        this.reqStats=[{id:"strength",min:1,max:5}];
+        this.reqSkills=[];//[{id:"Smithing",min:0,max:5}];
+        this.reqEnergy=35;
+        this.maxPeople=2;
+        this.facility="";
+    }
+    toJSON() {return window.storage.Generic_toJSON("WS_Smithy", this); };
+    static fromJSON(value) { return window.storage.Generic_fromJSON(WS_Builder, value.data);};
+    desc(){return(this.name);}
+    getProducables(){
+        let _facility=window.gm.getArrayElementById(window.story.state.City.Facilities,this.facility);
+        let _list=_facility.getUpgrades();
         return(_list);
     }
 }
@@ -198,6 +220,7 @@ window.gm.LibWorkspace = (function (Lib) {
     window.storage.registerConstructor(WS_Smithy);
     window.storage.registerConstructor(WS_Farm);
     window.storage.registerConstructor(WS_Scavenger);
+    window.storage.registerConstructor(WS_Builder);
     //Leisure
     Lib['Rest_Mansion']= function () { let x= new Workspace();x.id=x.name='Rest_Mansion';return(x);};
     //Jobs
@@ -209,5 +232,6 @@ window.gm.LibWorkspace = (function (Lib) {
     Lib['Farmer_Farm']= function () { let x= new WS_Farm();x.id=x.name='Farmer_Farm';return(x);};
     //Trainee / Trainer
     Lib['Study_Mansion']= function () { let x= new Workspace();x.id=x.name='Study_Mansion';return(x);};
+    Lib['Build_Mansion']= function () { let x= new WS_Builder();x.id=x.name='Build_Mansion';x.facility="Mansion";return(x);};
     return Lib; 
 }(window.gm.LibWorkspace || {}));

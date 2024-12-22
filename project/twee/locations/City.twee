@@ -17,13 +17,20 @@ From this menu you can access other menus.</br>
 <p>[[Exploration|Menu_Exploration]] [[Mission|Menu_Mission]] [[Policing|Menu_Administration]]</p>
 <p>[[People|Menu_Social]] [[Slaves|Menu_Slaves]]</p>
 <p>[[Facilities|Menu_Build]] [[Production|Menu_Production]] [[Breeding|Menu_Breed]] </p>
-<p>[[Trading|Menu_Market]] [[Inventory|Menu_Resources]]  </p>
+<p>[[Inventory|Menu_Resources]]  </p>
+<hr><label>[hint]<input type='checkbox' style='display: none;'>
+<span role='tooltip'>The button bellow will advance time by one step. Make sure you have assigned activities to your people.</span></label>
+<button onclick='window.gm.newTurn()'>-> Advance Daytime <-</button>
+<hr>
 </article><article id="LogPanel"></article></section>
 
 
 :: Menu_City
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
 <%window.gm.player.location=window.passage.name;%><p>[[Return to Mansion|Menu_Main]]</p>
+<p><a0 onclick="explore()" >Explore the town</a>
+<label>[hint]<input type='checkbox' style='display:none;'><span role='tooltip'>Exploration will also advance time.</span></label>
+</p>
 This menu:
 - traders
 - Slavers Guild
@@ -34,23 +41,32 @@ This menu:
 - Temple
 - Administration
 - Pillory
+<p>The following parts of the town are known by you: </p>
+<%if(window.story.state.Map?.Town.FlagMarket>0){%> [[Menu_Market]] <%}%>
+<%if(window.story.state.Map?.Town.FlagInn>0){%> [[Menu_Inn]] <%}%>
 </article><article id="LogPanel"></article></section>
+<script>
+function explore(){
+    let _E = window.gm.EventsLib.ScoutProgress();
+    _E.Area = "Town";
+    window.story.state.Events.push(_E);
+    window.gm.newTurn(); 
+}
+</script>
 
 
 :: Menu_Map
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
 <%window.gm.player.location=window.passage.name;%><p>[[Menu_Main]]</p>
-This menu:
-- worldmap
-- exploration progress
-- cities & dungeons
-- influence
-- travel
-<%if(){%>
-
-<%}else{%>
-
-<%}%>>
+This menu:<br>
+- worldmap<br>
+- exploration progress<br>
+- cities & dungeons<br>
+- influence & fame<br>
+- travel<br>
+<br>
+<%if(window.story.state.Map.Hills){%> [[Hills]] <%}%>
+<%if(window.story.state.Map.Forest){%> [[Forest]] <%}%>
 </article><article id="LogPanel"></article></section>
 
 
@@ -69,7 +85,7 @@ This menu:
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
 <%window.gm.player.location=window.passage.name;%><p>[[Menu_Main]]</p>
 This menu:</br>
-- list resource storage, consumption and generation</br>
+- list resource storage, consumption and generation<br>
 </br><div id='choice'></div>
 </br><div id='panel'></div></br>
 </article><article id="LogPanel"></article></section>
@@ -118,9 +134,9 @@ window.gm.listPeople();
 This menu:</br>
 - detail information for a person/slave</br>
 - assign them new work or training</br>
-- socialise 
-- set rules
-- take them for a walk
+- socialise <br>
+- set rules<br>
+- take them for a walk<br>
 </br><div id='choice'></div>
 </br><div id='panel'></div></br><hr><div id='panel2'></div>
 </article><article id="LogPanel"></article></section>
@@ -181,8 +197,11 @@ This menu:
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
 <%window.gm.player.location=window.passage.name;%>
 This menu:
-- list wares on the market place for selling and buying
-- buy & sell slaves and animals
+- list wares on the market place for selling and buying<br>
+- buy & sell slaves and animals<br>
+- some traders are only available at certain days<br>
+
+[[General_Store]] 
 
 <a0 onclick='window.story.state.Events.push(window.gm.EventsLib.SlaveCaptured());'>Get a slave.</a></br>
     
@@ -259,7 +278,7 @@ This menu:
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
 <p>[[Back|_back_]]</p>
 This menu:
-- assign, pause or abort production
+- assign, pause or abort production<br>
 </br><div id='choice'></div><hr><div id='panel2'></div><hr>
 </br><div id='panel'></div></br>
 </article><article id="LogPanel"></article></section>
@@ -271,9 +290,9 @@ This menu:
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
 <%window.gm.player.location=window.passage.name;%><p>[[Menu_Main]]</p>
 This menu:
-- lists research facilities and their research progress
-- list of scientists
-- assign, pause or abort research
+- lists research facilities and their research progress<br>
+- list of scientists<br>
+- assign, pause or abort research<br>
 [[Menu_Main]]
 </article><article id="LogPanel"></article></section>
 
@@ -281,12 +300,13 @@ This menu:
 :: Menu_Build
 <section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs") %>
 <%window.gm.player.location=window.passage.name;%><p>[[Menu_Main]]</p>
+<label>[hint]<input type='checkbox' style='display:none;'><span role='tooltip'>See production-Builder about upgrades of your home.</span></label>
 This menu:
-- lists building, there production and resource consumption
-- check build progress of buildings
-- start or pause build 
-- upgrading/downgrading a building (make sure the building doesnt produce something) 
-- deconstruct buildings 
+- lists building, there production and resource consumption<br>
+- check build progress of buildings<br>
+- start or pause build <br>
+- upgrading/downgrading a building (make sure the building doesnt produce something) <br>
+- deconstruct buildings <br>
 </br><div id='choice'></div><hr>facilities:</br><div id='panel'></div><hr>build...</br><div id='panel2'></div>
 </article><article id="LogPanel"></article></section>
 <script>
@@ -320,6 +340,39 @@ You saved Lydia from the cutthroats and she now ows you. Therefore she made the 
     window.story.show("Menu_Main");
 }
 </script>
+
+:: City_Explore
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.player.location=window.passage.name;%>
+<% if(window.story.state.Map.Town.timesExplored<=1){ window.story.state.Map.Town.FlagMarket=1; %>
+    <p>Taking a walk to the center of this little town to familarize yourself with it.</p> 
+    <p>There is the <b>Market</b> but only very few traders have setup their stall here.</p> 
+<%}else if((window.story.state.Map.Town.timesExplored>1) && (window.story.state.Map.Town.FlagInn===0)){window.story.state.Map.Town.FlagInn=1;%>
+    <p>Close to your quarter is a <b>Inn</b> that also has a tavern on its lower floor. Could be a good location to ask for work and pickup some rumors. </p>
+<%}else if((window.story.state.Map.Town.timesExplored>2) && (!window.story.state.Map.Hills)){window.story.state.Map.Hills=window.gm.ExploreLib['AreaHills']();%>
+    <p>You decide to walk toward the other site of the town facing away from the sea.</p>
+    <p>From the walls you can look into the surounding landscape. But your view is limited by the <b>hills</b> that the town is set into.</p>
+<%}else{%>
+    <p>Strolling around through the different areas of town...</p>
+<%}%>
+<% if(window.story.state.Map.Town.timesExplored> 8 ){ %>
+    <p>But there isnt anything new to find.</p>
+<%}%>
+<p>[[Next|_Event]]</p>
+</article><article id="LogPanel"></article></section>
+
+
+:: General_Store [_back_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<%window.gm.moveHere();%> Would you like to buy something?</br>[[Back|_back_]]</br>
+<div id="choice"></div></br></br>   <!--display buy message-->
+<div id="panel"></div></br></br>    <!--display wares list-->
+</article><article id="LogPanel"></article></section>
+<script>
+window.gm.shop.findWaresToBuy("Arena:Shop");
+renderToSelector("#panel", "listbuy");
+</script>
+
 
 :: other
 TODO visit bath/library/arena/stripclub for relaxation

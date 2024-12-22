@@ -32,7 +32,11 @@
 			"prefix": "bb",
 			"body": ["</br>$0"]
 		},
-
+		"Insert hint": {
+			"prefix": "hin",
+			"body": ["<label>[hint]<input type='checkbox' style='display: none;'>",
+				"<span role='tooltip'>$1</span></label>$0"]
+		},
 		"Insert <select": {
 			"prefix": "sel",
 			"body": ["<div id='select${1:idx}' >",

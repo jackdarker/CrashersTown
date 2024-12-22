@@ -36,7 +36,7 @@ window.gm.initGame= function(forceReset,NGP=null) {
     if (!s.City||forceReset) {
       s.City = {  //things you own
         Facilities: [window.gm.LibFacilities.Mansion()],
-        Workspaces: [window.gm.LibWorkspace.Rest_Mansion(),
+        Workspaces: [window.gm.LibWorkspace.Rest_Mansion(),window.gm.LibWorkspace.Build_Mansion(),
           window.gm.LibWorkspace.Maid_Mansion(),window.gm.LibWorkspace.Maid_Inn(),
           window.gm.LibWorkspace.Scavenger_Hills(),
           window.gm.LibWorkspace.Farmer_Farm(),window.gm.LibWorkspace.Smith_Mansion()],
@@ -48,7 +48,7 @@ window.gm.initGame= function(forceReset,NGP=null) {
       s.Known={};
       s.Known.Scout=null; //initial job-knowledge
       //initial Area-knowledge
-      s.Map={},s.Map.Crashsite=window.gm.ExploreLib["AreaCrashsite"](); 
+      s.Map={},s.Map.Town=window.gm.ExploreLib["AreaPorthcrawl"](); 
       s.Events=[];  //stack of events to run on next tick
       s.Schedule=new JobSchedule();
     }

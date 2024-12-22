@@ -1,11 +1,13 @@
 "use strict";
 //////////////////////////////////////////
-
-class Mansion extends Homestead {
+class Mansion extends Facility {
     constructor(){super(); this.style=0;
         this.storage[Resource.ID.Money]=10000;
         this.storage[Resource.ID.Wood]=10,this.storage[Resource.ID.Iron]=10,this.storage[Resource.ID.IronOre]=10,
         this.storage[Resource.ID.Food]=8,this.storage[Resource.ID.Energy]=4,this.storage[Resource.ID.Stone]=10;
+        //Building upgrades: 0=not present, 1=ready, 2=blocked by other upgrade
+        this.Room1=0,
+        this.Smithy=0
     }
     set style(style) {
         this._style = style; 
@@ -45,8 +47,44 @@ class Mansion extends Homestead {
         if(typ==='slave') return(3);
         return(0); 
     }
+    getUpgrades(){   
+        let _list=[];
+        //let _mansion=window.gm.getArrayElementById(window.story.state.City.Facilities,"Mansion");
+        if(this.Room1===0){
+            _list.push({id:"ClearRoom1", item:"Build_Room1",count:1, 
+            desc:'Clear out a room to have some more space.',    
+            preCond:function(){return({OK:true,msg:""});},
+            resources:[{item:'Stone',count:5},{item:'Wood',count:5}], 
+            wf:{skill:'Build', minLevel:0, eff:15} //eff = #timeslots
+            })
+        }
+        if(this.Smithy===0){
+            _list.push({id:"Smithy", item:"Build_Smithy",count:1,
+            desc:'Setup a smithy for crafting and repair.', 
+            preCond:function(){
+                let _res={OK:true,msg:""};
+                if(this.Room1!=1){
+                    _res.OK=false,_res.msg="You would need some more room to build a smithy."
+                }
+                return(_res)
+                },
+            resources:[{item:'Stone',count:5},{item:'Wood',count:5}], 
+            wf:{skill:'Build', minLevel:0, eff:15} //eff = #timeslots
+            })
+        }
+        _list.push({id:"ClearCellar", item:"Build_Cellar",count:1,
+          desc:'Remove the rubble that blocks the entrance of the cellar.', 
+          preCond:function(){
+            let _res={OK:true,msg:""};
+            return(_res)
+            },
+          resources:[{item:'Stone',count:5},{item:'Wood',count:5}], 
+          wf:{skill:'Build', minLevel:0, eff:15} //eff = #timeslots
+        })
+        return(_list);
+    }
 }
-class SlavePen extends Homestead {
+class SlavePen extends Facility {
     constructor(){super(); this.style='SlavePen';}
     set style(style) {
         this.id=this.name=this._style = style; 

@@ -4,11 +4,11 @@
 // display is done in _event-Passage
 window.gm.newTurn=function() {
     //daycount++
-    window.gm.addTime(4*60); //6 slots a day    //TODO ensure proper time slot cycle  22-2-6-10-14-18-22 
+    window.gm.addTime(60*24/window.gm.timeslots.length); //n slots a day    //TODO ensure proper time slot cycle
     window.story.state.PrcEvent=null;
     window.story.state.Summary={ResourceChange:new ResourceChangeSummary(),FoodDrain:new FoodDrain()};
     window.story.show("_Event");
-    };
+};
 window.gm.processEvents=function() {
     // events were sorted into groups and the groups are evaluated here left to right !
     window.story.state.PrcEvent = window.story.state.PrcEvent || {i:-1, list:'', group:['Facilities','Jobs','People','Events','Summary']};
@@ -23,7 +23,7 @@ window.gm.processEvents=function() {
             }
         }
         if(PrcEvent.list==='Facilities') _list2= window.story.state.City.Facilities;
-        else if(PrcEvent.list==='Jobs') _list2=window.story.state.Schedule.getJobsAtTime(window.gm.DoWs[DoW],daytime);
+        else if(PrcEvent.list==='Jobs') _list2=window.story.state.Schedule.getJobsAtTime(window.gm.DoWs[DoW],daytime);  //Todo people might skip job if busy with player
         else if(PrcEvent.list==='People') _list2= window.story.state.City.People;
         else if(PrcEvent.list==='Events') _list2= window.story.state.Events;
         else if(PrcEvent.list==='Summary') {
@@ -364,7 +364,7 @@ window.gm.listSlaves=function() {
     var _P,_list,link,link2;
     var panel=document.querySelector("#schedule>tbody"),panel1=document.querySelector("div#panel"),panel2=document.querySelector("div#panel2"),choice=document.querySelector("div#choice");
     function removeChildNodes(parent){
-        while(parent.hasChildNodes()) {//clearout existing table
+        while(parent.hasChildNodes()) {//clearout existing childs
             parent.removeChild(parent.children[0]);
         }
     }
@@ -482,95 +482,6 @@ window.gm.listSlaves=function() {
         button.style.backgroundColor=bc;
     }
 };
-/** 
- * print Schedule-table for worker. It requires:
- * #schedule>tbody to display day & Time assignment of Jobs
- * div#panel1 to display person-info
- * div#panel2 to display job selector
- * div#choice to display info for selected job
- */
-window.gm.planWork_OLD=function(personid,params) {
-    //let showall=(params&&params.showall)?params.showall:false;
-    let s=window.story.state;
-    var _P,_list,link,link2;
-    var panel=document.querySelector("#schedule>tbody"),panel1=document.querySelector("div#panel"),panel2=document.querySelector("div#panel2"),choice=document.querySelector("div#choice");
-    _list = window.story.state.City.Slaves;
-    _P=window.gm.getArrayElementById(_list,personid);
-    if(!_P) return;
-    
-    link = document.createElement('p');link.textContent = _P.name+' has '+_P.Stats.get('energyMax').value+' energy/day.';panel1.appendChild(link);
-    //link = document.createElement('hr');panel.appendChild(link);
-    const at='@';   //delimiter for ids
-    //Todo instead of selecting timeslot and then work -> select work then time 
-    link2=document.createElement('tr');panel.appendChild(link2);
-    link=document.createElement('th'),link.textContent="   ";link2.appendChild(link);
-    link=document.createElement('th'),link.textContent="   ";link2.appendChild(link);
-    window.gm.timeslots.forEach((x)=>{link=document.createElement('th'),link.textContent=x;link2.appendChild(link);});
-
-    window.gm.DoWs.forEach((x)=>{dayWork(x)});
-
-    function dayWork(day){
-        var row = document.createElement('tr');panel.appendChild(row);
-        link=document.createElement('td');link.textContent="   ";link.id=day+"_alert";row.appendChild(link);  //Todo indicator for overload
-        link=document.createElement('td');link.textContent=day;row.appendChild(link);
-        link=document.createElement('td'),link.textContent="   ";link2.appendChild(link);   
-        window.gm.timeslots.forEach((x)=>{timeWork(x,day,row)});
-    }
-    function timeWork(time,day,dayrow){
-        link=document.createElement('td');dayrow.appendChild(link);
-        let _j=s.Schedule.getJobAtTimePerson(day,time,personid);
-        link2 = document.createElement('button'),link2.id=day+at+time,
-            link2.textContent=_j.job;
-        link2.addEventListener("click", function(me){createSelector(me.currentTarget.id)});
-        link.appendChild(link2);
-    }
-    function createSelector(day_time){  //workspace-selector
-        while(panel2.hasChildNodes()) {
-            panel2.removeChild(panel2.children[0]);
-        }
-        _P.WorkOptions.forEach((x)=>{x.workspaces.forEach((y)=>{addOption(day_time,y);})}); //Todo filter options that are general unavailable (missing workspace)
-    }
-    function addOption(day_time,work){
-        link = document.createElement('button');link.id=day_time+at+work, link.textContent = work;panel2.appendChild(link);
-        link.addEventListener("click", function(me){workPreview(me.currentTarget.id)});
-    }
-    function workPreview(day_time_work){
-        var info=day_time_work.split(at),    //Monday@Dawn@Maid_Inn
-            day=info[0],time=info[1],work=info[2];
-        while(choice.hasChildNodes()) {
-            choice.removeChild(choice.children[0]);
-        }
-        var _res=window.gm.workPreview(_P,day,time,work);
-        if(_res.OK==true){
-            link = document.createElement('p');link.textContent=day_time_work;choice.appendChild(link);
-            s.Schedule.setJob(day,time,work,personid,_res.work.params());
-            dayPreview(day);
-            document.getElementById(day+at+time).textContent=_res.msg;
-        } else {
-            link = document.createElement('p');link.textContent=_res.msg;choice.appendChild(link);
-        }
-    }
-    function dayPreview(day){
-        let _res={OK:true,msg:""},_en=0;
-        window.gm.timeslots.forEach((x)=>{
-            let _j=s.Schedule.getJobAtTimePerson(day,x,personid);
-            if(_j){
-                _en+=window.gm.getArrayElementById(s.City.Workspaces,_j.job).requiredEnergy();
-                //_en+=_P.getWorkOption(_j.job).requiredEnergy();  //Resting has 0 Energy
-            }
-        })
-        if(_en>_P.Stats.get('energyMax').value){
-            _res.OK=false,_res.msg="Jobs require to much energy and might fail. "
-        }
-        if(_res.OK==false){
-            document.getElementById(day+"_alert").innerHTML='<div class="popup combateff"><div class="combaticon">'+window.gm.images.ic_warn()+'</div><span class="popuptext" id="myPopup2">'+_res.msg+'</span></div>';
-            
-        } else {
-            document.getElementById(day+"_alert").innerHTML="";
-        }
-    }
-};
-
 /**
  * estimate effect of work
 */
@@ -596,7 +507,7 @@ window.gm.workPreview=function(person,day,time,workspace){
     }
     if(_res.OK==true) {
         //Resources available
-        _res.msg=person.name+" will use "+_work.workspaces[0]+ ".";
+        _res.msg=person.name+" will use "+workspace+ ".";
         _res.work=_work;
     }
     return(_res)
@@ -697,7 +608,7 @@ window.gm.listProduction=function() {
     _list2 = window.story.state.City.Workspaces;
     for(var i=_list2.length-1;i>=0;i--){ //for each ws...
         var _ws = _list2[i],_rec=_ws.getProducables();
-        if(_rec===null) break; //produce nothing - skip
+        if(_rec===null) continue; //produce nothing - skip
         var link = document.createElement('a');
         link.id=_ws.id,link.href='javascript:void(0)',
         link.addEventListener("click", function(me){window.story.state.tmp.args=[{ws_id:me.currentTarget.id}];window.story.show('Menu_ProductionWS');});

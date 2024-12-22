@@ -35,6 +35,12 @@ a {
     margin-left:0.25em;
     margin-right:0.25em;
 }
+.link {
+  /*makes a text look like link*/
+  cursor: pointer;
+  color: rgb(140, 180, 255);
+  text-decoration:underline;
+}
 .nolink {
   /*makes a link look like plain texr*/
   color: unset;
@@ -228,13 +234,16 @@ background:blue;
     display: block;
 background:red;
 }
-
+/* hint-toggle:
+<label>[hint]<input type="checkbox" style="display: none;">
+     <span role='tooltip'>My tooltip</span>
+</label> */
 input:not(checked) ~ span[role=tooltip] {
   display:none;
   visibility:hidden;
 }
 input:checked ~ span[role=tooltip] {
-	display: inline-block;
+	/*
 	position: relative;
 	bottom: 1em;
 	left: 0em;
@@ -243,9 +252,14 @@ input:checked ~ span[role=tooltip] {
 	z-index: 100;
 	color: #000;
 	background-color: #ffebe6;
-	border: solid 1px #c32e04;
-	border-radius: 0.2em;
+  */
+  display: inline-block; 
   visibility:visible;
+  border: solid 1px #c32e04;
+	border-radius: 0.2em;
+	padding: 8px 8px 8px 8px;
+  text-align: left;
+  margin: 8px 8px 8px 8px;
 }
 [type=checkbox], [type=radio] {
   width:1em;
@@ -261,8 +275,8 @@ button {
 	border-radius: 15px;
 	padding: 8px 8px 8px 8px;
 	box-shadow: 5px 5px 3px Black;
-  	text-align: left;
-  	margin: 8px 8px 8px 8px;
+  text-align: left;
+  margin: 8px 8px 8px 8px;
 }
 .avatar {
 	display: block;
