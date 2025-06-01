@@ -139,7 +139,13 @@ You gain the impression that the soul crystal has reached the maximum size that 
 "A developing soul gem interferes and supresses normal pregnancys. There are different cases known where host used this effect as alternative to other birth control measures." 
 Several religious directions state that this is against natures law and has to be prohibited. However, the high demand for crystals encourages unofficial experimentation."
 
-
+:: CardGame
+<a0 id='btStart'>Start</a><p id='result'></p>
+<div id="card-table" style="position: relative;"></div>
+<script>
+var _game = window.gm.startCardGame();
+document.getElementById('btStart').addEventListener("click", _game.start);
+</script>
 
 :: Pong
 <div id="pong"></div>
