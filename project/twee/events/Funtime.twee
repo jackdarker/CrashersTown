@@ -146,6 +146,7 @@ body {
   user-select: none;
 }
 .draggable {
+  position: absolute;
   text-align: center;
   background: white;
 }
@@ -170,7 +171,7 @@ body {
   opacity: 0.5;
 }
 .R1x2 {
-    position: absolute;
+    text-align: center;
     width: 128px;
     height: 64px;
     background-color: lightblue;
@@ -178,7 +179,7 @@ body {
     cursor: grab;
 }
 .R1x1 {
-    position: absolute;
+    text-align: center;
     width: 64px;
     height: 64px;
     background-color: red;
@@ -186,39 +187,72 @@ body {
     cursor: grab;
 }
 </style>
-<a0 id='btStart'>Start</a><p id='result'><br>
-<div class="dropzone" id="drop-target">
-  <div class="R1x2 draggable" >1x2</div>
-  <div class="R1x1 draggable" >1x1</div>
-  </div>
+<a0 id='btStart' onclick="abort();">Abort</a><p id='result'><br>
+<div class="R1x2" onclick='addRect("R1x2");'>1x2</div>
+<div class="R1x1" onclick='addRect("R1x1");'>1x1</div>
+<div>sdfsfd<div class="dropzone" id="drop-target"></div></div>
 <script>
-document.querySelectorAll('.draggable').forEach(rect => {
-  rect.addEventListener('pointerdown', (e) => {
+const gridSize=32;
+let Rects=[];
+function isIntersectingRect(r1, r2) {
+  var quickCheck = (r1.x <= r2.x + r2.w &&
+          r2.x <= r1.x + r1.w &&
+          r1.y <= r2.y + r2.h &&
+          r2.y <= r1.y + r1.h)
+  if (quickCheck) return true;
+  var x_overlap = Math.max(0, Math.min(r1.x + r1.w, r2.x + r2.w) - Math.max(r1.x, r2.x));
+  var y_overlap = Math.max(0, Math.min(r1.y + r1.h, r2.y + r2.h) - Math.max(r1.y, r2.y));
+  var overlapArea = x_overlap * y_overlap;
+  return(overlapArea == 0);
+}
+function sanitizeRect(){}
+function addRect(classname){
+  let container=document.querySelector('.dropzone');
+  let rect=document.createElement('div');
+  rect.classList.add(classname); rect.textContent=classname;
+  container.appendChild(rect);
+  makeDragable(container,rect);
+}
+function makeDragable(container,rect){
+  function startDrag(e){
     rect.setPointerCapture(e.pointerId);
     let offsetX = e.clientX - rect.getBoundingClientRect().left;
     let offsetY = e.clientY - rect.getBoundingClientRect().top;
     const moveRect = (event) => {
-        let container = document.querySelector('.dropzone');
         let containerRect = container.getBoundingClientRect();
-        let newX = event.clientX;// - offsetX;
-        let newY = event.clientY;// - offsetY;
-        newX=newX-(newX % 10);newY=newY-(newY % 10);
+        let w=event.target.width,h=event.target.height;
+        let newX = event.clientX - offsetX;
+        let newY = event.clientY - offsetY;
+        newX=newX-(newX % gridSize);newY=newY-(newY % gridSize);
         // Begrenzung innerhalb der Containerfläche
         newX = Math.max(containerRect.left, Math.min(newX, containerRect.right - rect.clientWidth));
         newY = Math.max(containerRect.top, Math.min(newY, containerRect.bottom - rect.clientHeight));
         rect.style.left = (newX - containerRect.left) + "px";
         rect.style.top = (newY - containerRect.top) + "px";
     };
-    const stopDrag = () => {
+    const stopDrag = (event) => {
+        let w=event.target.style.width,h=event.target.style.height,x=event.target.x,y=event.target.y;
         rect.removeEventListener('pointermove', moveRect);
         rect.removeEventListener('pointerup', stopDrag);
+        if(true){
+          debugger
+          event.target.classList.remove("dragging");
+          Rects.push({x:x,y:y,w:w,h:h})
+          rect.removeEventListener('pointerdown', startDrag);
+        }
         rect.style.cursor = "grab";
     };
     rect.addEventListener('pointermove', moveRect);
     rect.addEventListener('pointerup', stopDrag);
+    if(true){
+      event.target.classList.add("dragging");
+    }
     rect.style.cursor = "grabbing";
-  });
-});
+  }
+  rect.classList.add("draggable")
+  rect.addEventListener('pointerdown', startDrag);
+}
+//document.querySelectorAll('.draggable').forEach(rect => {  });
 </script>
 <scriptOLD>
 let dragged;
