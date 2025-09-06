@@ -116,11 +116,16 @@ class WS_Maid extends Workspace{
             entry.textContent = 'As '+ _P.name;
             if(this.id=='Maid_Mansion'){
                 entry.textContent += ' cleaned the mansion, something happened... '
+                document.querySelector("div#panel").appendChild(entry);
+                GMEvent.createButton('Next',
+                    function(){ window.story.state.tmp.args[0]=_P.id,window.story.state.tmp.args[1]=0,
+                        window.story.show("MaidMolested");}
+                );
             } else {
                 entry.textContent += ' cleaned the other peoples quarters, something happened... '
+                document.querySelector("div#panel").appendChild(entry);
+                GMEvent.createNextBt('Next');
             }
-            document.querySelector("div#panel").appendChild(entry);
-            GMEvent.createNextBt('Next');
             return(true); //halt for display
         } else {
             GMEvent.createNextBt('Next');

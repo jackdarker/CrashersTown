@@ -374,6 +374,37 @@ renderToSelector("#panel", "listbuy");
 </script>
 
 
+:: MaidMolested [_nosave_]
+<section><aside id="sidebar"></aside><article><%=window.story.render("CenterDialogs")%>
+<div id="panel"></div></br></br> 
+</article><article id="LogPanel"></article></section>
+<script>
+var _P = window.gm.getArrayElementById(window.story.state.City.Slaves,window.story.state.tmp.args[0]);
+if(window.story.state.tmp.args[1]==0){ //Todo this could also be done with events.push(window.gm.EventsLib)   ???
+    var entry = document.createElement('p');
+    entry.textContent = _P.name+ " got molested by someone.";
+    document.querySelector("div#panel").appendChild(entry);
+    var link = document.createElement('a');link.href='javascript:void(0)',link.addEventListener("click", 
+        function(){window.story.show(window.passage.name);});
+    link.textContent="Pull the molester away";
+    document.querySelector("div#panel").appendChild(link);
+    link = document.createElement('a');link.href='javascript:void(0)',link.addEventListener("click", 
+        function(){window.story.show('_Event');});
+    link.textContent="Ignore it";
+    document.querySelector("div#panel").appendChild(link);
+    window.story.state.tmp.args[1]=1;
+} else if(window.story.state.tmp.args[1]==1){ 
+    var entry = document.createElement('p');
+    entry.textContent = _P.name+ " is grateful for your help.";
+    document.querySelector("div#panel").appendChild(entry);
+    var link = document.createElement('a');
+    link.href='javascript:void(0)',link.addEventListener("click", function(){window.story.show('_Event');});
+    link.textContent="Next";
+    document.querySelector("div#panel").appendChild(link);
+}
+</script>
+
+
 :: other
 TODO visit bath/library/arena/stripclub for relaxation
 

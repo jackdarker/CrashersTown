@@ -294,6 +294,7 @@ class SlaveCaptured extends GMEvent {
         let _P = window.gm.randomizePerson({slave:true});
         this.SlaveId = _P.id;
         window.story.state.City.Slaves.push(_P);
+        window.gm.updataJobCapabilitys();
         this.done=true;
         return(true);
 
